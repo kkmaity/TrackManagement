@@ -14,9 +14,9 @@ public class Constant {
 
     private static String getBaseURL() {
         if (environment == ENVIRONMENT.PRODUCTION) {
-            return "https://google.com/";
+            return "https://api.github.com/";
         } else if (environment == ENVIRONMENT.STAGING) {
-            return "https://google.com/";
+            return "https://api.github.com/";
         } else if (environment == ENVIRONMENT.DEVELOPMENT) {
             return "https://google.com/";
         }

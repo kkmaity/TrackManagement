@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#dedede">
+    <include
+        layout="@layout/toolbar_custom"></include>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal">
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            app:cardElevation="2dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Work"
+                android:textColor="@android:color/holo_green_dark"
+                android:layout_gravity="center"
+                android:padding="10dp"/>
+
+        </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="06:37:45"
+            android:textSize="17sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:padding="10dp"/>
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            android:layout_weight="1"
+            app:cardElevation="2dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Work"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_gravity="center"
+                android:padding="10dp"/>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+
+</LinearLayout>
