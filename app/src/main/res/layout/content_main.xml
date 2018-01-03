@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:design="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -9,11 +10,32 @@
     tools:showIn="@layout/app_bar_main">
 
 
-    <include
+   <!-- <include
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        layout="@layout/initial_dashboard"></include>
+        layout="@layout/initial_dashboard"></include>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="fill_parent"
+        android:layout_above="@+id/navigation"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"/>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="start"
+        android:background="@color/colorPrimary"
+        android:foregroundTint="@color/colorAccent"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
+        app:menu="@menu/bottom_nav_items" />
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
