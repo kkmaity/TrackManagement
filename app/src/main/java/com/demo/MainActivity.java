@@ -25,13 +25,14 @@ public class MainActivity extends BaseActivity
 
     private static int ACTIVE_TAB_POSITION = 1;
     private boolean doubleBackToExitPressedOnce = false;
+    private  Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startService(new Intent(MainActivity.this,LocationUpdateService.class));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -110,15 +111,15 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.about_us) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.terms_conditions) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.notifications) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.profile) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.logout) {
 
         }
 
@@ -220,6 +221,10 @@ public class MainActivity extends BaseActivity
             }, 2000);
         }
 
+    }
+
+    public void setTitle(String title){
+        toolbar.setTitle(title);
     }
 
 

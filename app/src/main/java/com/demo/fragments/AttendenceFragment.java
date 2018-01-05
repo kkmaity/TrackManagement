@@ -22,7 +22,7 @@ public class AttendenceFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_attendence, null, false);
-
+        ((MainActivity)getActivity()).setTitle(AppMenu.ATTENDENCE.name());
         return v;
 
     }

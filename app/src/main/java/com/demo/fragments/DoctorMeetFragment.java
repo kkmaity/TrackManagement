@@ -6,24 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
-import com.demo.Enum.AppMenu;
-import com.demo.MainActivity;
 import com.demo.R;
 
 
 /**
  * Created by root on 20/8/15.
  */
-public class LeavesFragment extends BaseFragment {
+public class DoctorMeetFragment extends BaseFragment {
+
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_leaves, null, false);
-        ((MainActivity)getActivity()).setTitle(AppMenu.LEAVES.name());
+        View v = inflater.inflate(R.layout.fragment_doctor_meet, null, false);
+
         return v;
 
     }

@@ -2,6 +2,7 @@ package com.demo.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +17,22 @@ import com.demo.R;
 /**
  * Created by root on 20/8/15.
  */
-public class WorkFlowFragment extends BaseFragment {
+public class WorkEntryFragment extends BaseFragment {
 
-    private TextView tv_attendence;
-    private TextView tv_work_entry;
-    private TextView tv_leaves;
+    private TextView tv_office_job;
+    private TextView tv_out_door_job;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_dashboard, null, false);
-        tv_attendence = (TextView)v.findViewById(R.id.tv_attendence);
-        tv_work_entry = (TextView)v.findViewById(R.id.tv_work_entry);
-        tv_leaves = (TextView)v.findViewById(R.id.tv_leaves);
+        View v = inflater.inflate(R.layout.fragment_work_entry, null, false);
+        tv_office_job = (TextView)v.findViewById(R.id.tv_office_job);
+        tv_out_door_job = (TextView)v.findViewById(R.id.tv_out_door_job);
 
-        tv_attendence.setOnClickListener(this);
-        tv_work_entry.setOnClickListener(this);
-        tv_leaves.setOnClickListener(this);
+        ((MainActivity)getActivity()).setTitle(AppMenu.WORk_ENTRY.name());
+
+        tv_office_job.setOnClickListener(this);
+        tv_out_door_job.setOnClickListener(this);
         return v;
 
     }
@@ -48,15 +48,15 @@ public class WorkFlowFragment extends BaseFragment {
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.tv_attendence:
-                ((MainActivity)getActivity()).onMenuItemSelect(AppMenu.ATTENDENCE);
+            case R.id.tv_office_job:
+                Fragment officejobFragment = new OfficeJboFragment();
+                displayView(officejobFragment);
                 break;
-            case R.id.tv_work_entry:
-                ((MainActivity)getActivity()).onMenuItemSelect(AppMenu.WORk_ENTRY);
+            case R.id.tv_out_door_job:
+                Fragment outdoorFragment = new OutdoorJboFragment();
+                displayView(outdoorFragment);
                 break;
-            case R.id.tv_leaves:
-                ((MainActivity)getActivity()).onMenuItemSelect(AppMenu.LEAVES);
-                break;
+
         }
     }
 }

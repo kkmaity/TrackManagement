@@ -68,7 +68,7 @@ public class RootFragment extends BaseFragment {
                 getChildFragmentManager().beginTransaction().add(R.id.fl_root, new AttendenceFragment()).commit();
                 break;
             case WORk_ENTRY:
-                getChildFragmentManager().beginTransaction().add(R.id.fl_root, new WorkFlowFragment()).commit();
+                getChildFragmentManager().beginTransaction().add(R.id.fl_root, new WorkEntryFragment()).commit();
                 break;
             case LEAVES:
                 getChildFragmentManager().beginTransaction().add(R.id.fl_root, new LeavesFragment()).commit();

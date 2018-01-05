@@ -16,14 +16,15 @@ import com.demo.R;
 /**
  * Created by root on 20/8/15.
  */
-public class LeavesFragment extends BaseFragment {
+public class WashFragment extends BaseFragment {
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_leaves, null, false);
-        ((MainActivity)getActivity()).setTitle(AppMenu.LEAVES.name());
+        View v = inflater.inflate(R.layout.fragment_wash, null, false);
+
         return v;
 
     }
