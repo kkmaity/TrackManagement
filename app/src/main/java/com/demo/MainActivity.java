@@ -1,13 +1,17 @@
 package com.demo;
 
-import android.content.Intent;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,20 +22,26 @@ import android.widget.Toast;
 
 import com.demo.Enum.AppMenu;
 import com.demo.fragments.RootFragment;
-import com.demo.services.LocationUpdateService;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static int ACTIVE_TAB_POSITION = 1;
+    private String user;
     private boolean doubleBackToExitPressedOnce = false;
     private  Toolbar toolbar;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startService(new Intent(MainActivity.this,LocationUpdateService.class));
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            user = bundle.getString("user");
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -61,6 +71,13 @@ public class MainActivity extends BaseActivity
             }
         });
 
+
+        if (!checkPermission()) {
+
+            requestPermission();
+
+        }
+
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
         if (fragment == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.frame_container, getRootFragment(AppMenu.HOME),AppMenu.HOME.name()).commit();
@@ -82,6 +99,8 @@ public class MainActivity extends BaseActivity
             }
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -227,6 +246,46 @@ public class MainActivity extends BaseActivity
         toolbar.setTitle(title);
     }
 
+    private boolean checkPermission(){
+        int result = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (result == PackageManager.PERMISSION_GRANTED){
 
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+    }
+
+    private void requestPermission(){
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,Manifest.permission.ACCESS_FINE_LOCATION)){
+
+            Toast.makeText(MainActivity.this,"GPS permission allows us to access location data. Please allow in App Settings for additional functionality.",Toast.LENGTH_LONG).show();
+
+        } else {
+
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+
+                } else {
+
+
+
+                }
+                break;
+        }
+    }
 
 }
