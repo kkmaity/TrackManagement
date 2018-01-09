@@ -33,7 +33,16 @@
             android:screenOrientation="portrait">
 
         </activity>
+
+        <activity android:name=".CrashActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <service android:name=".services.LocationUpdateService" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 
 </manifest>

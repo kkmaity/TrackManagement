@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            app:cardBackgroundColor="#377838"
+            android:layout_gravity="center"
+            app:cardElevation="5dp"
+            >
+            <TextView
+                android:id="@+id/tv_office_job"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Office Job"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                />
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#2b41d4"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="20dp"
+            app:cardElevation="5dp"
+            android:layout_centerInParent="true"
+            >
+            <TextView
+                android:id="@+id/tv_out_door_job"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Outdoor Job "
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                />
+
+        </android.support.v7.widget.CardView>
+
+    <include layout="@layout/view_grid"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+</LinearLayout>
