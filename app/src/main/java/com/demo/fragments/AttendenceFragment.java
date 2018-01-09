@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.demo.MainActivity;
 import com.demo.R;
 import com.demo.services.LocationUpdateService;
 
+import java.util.Timer;
+
 
 /**
  * Created by root on 20/8/15.
@@ -25,8 +28,10 @@ public class AttendenceFragment extends BaseFragment {
 
     private TextView tv_start_work;
     private TextView tv_end_work;
-    private TextView tv_start_date_time,tv_end_date_time;
-
+    private TextView tv_end_date_time,tv_start_date_time;
+    private Timer timer;
+    long time;
+    CountDownTimer countDownTimer=null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -38,6 +43,7 @@ public class AttendenceFragment extends BaseFragment {
         tv_end_date_time = (TextView)v.findViewById(R.id.tv_end_date_time);
         tv_start_work.setOnClickListener(this);
         tv_end_work.setOnClickListener(this);
+
         return v;
 
     }
@@ -54,6 +60,28 @@ public class AttendenceFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_start_work:
+             /* String currentTime = baseActivity.getTimeStamp();
+                tv_start_work.setText(currentTime);*/
+
+                //countDownView.start();
+                baseActivity.preference.setStartTime(baseActivity.getTimeStamp());
+                if(countDownTimer!=null){
+                    countDownTimer.cancel();
+                    countDownTimer=null;
+                }
+                TimerTask();
+
+
+
+
+
+
+
+
+
+
+
+
                  LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
                 if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
@@ -67,6 +95,17 @@ public class AttendenceFragment extends BaseFragment {
             case R.id.tv_end_work:
                 getActivity().stopService(new Intent(getActivity(),LocationUpdateService.class));
                 break;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(baseActivity.preference.getStartTime().length()>0){
+            String sTime = baseActivity.preference.getStartTime();
+            String nowTime = baseActivity.getTimeStamp();
+            time=Long.parseLong(nowTime)- Long.parseLong(sTime);
+            TimerTask1(time);
         }
     }
 
@@ -86,5 +125,57 @@ public class AttendenceFragment extends BaseFragment {
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+    public void TimerTask() {
+         time = Long.parseLong(baseActivity.getTimeStamp());
+
+
+        countDownTimer = new CountDownTimer(time, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                try {
+                    tv_start_date_time.setText(baseActivity.getTimer(time-millisUntilFinished));
+
+                }catch (Exception e){
+
+                }
+
+            }
+
+            public void onFinish() {
+                tv_end_date_time.setText("done!");
+            }
+        }.start();
+    }
+
+    public void TimerTask1(final Long time1) {
+        time = Long.parseLong(baseActivity.getTimeStamp());
+
+
+         countDownTimer = new CountDownTimer(time, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                try {
+                    tv_start_date_time.setText(baseActivity.getTimer((time+time1)-millisUntilFinished));
+
+                }catch (Exception e){
+
+                }
+
+            }
+
+            public void onFinish() {
+                tv_end_date_time.setText("done!");
+            }
+        }.start();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(countDownTimer!=null){
+            countDownTimer.cancel();
+            countDownTimer=null;
+        }
     }
 }
