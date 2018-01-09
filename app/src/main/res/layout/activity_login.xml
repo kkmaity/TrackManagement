@@ -27,7 +27,7 @@
             android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
             android:hint="Enter email/mobileNo"
-            android:inputType="phone"
+            android:inputType="text"
             ></EditText>
     </LinearLayout>
     <LinearLayout

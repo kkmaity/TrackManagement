@@ -2,8 +2,12 @@ package com.demo;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -16,21 +20,55 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.demo.Enum.AppMenu;
 import com.demo.fragments.RootFragment;
+import com.demo.network.KlHttpClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     private static int ACTIVE_TAB_POSITION = 1;
     private String user;
     private boolean doubleBackToExitPressedOnce = false;
     private  Toolbar toolbar;
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private GoogleMap mMap;
+    private FrameLayout frame_container;
+    boolean isMapLoaded = false;
+    private CameraUpdate cameraPosition;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    new SendTrackNotification().execute();
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -38,13 +76,21 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
-            user = bundle.getString("user");
-        }
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        frame_container = (FrameLayout) findViewById(R.id.frame_container);
+
+        if(bundle!=null){
+            user = bundle.getString("user");
+
+
+        }
 
         setSupportActionBar(toolbar);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -82,6 +128,29 @@ public class MainActivity extends BaseActivity
         if (fragment == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.frame_container, getRootFragment(AppMenu.HOME),AppMenu.HOME.name()).commit();
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        mMap.setMyLocationEnabled(true);
+
+        Location location = mMap.getMyLocation();
+
+
+        if(user.equals("user1")){
+            frame_container.setVisibility(View.VISIBLE);
+        }else{
+            frame_container.setVisibility(View.GONE);
+            handler.sendEmptyMessageDelayed(1,1000);
+
+
+        }
+
+
+
+
     }
 
     @Override
@@ -285,6 +354,64 @@ public class MainActivity extends BaseActivity
 
                 }
                 break;
+        }
+    }
+
+
+    public class SendTrackNotification extends AsyncTask<String, Void, Boolean> {
+        List<LatLng> latLngs = new ArrayList<>();
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                 Log.e("SendTrackNotification", jsonObject.toString());
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/getlocation.php", jsonObject);
+                if(json.getInt("ResponseCode") == 200){
+
+                    JSONArray ResponseData = json.getJSONArray("ResponseData");
+                    latLngs.clear();
+
+                    for(int i=0; i<ResponseData.length(); i++){
+                        JSONObject c = ResponseData.getJSONObject(i);
+                        latLngs.add( new LatLng(Double.parseDouble(c.getString("userLat")),Double.parseDouble(c.getString("userLong"))));
+
+
+                    }
+
+
+                    return true;
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if(aBoolean){
+
+                if(latLngs.size()>1){
+                    if (!isMapLoaded) {
+                        LatLng ln = latLngs.get(latLngs.size()-1);
+                        cameraPosition = CameraUpdateFactory.newLatLngZoom(ln, 19);
+
+                        mMap.moveCamera(cameraPosition);
+                        mMap.animateCamera(cameraPosition);
+                        isMapLoaded = true;
+                    }
+                }
+                Polygon polygon = mMap.addPolygon(new PolygonOptions()
+                        //.add(new LatLng(22.56566, 88.7677), new LatLng(22.6775, 88.6777))
+                         .addAll(latLngs)
+                        .strokeColor(Color.RED)
+                        .fillColor(Color.BLUE));
+                handler.sendEmptyMessageDelayed(1,5000);
+            }
+
         }
     }
 

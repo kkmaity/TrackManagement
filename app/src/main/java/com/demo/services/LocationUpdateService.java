@@ -30,8 +30,8 @@ import org.json.JSONObject;
 public class LocationUpdateService extends Service  implements    LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = "LocationService";
-    private static final long INTERVAL = 1000 * 1;
-    private static final long FASTEST_INTERVAL = 1000 * 2;
+    private static final long INTERVAL = 1000 * 3;
+    private static final long FASTEST_INTERVAL = 0;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mCurrentLocation;
@@ -117,6 +117,7 @@ public class LocationUpdateService extends Service  implements    LocationListen
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "Location onDestroy ..............: ");
         mGoogleApiClient.disconnect();
         super.onDestroy();
     }
@@ -129,7 +130,7 @@ public class LocationUpdateService extends Service  implements    LocationListen
             try {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
-                jsonObject.put("userID", "1");
+                jsonObject.put("userID", "2");
                 jsonObject.put("userLat",params[0]);
                 jsonObject.put("userLong", params[1]);
                 Log.e("SendTrackNotification", jsonObject.toString());

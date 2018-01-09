@@ -19,21 +19,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/map"
+            android:layout_above="@+id/navigation"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
+            tools:context="com.demo.MainActivity"></fragment>
     <FrameLayout
         android:id="@+id/frame_container"
         android:layout_width="fill_parent"
+        android:background="#ffffff"
         android:layout_above="@+id/navigation"
         android:layout_height="fill_parent"
         android:orientation="vertical"/>
 
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/navigation"
-            tools:context="com.mapcmarkar.MapsActivity"></fragment>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
