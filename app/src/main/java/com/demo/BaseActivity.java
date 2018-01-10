@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.demo.preferences.Preference;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
@@ -24,11 +26,13 @@ import java.util.Locale;
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     public ProgressDialog prsDlg;
+    public Preference preference=null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prsDlg = new ProgressDialog(this);
+         preference =new Preference(BaseActivity.this);
 
 
     }
@@ -38,6 +42,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         java.sql.Date currentTimestamp = new java.sql.Date(calendar.getTime().getTime());
         timeStmp=""+currentTimestamp;
         return timeStmp;
+    }
+    public String getTimeStamp(){
+        long time= System.currentTimeMillis();
+        return ""+time;
     }
     public void showSnackMessage(View view){
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -209,4 +217,15 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
         });
     }
+    public String getTimer(long timeInMilliSeconds ){
+        long seconds = timeInMilliSeconds / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+        //String time = days + ":" + hours % 24 + ":" + minutes % 60 + ":" + seconds % 60;
+        String time = hours % 24 + ":" + minutes % 60 + ":" + seconds % 60;
+        return time;
+    }
+
+
 }

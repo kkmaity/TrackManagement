@@ -20,7 +20,11 @@ android {
         }
     }
 }
-
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
@@ -41,4 +45,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.8.0'
     compile "com.google.android.gms:play-services-base:+"
     compile "com.google.android.gms:play-services-maps:+"
+    implementation 'com.github.alexfu:CountDownView:0.1.0'
 }
