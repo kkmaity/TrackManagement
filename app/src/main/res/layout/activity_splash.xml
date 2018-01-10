@@ -6,9 +6,9 @@
     android:background="@color/grey_10">
 
    <TextView
+       android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test App"
         android:textStyle="bold"
         android:layout_centerInParent="true"
         android:textColor="@color/colorPrimary"

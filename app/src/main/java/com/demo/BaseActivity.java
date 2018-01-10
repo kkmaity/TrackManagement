@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -109,6 +111,15 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("result" + result.toString());
 
         return result.toString();
+    }
+    public boolean isNetworkConnected(){
+        ConnectivityManager cm =
+                (ConnectivityManager)BaseActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
     }
 
 
