@@ -55,9 +55,55 @@ public class Preference {
         SharedPreferences.Editor e = prefs.edit();
         e.clear();
         e.commit();
+
+
     }
 
-    /*--ProviderState--*/
+    public void setUserId(String UserId) {
+        setString("UserId", UserId);
+    }
+
+    public String getUserId() {
+        return getString("UserId", null);
+    }
+
+    public void setName(String Name) {
+        setString("Name", Name);
+    }
+
+    public String getName() {
+        return getString("Name", "");
+    }
+
+    public void setEmail(String Email) {
+        setString("Email", Email);
+    }
+
+    public String getEmail() {
+        return getString("Email", "");
+    }
+
+    public void setPhone(String Phone) {
+        setString("Phone", Phone);
+    }
+
+    public String getPhone() {
+        return getString("Phone", "");
+    }
+
+    public void setUserStatus(String setUserStatus) {
+        setString("UserStatus", setUserStatus);
+    }
+
+    public String getUserStatus() {
+        return getString("setUserStatus", "");
+    }
+
+
+
+
+
+    /*--ProviderState--*//*
     public void setProviderState(String ProviderState) {
         setString("ProviderState", ProviderState);
     }
@@ -67,7 +113,7 @@ public class Preference {
     }
 
 
-    /*--DeviceId--*/
+    *//*--DeviceId--*//*
     public void setDeviceId(String DeviceId) {
         setString("DeviceId", DeviceId);
     }
@@ -77,7 +123,7 @@ public class Preference {
     }
 
 
-    /*--Latitude--*/
+    *//*--Latitude--*//*
     public void setLatitude(Double Latitude) {
         setString("Latitude", String.valueOf(Latitude));
     }
@@ -92,7 +138,7 @@ public class Preference {
         }
     }
 
-    /*--Longitude--*/
+    *//*--Longitude--*//*
     public void setLongitude(Double Longitude) {
         setString("Longitude", String.valueOf(Longitude));
     }
@@ -106,7 +152,7 @@ public class Preference {
         }
     }
 
-    /*--CustId--*/
+    *//*--CustId--*//*
     public void setUserId(String UserId) {
         setString("UserId", UserId);
     }
@@ -141,7 +187,7 @@ public class Preference {
     }
 
 
-    /*--SessionToken--*/
+    *//*--SessionToken--*//*
     public void setSessionToken(String SessionToken) {
         setString("SessionToken", SessionToken);
     }
@@ -150,7 +196,7 @@ public class Preference {
         return getString("SessionToken", null);
     }
 
-    /*--Email--*/
+    *//*--Email--*//*
     public void setEmail(String Email) {
         setString("Email", Email);
     }
@@ -160,7 +206,7 @@ public class Preference {
     }
 
 
-    /*--Name--*/
+    *//*--Name--*//*
     public void setName(String Name) {
         setString("Name", Name);
     }
@@ -169,7 +215,7 @@ public class Preference {
         return getString("Name", "");
     }
 
-    /*CustAddress*/
+    *//*CustAddress*//*
     public void setCustAddress(String CustAddress) {
         setString("CustAddress", CustAddress);
     }
@@ -178,7 +224,7 @@ public class Preference {
         return getString("CustAddress", "");
     }
 
-    /*--CustDrivingLincese--*/
+    *//*--CustDrivingLincese--*//*
     public void setCustDrivingLincese(String CustDrivingLincese) {
         setString("CustDrivingLincese", CustDrivingLincese);
     }
@@ -187,7 +233,7 @@ public class Preference {
         return getString("CustDrivingLincese", "");
     }
 
-    /*--CustDrivingLincese--*/
+    *//*--CustDrivingLincese--*//*
     public void setCustDrivingLinceseNo(String CustDrivingLinceseNo) {
         setString("CustDrivingLinceseNo", CustDrivingLinceseNo);
     }
@@ -197,7 +243,7 @@ public class Preference {
     }
 
 
-    /*--CustImage--*/
+    *//*--CustImage--*//*
     public void setCustImage(String CustImage) {
         setString("CustImage", CustImage);
     }
@@ -206,7 +252,7 @@ public class Preference {
         return getString("CustImage", "");
     }
 
-    /*--CustPhNo--*/
+    *//*--CustPhNo--*//*
     public void setCustPhNo(String CustPhNo) {
         setString("CustPhNo", CustPhNo);
     }
@@ -215,7 +261,7 @@ public class Preference {
         return getString("CustPhNo", "");
     }
 
-    /*--SocialUser--*/
+    *//*--SocialUser--*//*
     public void setIsSocialUser(String IsSocialUser) {
         setString("IsSocialUser", IsSocialUser);
     }
@@ -225,7 +271,7 @@ public class Preference {
     }
 
 
-    /*--StartTime--*/
+    *//*--StartTime--*//*
     public void setStartTime(String StartTime) {
         setString("StartTime", StartTime);
     }
@@ -235,7 +281,7 @@ public class Preference {
     }
 
 
-    /*--EndTime--*/
+    *//*--EndTime--*//*
     public void setEndTime(String EndTime) {
         setString("EndTime", EndTime);
     }
@@ -244,7 +290,7 @@ public class Preference {
         return getString("EndTime", "");
     }
 
-    /*--PinCode--*/
+    *//*--PinCode--*//*
     public void setPinCode(String PinCode) {
         setString("PinCode", PinCode);
     }
@@ -254,7 +300,7 @@ public class Preference {
     }
 
 
-    /*--Date Of Birth--*/
+    *//*--Date Of Birth--*//*
     public void setDOB(String DOB) {
         setString("DOB", DOB);
     }
@@ -264,7 +310,7 @@ public class Preference {
     }
 
 
-    /*--Date Of Birth--*/
+    *//*--Date Of Birth--*//*
     public void setHomeDelivery(boolean status) {
         setBoolean("HomeDelivery", status);
     }
@@ -274,7 +320,7 @@ public class Preference {
     }
 
 
-    /*--DeviceId--*/
+    *//*--DeviceId--*//*
     public void setProfileImageURL(String profileImageURL) {
         setString("ImageURL", profileImageURL);
     }
@@ -311,6 +357,6 @@ public class Preference {
     }
     public String getDeviceToken() {
         return getString("device_token", "");
-    }
+    }*/
 }
 
