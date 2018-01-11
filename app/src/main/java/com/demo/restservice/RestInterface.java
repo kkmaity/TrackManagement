@@ -37,7 +37,6 @@ public interface RestInterface {
     @POST("emp_track/api/userLogin.php")
     Call<LoginMain> userLogin(@Body ApiLoginParam params);
 
-    @FormUrlEncoded
     @POST("emp_track/api/attendance_history.php")
     Call<AttendenceHistoryMain> attendance_history(@Body ApiAttendenceHistoryParam params);
 

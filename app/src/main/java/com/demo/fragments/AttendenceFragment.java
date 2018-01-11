@@ -11,12 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.demo.Enum.AppMenu;
 import com.demo.MainActivity;
 import com.demo.R;
+import com.demo.adapter.AttendanceGridAdapter;
+import com.demo.api.ApiAttendenceHistory;
+import com.demo.model.attendence_history.ApiAttendenceHistoryParam;
+import com.demo.model.attendence_history.AttendenceHistoryMain;
+import com.demo.restservice.OnApiResponseListener;
 import com.demo.services.LocationUpdateService;
+import com.demo.utils.Constant;
 
 import java.util.Timer;
 
@@ -32,6 +39,9 @@ public class AttendenceFragment extends BaseFragment {
     private Timer timer;
     long time;
     CountDownTimer countDownTimer=null;
+    private GridView gridAttendanceHis;
+    private AttendanceGridAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -41,11 +51,50 @@ public class AttendenceFragment extends BaseFragment {
         tv_end_work = (TextView)v.findViewById(R.id.tv_end_work);
         tv_start_date_time = (TextView)v.findViewById(R.id.tv_start_date_time);
         tv_end_date_time = (TextView)v.findViewById(R.id.tv_end_date_time);
+        gridAttendanceHis = (GridView)v.findViewById(R.id.gridAttendanceHis);
         tv_start_work.setOnClickListener(this);
         tv_end_work.setOnClickListener(this);
+        getAttendenceHistory();
 
         return v;
 
+    }
+
+    private void getAttendenceHistory() {
+        if(baseActivity.isNetworkConnected()){
+            baseActivity.showProgressDialog();
+            new ApiAttendenceHistory(getParam(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    baseActivity.dismissProgressDialog();
+                    AttendenceHistoryMain main=(AttendenceHistoryMain)t;
+                    if (main.getResponseCode()==200){
+                        adapter=new AttendanceGridAdapter(baseActivity,main.getResponseData());
+                        gridAttendanceHis.setAdapter(adapter);
+
+                    }
+
+
+                }
+
+                @Override
+                public <E> void onError(E t) {
+                    baseActivity.dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    baseActivity.dismissProgressDialog();
+                }
+            });
+        }
+    }
+
+    private ApiAttendenceHistoryParam getParam() {
+        ApiAttendenceHistoryParam param=new ApiAttendenceHistoryParam();
+        param.setApiKey(Constant.API_KEY);
+        param.setUserid("1");
+        return param;
     }
 
 

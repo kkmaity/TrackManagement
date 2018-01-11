@@ -68,7 +68,7 @@ public class SplashActivity extends BaseActivity{
             @Override
             public void run() {
                 if (preference.getUserId()!=null&&preference.getUserId().length()>0){
-                    Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                    Intent i = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(i);
                     finish();
                 }else {
