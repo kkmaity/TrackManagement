@@ -223,7 +223,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         long hours = minutes / 60;
         long days = hours / 24;
         //String time = days + ":" + hours % 24 + ":" + minutes % 60 + ":" + seconds % 60;
-        String time = hours % 24 + ":" + minutes % 60 + ":" + seconds % 60;
+        String time = String.format("%2d",hours % 24) + ":" + String.format("%2d",minutes % 60) + ":" + String.format("%2d",seconds % 60);
         return time;
     }
 
