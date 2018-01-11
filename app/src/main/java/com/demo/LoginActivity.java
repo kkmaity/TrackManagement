@@ -9,6 +9,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.demo.api.ApiLogin;
+import com.demo.api.ApiRegistration;
+import com.demo.model.login.ApiLoginParam;
+import com.demo.model.login.LoginMain;
+import com.demo.model.registration.ApiRegistrationParam;
+import com.demo.model.registration.RegistrationMain;
+import com.demo.restservice.OnApiResponseListener;
+import com.demo.utils.Constant;
+
+import java.util.regex.Pattern;
+
 public class LoginActivity extends BaseActivity {
     private TextView tvNewAccount;
     private CardView cardViewLogin;
@@ -45,17 +56,74 @@ public class LoginActivity extends BaseActivity {
 
 
     public void login(){
-        String user = et_userid.getText().toString().trim();
-        String password = et_password.getText().toString().trim();
-
-        if(user.equals("admin") && password.equals("password")){
-            startActivity(new Intent(LoginActivity.this,MainActivity.class).putExtra("user", "admin"));
-            finish();
-        }else if(user.equals("user1") && password.equals("password")){
-            startActivity(new Intent(LoginActivity.this,MainActivity.class).putExtra("user", "user1"));
-            finish();
-        }else{
-            Toast.makeText(getApplicationContext(), "Please enter valid username and password", Toast.LENGTH_LONG).show();
+        if(isValid()){
+            getLogin();
         }
+    }
+
+    public boolean isValid(){
+        boolean flag = true;
+        if(et_userid.getText().toString().trim().length() ==0 ){
+            flag = false;
+            et_userid.setError("Please enter user id");
+        }else if(et_password.getText().toString().trim().length() ==0 ){
+            flag = false;
+            et_password.setError("Please enter password");
+        }
+        return  flag;
+    }
+
+    private void getLogin() {
+        if(isNetworkConnected()){
+            showProgressDialog();
+            new ApiLogin(getParam(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    dismissProgressDialog();
+                    LoginMain main=(LoginMain)t;
+                    if(main.getResponseCode()==200){
+                        preference.setUserId(main.getResponseData().getUserid().toString());
+                        preference.setName(main.getResponseData().getName().toString());
+                        preference.setEmail(main.getResponseData().getEmail().toString());
+                        preference.setPhone(main.getResponseData().getPhone().toString());
+                        preference.setUserStatus("yes");
+                        callNewScreen();
+
+                    }
+
+
+                }
+
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
+
+
+    }
+
+
+
+
+
+    private ApiLoginParam getParam() {
+        ApiLoginParam map=new ApiLoginParam();
+        map.setApiKey(Constant.API_KEY);
+        map.setUsername(et_userid.getText().toString().trim());
+        map.setPassword(et_password.getText().toString().trim());
+        map.setDeviceToken(Constant.API_KEY);
+        return map;
+    }
+    private void callNewScreen() {
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }

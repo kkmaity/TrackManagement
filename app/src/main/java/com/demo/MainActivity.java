@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     private static int ACTIVE_TAB_POSITION = 1;
-    private String user;
+    private String user = "user";
     private boolean doubleBackToExitPressedOnce = false;
     private  Toolbar toolbar;
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity
         Location location = mMap.getMyLocation();
 
 
-        if(user.equals("user1")){
+        if(user.equals("user")){
             frame_container.setVisibility(View.VISIBLE);
         }else{
             frame_container.setVisibility(View.GONE);

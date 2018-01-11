@@ -49,7 +49,7 @@ public class RegistrationActivity extends BaseActivity {
         switch (view.getId()){
             case R.id.tv_register:
                 if(isvalid()){
-
+                    getRegistration();
                 }
                 break;
         }
@@ -138,7 +138,7 @@ public class RegistrationActivity extends BaseActivity {
         return map;
     }
     private void callNewScreen() {
-        Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
+        Intent i = new Intent(RegistrationActivity.this, MainActivity.class);
         startActivity(i);
         finish();
     }
