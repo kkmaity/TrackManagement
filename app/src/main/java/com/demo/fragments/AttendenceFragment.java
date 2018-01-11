@@ -60,8 +60,8 @@ public class AttendenceFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_start_work:
-             /* String currentTime = baseActivity.getTimeStamp();
-                tv_start_work.setText(currentTime);*/
+            /* *//* String currentTime = baseActivity.getTimeStamp();
+                tv_start_work.setText(currentTime);*//*
 
                 //countDownView.start();
                 baseActivity.preference.setStartTime(baseActivity.getTimeStamp());
@@ -79,7 +79,7 @@ public class AttendenceFragment extends BaseFragment {
 
 
 
-
+*/
 
 
                  LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
@@ -101,12 +101,12 @@ public class AttendenceFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(baseActivity.preference.getStartTime().length()>0){
+        /*if(baseActivity.preference.getStartTime().length()>0){
             String sTime = baseActivity.preference.getStartTime();
             String nowTime = baseActivity.getTimeStamp();
             time=Long.parseLong(nowTime)- Long.parseLong(sTime);
             TimerTask1(time);
-        }
+        }*/
     }
 
     private void buildAlertMessageNoGps() {
