@@ -8,6 +8,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -47,6 +49,8 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.Timer;
 
+import okhttp3.internal.Util;
+
 
 /**
  * Created by root on 20/8/15.
@@ -69,7 +73,25 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     GoogleApiClient mGoogleApiClient;
     Location mCurrentLocation;
     private String lat,lng;
-    private boolean isStartButtonClick = false;
+    private Long attendenceStartTimeStamp;
+    private boolean isStartButtonClick = true;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    Long diff = System.currentTimeMillis() - attendenceStartTimeStamp;
+                    String st = Constant.convertSecondsToHMmSs(diff);
+                    tv_start_date_time.setText(st);
+                    if(isStartButtonClick){
+                        handler.sendEmptyMessageDelayed(1, 1000);
+                    }
+
+                    break;
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -217,6 +239,9 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                     AttendenceStartMain main=(AttendenceStartMain)t;
                     if(main.getResponseCode()==200){
                         mGoogleApiClient.disconnect();
+
+                        attendenceStartTimeStamp = Constant.getMillisecond(main.getResponseData().getStartTime());
+                        handler.sendEmptyMessageDelayed(1, 1000);
 
                         LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
