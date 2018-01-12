@@ -93,7 +93,7 @@ public class AttendenceFragment extends BaseFragment {
     private ApiAttendenceHistoryParam getParam() {
         ApiAttendenceHistoryParam param=new ApiAttendenceHistoryParam();
         param.setApiKey(Constant.API_KEY);
-        param.setUserid("1");
+        param.setUserid(baseActivity.preference.getUserId());
         return param;
     }
 
