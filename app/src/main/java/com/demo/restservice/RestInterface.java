@@ -9,6 +9,10 @@ import com.demo.model.login.ApiLoginParam;
 import com.demo.model.login.LoginMain;
 import com.demo.model.registration.RegistrationMain;
 import com.demo.model.registration.ApiRegistrationParam;
+import com.demo.model.start_attendence.ApiAttendenceStartParam;
+import com.demo.model.start_attendence.AttendenceStartMain;
+import com.demo.model.stop_attendence.ApiAttendenceStopParam;
+import com.demo.model.stop_attendence.AttendenceStopMain;
 
 import java.util.List;
 import java.util.Map;
@@ -39,6 +43,12 @@ public interface RestInterface {
 
     @POST("emp_track/api/attendance_history.php")
     Call<AttendenceHistoryMain> attendance_history(@Body ApiAttendenceHistoryParam params);
+
+    @POST("emp_track/api/attendanceStart.php")
+    Call<AttendenceStartMain> attendance_start(@Body ApiAttendenceStartParam params);
+
+    @POST("emp_track/api/attendanceStop.php")
+    Call<AttendenceStopMain> attendance_stop(@Body ApiAttendenceStopParam params);
 
 
     @Multipart

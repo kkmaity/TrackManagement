@@ -99,6 +99,22 @@ public class Preference {
         return getString("setUserStatus", "");
     }
 
+    public void setLat(String lat) {
+        setString("lat", lat);
+    }
+
+    public String getLat() {
+        return getString("lat", "");
+    }
+
+    public void setLng(String lng) {
+        setString("lng", lng);
+    }
+
+    public String getLng() {
+        return getString("lng", "");
+    }
+
 
 
 

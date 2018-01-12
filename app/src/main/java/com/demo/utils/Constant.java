@@ -1,5 +1,9 @@
 package com.demo.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by root on 3/1/18.
  */
@@ -23,6 +27,30 @@ public class Constant {
         }
         return null;
 
+    }
+
+    public static Long getMillisecond(String datetime){
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        try
+        {
+            Date date = simpleDateFormat.parse(datetime);
+
+            System.out.println("date : "+simpleDateFormat.format(date));
+           return date.getTime();
+        }
+        catch (ParseException ex)
+        {
+            System.out.println("Exception "+ex);
+        }
+        return null;
+    }
+
+    public static String convertSecondsToHMmSs(long seconds) {
+        long s = seconds % 60;
+        long m = (seconds / 60) % 60;
+        long h = (seconds / (60 * 60)) % 24;
+        return String.format("%d:%02d:%02d", h,m,s);
     }
 
 
