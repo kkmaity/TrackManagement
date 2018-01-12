@@ -3,8 +3,12 @@ package com.demo.restservice;
 
 import com.demo.model.AppConfigMain;
 import com.demo.model.AppConfigParam;
+import com.demo.model.attendanceStatus.ApiAttendanceStatusParam;
+import com.demo.model.attendanceStatus.AttendanceStatusMain;
 import com.demo.model.attendence_history.ApiAttendenceHistoryParam;
 import com.demo.model.attendence_history.AttendenceHistoryMain;
+import com.demo.model.emplist.ApiEmpListParam;
+import com.demo.model.emplist.EmpListMain;
 import com.demo.model.login.ApiLoginParam;
 import com.demo.model.login.LoginMain;
 import com.demo.model.registration.RegistrationMain;
@@ -49,7 +53,10 @@ public interface RestInterface {
 
     @POST("emp_track/api/attendanceStop.php")
     Call<AttendenceStopMain> attendance_stop(@Body ApiAttendenceStopParam params);
-
+    @POST("emp_track/api/attendanceStatus.php")
+    Call<AttendanceStatusMain> attendanceStatus(@Body ApiAttendanceStatusParam params);
+    @POST("emp_track/api/getemployeeList.php")
+    Call<EmpListMain> getemployeeList(@Body ApiEmpListParam params);
 
     @Multipart
     @POST("api/users/uploadPrescriptionForSamplePickUp")

@@ -12,24 +12,39 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.demo.Enum.AppMenu;
 import com.demo.MainActivity;
+import com.demo.MapsActivity;
 import com.demo.R;
 import com.demo.adapter.AttendanceGridAdapter;
+import com.demo.adapter.EmpRecyclerViewAdapter;
+import com.demo.api.ApiAttendanceStatus;
 import com.demo.api.ApiAttendenceHistory;
 import com.demo.api.ApiAttendenceStart;
 import com.demo.api.ApiAttendenceStop;
+import com.demo.api.ApiEmpList;
 import com.demo.api.ApiLogin;
+import com.demo.interfaces.ItemClickListner;
+import com.demo.model.attendanceStatus.ApiAttendanceStatusParam;
+import com.demo.model.attendanceStatus.AttendanceStatusMain;
 import com.demo.model.attendence_history.ApiAttendenceHistoryParam;
 import com.demo.model.attendence_history.AttendenceHistoryMain;
+import com.demo.model.emplist.ApiEmpListParam;
+import com.demo.model.emplist.EmpListMain;
 import com.demo.model.login.ApiLoginParam;
 import com.demo.model.login.LoginMain;
 import com.demo.model.start_attendence.ApiAttendenceStartParam;
@@ -50,22 +65,13 @@ import com.google.android.gms.common.api.Status;
 import java.util.Timer;
 
 import okhttp3.internal.Util;
-
-
-/**
- * Created by root on 20/8/15.
- */
 public class AttendenceFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private TextView tv_start_work;
     private TextView tv_end_work;
     private TextView tv_end_date_time,tv_start_date_time;
-
-
     private GridView gridAttendanceHis;
     private AttendanceGridAdapter adapter;
-
-
     private static final String TAG = "LocationService";
     private static final long INTERVAL = 1000 * 3;
     private static final long FASTEST_INTERVAL = 0;
@@ -75,6 +81,9 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     private String lat,lng;
     private Long attendenceStartTimeStamp;
     private boolean isStartButtonClick = true;
+    private LinearLayout linAttendenceEmployee;
+    private LinearLayout linAttendenceAdmin;
+    private RecyclerView recyclerEmpList;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -83,7 +92,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                 case 1:
                     Long diff = System.currentTimeMillis() - attendenceStartTimeStamp;
                     String st = Constant.convertSecondsToHMmSs(diff);
-                    tv_start_date_time.setText(st);
+
                     if(isStartButtonClick){
                         handler.sendEmptyMessageDelayed(1, 1000);
                     }
@@ -92,12 +101,21 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
             }
         }
     };
+    private String latEnd;
+    private String lngEnd;
+    private boolean isAlreadyStarted=false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_attendence, null, false);
         ((MainActivity)getActivity()).setTitle(AppMenu.ATTENDENCE.name());
+        linAttendenceEmployee = (LinearLayout)v.findViewById(R.id.linAttendenceEmployee);
+        linAttendenceAdmin = (LinearLayout)v.findViewById(R.id.linAttendenceAdmin);
+        recyclerEmpList = (RecyclerView)v.findViewById(R.id.recyclerEmpList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(baseActivity);
+        recyclerEmpList.setLayoutManager(mLayoutManager);
+        recyclerEmpList.setItemAnimator(new DefaultItemAnimator());
         tv_start_work = (TextView)v.findViewById(R.id.tv_start_work);
         tv_end_work = (TextView)v.findViewById(R.id.tv_end_work);
         tv_start_date_time = (TextView)v.findViewById(R.id.tv_start_date_time);
@@ -105,13 +123,67 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
         gridAttendanceHis = (GridView)v.findViewById(R.id.gridAttendanceHis);
         tv_start_work.setOnClickListener(this);
         tv_end_work.setOnClickListener(this);
-        getAttendenceHistory();
+        if (baseActivity.preference.getIsAdmin()!=null&&baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
+            linAttendenceEmployee.setVisibility(View.GONE);
+            linAttendenceAdmin.setVisibility(View.VISIBLE);
+            getEmpList();
+        }else {
+            linAttendenceAdmin.setVisibility(View.GONE);
+            linAttendenceEmployee.setVisibility(View.VISIBLE);
+            getAttendenceStatus();
+            getAttendenceHistory();
 
-
-
+        }
 
         return v;
 
+    }
+
+    private void getEmpList() {
+        if (baseActivity.isNetworkConnected()){
+            baseActivity.showProgressDialog();
+            new ApiEmpList(getParamEmp(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    baseActivity.dismissProgressDialog();
+                    EmpListMain main=(EmpListMain)t;
+                    if (main.getResponseCode()==200) {
+                        EmpRecyclerViewAdapter adapter = new EmpRecyclerViewAdapter(baseActivity, main.getResponseData(), new ItemClickListner() {
+                            @Override
+                            public void onItemClick(Object viewID, int position) {
+                                openMapActivity();
+
+                            }
+                        });
+                        recyclerEmpList.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public <E> void onError(E t) {
+                    baseActivity.dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    baseActivity.dismissProgressDialog();
+                }
+            });
+        }
+
+    }
+
+    private void openMapActivity() {
+        startActivity(new Intent(baseActivity, MapsActivity.class));
+
+
+    }
+
+    private ApiEmpListParam getParamEmp() {
+        ApiEmpListParam param=new ApiEmpListParam();
+        param.setApiKey(Constant.API_KEY);
+        return param;
     }
 
     private void getAttendenceHistory() {
@@ -163,23 +235,25 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_start_work:
-                isStartButtonClick = true;
-                LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
+                if (!isAlreadyStarted){
+                    isStartButtonClick = true;
+                    LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
-                if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-                    buildAlertMessageNoGps();
-                }else{
-                    createLocationRequest();
-                    mGoogleApiClient = new GoogleApiClient.Builder(baseActivity)
-                            .addApi(LocationServices.API)
-                            .addConnectionCallbacks(this)
-                            .addOnConnectionFailedListener(this)
-                            .build();
-                    mGoogleApiClient.connect();
-                }
+                    if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                        buildAlertMessageNoGps();
+                    }else{
+                        createLocationRequest();
+                        mGoogleApiClient = new GoogleApiClient.Builder(baseActivity)
+                                .addApi(LocationServices.API)
+                                .addConnectionCallbacks(this)
+                                .addOnConnectionFailedListener(this)
+                                .build();
+                        mGoogleApiClient.connect();
+                    }
+                    updateUI();
 
-
-
+                }else
+                    Toast.makeText(baseActivity,"Work already started",Toast.LENGTH_LONG).show();
 
                 break;
             case R.id.tv_end_work:
@@ -198,7 +272,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                     mGoogleApiClient.connect();
                 }
 
-
+                getAttendenceStop();
                 break;
         }
     }
@@ -238,6 +312,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                     baseActivity.dismissProgressDialog();
                     AttendenceStartMain main=(AttendenceStartMain)t;
                     if(main.getResponseCode()==200){
+                        tv_start_date_time.setText(main.getResponseData().getStartTime());
                         mGoogleApiClient.disconnect();
 
                         attendenceStartTimeStamp = Constant.getMillisecond(main.getResponseData().getStartTime());
@@ -250,11 +325,12 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                         }else{
                             getActivity().startService(new Intent(getActivity(),LocationUpdateService.class));
                         }
+                    }else if (main.getResponseCode()==400){
+                        Toast.makeText(baseActivity,"Work already started",Toast.LENGTH_LONG).show();
+
                     }
 
-
                 }
-
                 @Override
                 public <E> void onError(E t) {
                     baseActivity.dismissProgressDialog();
@@ -266,8 +342,6 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                 }
             });
         }
-
-
     }
 
     private ApiAttendenceStartParam getAttendenceStartParam() {
@@ -278,9 +352,6 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
         map.setStartLong(lng);
         return map;
     }
-
-
-
     private void getAttendenceStop() {
         if(baseActivity.isNetworkConnected()){
             baseActivity.showProgressDialog();
@@ -290,10 +361,11 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                     baseActivity.dismissProgressDialog();
                     AttendenceStopMain main=(AttendenceStopMain)t;
                     if(main.getResponseCode()==200){
+                        tv_end_date_time.setText(main.getResponseData().getStopTime());
                         mGoogleApiClient.disconnect();
                         getActivity().stopService(new Intent(getActivity(),LocationUpdateService.class));
+                        getAttendenceHistory();
                     }
-
 
                 }
 
@@ -313,15 +385,16 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     }
 
 
-
-
-
     private ApiAttendenceStopParam getAttendenceStopParam() {
+        if (null != mCurrentLocation) {
+            latEnd = String.valueOf(mCurrentLocation.getLatitude());
+            lngEnd = String.valueOf(mCurrentLocation.getLongitude());
+        }
         ApiAttendenceStopParam map=new ApiAttendenceStopParam();
         map.setApiKey(Constant.API_KEY);
         map.setUserid(baseActivity.preference.getUserId());
-        map.setStartLat("");
-        map.setStartLong("");
+        map.setEndLat(latEnd);
+        map.setEndLong(lngEnd);
         return map;
     }
 
@@ -348,7 +421,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
-        updateUI();
+
     }
 
     protected void createLocationRequest() {
@@ -368,11 +441,45 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
              if(isStartButtonClick){
                  getAttendenceStart();
              }else{
-                 getAttendenceStop();
+                 //getAttendenceStop();
              }
 
-
-
         }
+    }
+    void getAttendenceStatus(){
+        if (baseActivity.isNetworkConnected()){
+            baseActivity.showProgressDialog();
+            new ApiAttendanceStatus(getAttParam(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    baseActivity.dismissProgressDialog();
+                    AttendanceStatusMain main=(AttendanceStatusMain)t;
+                    if (main.getResponseCode()==200){
+                        if (main.getResponseData().getIsUserWorkStarted().equalsIgnoreCase("true"))
+                        tv_start_date_time.setText(main.getResponseData().getStartTime());
+                        if (main.getResponseData().getIsUserWorkStarted().equalsIgnoreCase("true"))
+                        isAlreadyStarted=true;
+                    }
+
+                }
+
+                @Override
+                public <E> void onError(E t) {
+                    baseActivity.dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    baseActivity.dismissProgressDialog();
+                }
+            });
+        }
+    }
+
+    private ApiAttendanceStatusParam getAttParam() {
+        ApiAttendanceStatusParam param=new ApiAttendanceStatusParam();
+        param.setApiKey(Constant.API_KEY);
+        param.setUserid(baseActivity.preference.getUserId());
+        return param;
     }
 }

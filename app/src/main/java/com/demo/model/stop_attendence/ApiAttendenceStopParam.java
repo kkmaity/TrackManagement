@@ -12,18 +12,15 @@ public class ApiAttendenceStopParam {
     @SerializedName("ApiKey")
     @Expose
     private String apiKey;
-
     @SerializedName("userid")
     @Expose
     private String userid;
-
-    @SerializedName("startLat")
+    @SerializedName("endLat")
     @Expose
-    private String startLat;
-    @SerializedName("startLong")
+    private String endLat;
+    @SerializedName("endLong")
     @Expose
-    private String startLong;
-
+    private String endLong;
 
     public String getApiKey() {
         return apiKey;
@@ -41,19 +38,19 @@ public class ApiAttendenceStopParam {
         this.userid = userid;
     }
 
-    public String getStartLat() {
-        return startLat;
+    public String getEndLat() {
+        return endLat;
     }
 
-    public void setStartLat(String startLat) {
-        this.startLat = startLat;
+    public void setEndLat(String endLat) {
+        this.endLat = endLat;
     }
 
-    public String getStartLong() {
-        return startLong;
+    public String getEndLong() {
+        return endLong;
     }
 
-    public void setStartLong(String startLong) {
-        this.startLong = startLong;
+    public void setEndLong(String endLong) {
+        this.endLong = endLong;
     }
 }

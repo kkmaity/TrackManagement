@@ -90,7 +90,13 @@ public class Preference {
     public String getPhone() {
         return getString("Phone", "");
     }
+    public void setIsAdmin(String Phone) {
+        setString("isAdmin", Phone);
+    }
 
+    public String getIsAdmin() {
+        return getString("isAdmin", "");
+    }
     public void setUserStatus(String setUserStatus) {
         setString("UserStatus", setUserStatus);
     }

@@ -1,13 +1,14 @@
-package com.demo.model.login;
+package com.demo.model.emplist;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by kamal on 01/10/2018.
+ * Created by kamal on 01/12/2018.
  */
 
-public class ResponseLoginData {
+public class ResponseDatum {
+
     @SerializedName("userid")
     @Expose
     private String userid;
@@ -26,9 +27,6 @@ public class ResponseLoginData {
     @SerializedName("device_token")
     @Expose
     private String deviceToken;
-    @SerializedName("isAdmin")
-    @Expose
-    private String isAdmin;
 
     public String getUserid() {
         return userid;
@@ -77,14 +75,5 @@ public class ResponseLoginData {
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
     }
-
-    public String getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(String isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
 
 }

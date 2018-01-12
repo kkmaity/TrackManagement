@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ResponseData {
 
+
     @SerializedName("stopTime")
     @Expose
     private String stopTime;
@@ -20,4 +21,5 @@ public class ResponseData {
     public void setStopTime(String stopTime) {
         this.stopTime = stopTime;
     }
+
 }
