@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +47,7 @@ import com.demo.model.start_attendence.ApiAttendenceStartParam;
 import com.demo.model.start_attendence.AttendenceStartMain;
 import com.demo.model.stop_attendence.ApiAttendenceStopParam;
 import com.demo.model.stop_attendence.AttendenceStopMain;
+import com.demo.network.KlHttpClient;
 import com.demo.restservice.OnApiResponseListener;
 import com.demo.services.LocationUpdateService;
 import com.demo.utils.Constant;
@@ -55,6 +58,9 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import org.json.JSONObject;
+
 public class AttendenceFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private TextView tv_start_work;
@@ -74,26 +80,12 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     private LinearLayout linAttendenceEmployee;
     private LinearLayout linAttendenceAdmin;
     private RecyclerView recyclerEmpList;
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    Long diff = System.currentTimeMillis() - attendenceStartTimeStamp;
-                    String st = Constant.convertSecondsToHMmSs(diff);
 
-                    if(isStartButtonClick){
-                        handler.sendEmptyMessageDelayed(1, 1000);
-                    }
-
-                    break;
-            }
-        }
-    };
     private String latEnd;
     private String lngEnd;
     private boolean isAlreadyStarted=false;
+    private boolean isButtonClicked = false;
+    private int val = 0;
 
 
     @Override
@@ -227,12 +219,15 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
         switch (view.getId()){
             case R.id.tv_start_work:
                 if (!isAlreadyStarted){
+                    val = 1;
+                    isButtonClicked = true;
 
                     LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
                     if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
                         buildAlertMessageNoGps();
                     }else{
+                        baseActivity.showProgressDialog();
                         createLocationRequest();
                         mGoogleApiClient = new GoogleApiClient.Builder(baseActivity)
                                 .addApi(LocationServices.API)
@@ -241,18 +236,24 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                                 .build();
                         mGoogleApiClient.connect();
                     }
-                    attendenceStart();
+
 
                 }else
                     Toast.makeText(baseActivity,"Work already started",Toast.LENGTH_LONG).show();
 
                 break;
             case R.id.tv_end_work:
+                val = 2;
+                isButtonClicked = true;
+
+                getActivity().stopService(new Intent(getActivity(),LocationUpdateService.class));
+
                 LocationManager manager1 = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
                 if ( !manager1.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
                     buildAlertMessageNoGps();
                 }else{
+                    baseActivity.showProgressDialog();
                     createLocationRequest();
                     mGoogleApiClient = new GoogleApiClient.Builder(baseActivity)
                             .addApi(LocationServices.API)
@@ -260,9 +261,11 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                             .addOnConnectionFailedListener(this)
                             .build();
                     mGoogleApiClient.connect();
+
+
                 }
 
-                getAttendenceStop();
+
                 break;
         }
     }
@@ -295,44 +298,17 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
 
     private void getAttendenceStart() {
         if(baseActivity.isNetworkConnected()){
-            baseActivity.showProgressDialog();
-            new ApiAttendenceStart(getAttendenceStartParam(), new OnApiResponseListener() {
-                @Override
-                public <E> void onSuccess(E t) {
-                    baseActivity.dismissProgressDialog();
-                    AttendenceStartMain main=(AttendenceStartMain)t;
-                    if(main.getResponseCode()==200){
-                        tv_start_date_time.setText(main.getResponseData().getStartTime());
-                        mGoogleApiClient.disconnect();
+            new AttendenceStartAsynctask().execute();
 
-                        attendenceStartTimeStamp = Constant.getMillisecond(main.getResponseData().getStartTime());
-                        handler.sendEmptyMessageDelayed(1, 1000);
-
-                        LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
-
-                        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-                            buildAlertMessageNoGps();
-                        }else{
-                            getActivity().startService(new Intent(getActivity(),LocationUpdateService.class));
-                        }
-                    }else if (main.getResponseCode()==400){
-                        Toast.makeText(baseActivity,"Work already started",Toast.LENGTH_LONG).show();
-
-                    }
-
-                }
-                @Override
-                public <E> void onError(E t) {
-                    baseActivity.dismissProgressDialog();
-                }
-
-                @Override
-                public void onError() {
-                    baseActivity.dismissProgressDialog();
-                }
-            });
         }
     }
+    private void getAttendenceStop() {
+        if(baseActivity.isNetworkConnected()){
+            new AttendenceStopAsynctask().execute();
+
+        }
+    }
+
 
     private ApiAttendenceStartParam getAttendenceStartParam() {
         ApiAttendenceStartParam map=new ApiAttendenceStartParam();
@@ -342,37 +318,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
         map.setStartLong(lng);
         return map;
     }
-    private void getAttendenceStop() {
-        if(baseActivity.isNetworkConnected()){
-            baseActivity.showProgressDialog();
-            new ApiAttendenceStop(getAttendenceStopParam(), new OnApiResponseListener() {
-                @Override
-                public <E> void onSuccess(E t) {
-                    baseActivity.dismissProgressDialog();
-                    AttendenceStopMain main=(AttendenceStopMain)t;
-                    if(main.getResponseCode()==200){
-                        tv_end_date_time.setText(main.getResponseData().getStopTime());
-                        mGoogleApiClient.disconnect();
-                        getActivity().stopService(new Intent(getActivity(),LocationUpdateService.class));
-                        getAttendenceHistory();
-                    }
 
-                }
-
-                @Override
-                public <E> void onError(E t) {
-                    baseActivity.dismissProgressDialog();
-                }
-
-                @Override
-                public void onError() {
-                    baseActivity.dismissProgressDialog();
-                }
-            });
-        }
-
-
-    }
 
 
     private ApiAttendenceStopParam getAttendenceStopParam() {
@@ -411,6 +357,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
+        attendenceStart();
 
     }
 
@@ -425,10 +372,20 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     private void attendenceStart() {
 
         if (null != mCurrentLocation) {
-             lat = String.valueOf(mCurrentLocation.getLatitude());
-             lng = String.valueOf(mCurrentLocation.getLongitude());
+           if(isButtonClicked){
+               lat = String.valueOf(mCurrentLocation.getLatitude());
+               lng = String.valueOf(mCurrentLocation.getLongitude());
+               mGoogleApiClient.disconnect();
+               if(val == 1){
+                   getAttendenceStart();
+               }else if(val == 2){
+                   getAttendenceStop();
+               }
 
-                 getAttendenceStart();
+           }
+
+
+            isButtonClicked = false;
 
 
         }
@@ -468,5 +425,107 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
         param.setApiKey(Constant.API_KEY);
         param.setUserid(baseActivity.preference.getUserId());
         return param;
+    }
+
+
+    public class AttendenceStartAsynctask extends AsyncTask<String, Void, JSONObject> {
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                jsonObject.put("userid", baseActivity.preference.getUserId());
+                jsonObject.put("startLat",lat);
+                jsonObject.put("startLong", lng);
+                Log.e("SendTrackNotification", jsonObject.toString());
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/attendanceStart.php", jsonObject);
+                return json;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            super.onPostExecute(json);
+            baseActivity.dismissProgressDialog();
+
+                    if(json!=null) {
+
+                        try {
+                            if (json.getInt("ResponseCode") == 200) {
+                                tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
+                                LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+                                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                    buildAlertMessageNoGps();
+                                } else {
+                                    getActivity().startService(new Intent(getActivity(), LocationUpdateService.class));
+                                }
+                            } else if (json.getInt("ResponseCode") == 400) {
+                                Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
+
+
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+
+
+        }
+    }
+
+    public class AttendenceStopAsynctask extends AsyncTask<String, Void, JSONObject> {
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                jsonObject.put("userid", baseActivity.preference.getUserId());
+                jsonObject.put("endLat",lat);
+                jsonObject.put("endLong", lng);
+                Log.e("AttendenceStop ", jsonObject.toString());
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/attendanceStop.php", jsonObject);
+                return json;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            super.onPostExecute(json);
+            baseActivity.dismissProgressDialog();
+
+            if(json!=null) {
+
+                try {
+                    if (json.getInt("ResponseCode") == 200) {
+                        if(json.has("ResponseData")){
+                            tv_end_date_time.setText(json.getJSONObject("ResponseData").getString("stopTime"));
+                        }else{
+                            Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+        }
     }
 }
