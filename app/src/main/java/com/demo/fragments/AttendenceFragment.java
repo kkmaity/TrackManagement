@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,7 +67,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     private TextView tv_start_work;
     private TextView tv_end_work;
     private TextView tv_end_date_time,tv_start_date_time;
-    private GridView gridAttendanceHis;
+    private ListView gridAttendanceHis;
     private AttendanceGridAdapter adapter;
     private static final String TAG = "LocationService";
     private static final long INTERVAL = 1000 * 3;
@@ -103,7 +104,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
         tv_end_work = (TextView)v.findViewById(R.id.tv_end_work);
         tv_start_date_time = (TextView)v.findViewById(R.id.tv_start_date_time);
         tv_end_date_time = (TextView)v.findViewById(R.id.tv_end_date_time);
-        gridAttendanceHis = (GridView)v.findViewById(R.id.gridAttendanceHis);
+        gridAttendanceHis = (ListView)v.findViewById(R.id.gridAttendanceHis);
         tv_start_work.setOnClickListener(this);
         tv_end_work.setOnClickListener(this);
         if (baseActivity.preference.getIsAdmin()!=null&&baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
