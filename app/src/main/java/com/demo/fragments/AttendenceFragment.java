@@ -7,16 +7,13 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +34,6 @@ import com.demo.api.ApiAttendenceHistory;
 import com.demo.api.ApiAttendenceStart;
 import com.demo.api.ApiAttendenceStop;
 import com.demo.api.ApiEmpList;
-import com.demo.api.ApiLogin;
 import com.demo.interfaces.ItemClickListner;
 import com.demo.model.attendanceStatus.ApiAttendanceStatusParam;
 import com.demo.model.attendanceStatus.AttendanceStatusMain;
@@ -45,8 +41,6 @@ import com.demo.model.attendence_history.ApiAttendenceHistoryParam;
 import com.demo.model.attendence_history.AttendenceHistoryMain;
 import com.demo.model.emplist.ApiEmpListParam;
 import com.demo.model.emplist.EmpListMain;
-import com.demo.model.login.ApiLoginParam;
-import com.demo.model.login.LoginMain;
 import com.demo.model.start_attendence.ApiAttendenceStartParam;
 import com.demo.model.start_attendence.AttendenceStartMain;
 import com.demo.model.stop_attendence.ApiAttendenceStopParam;
@@ -57,14 +51,10 @@ import com.demo.utils.Constant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.common.api.Status;
-
-import java.util.Timer;
-
-import okhttp3.internal.Util;
 public class AttendenceFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private TextView tv_start_work;
@@ -113,9 +103,10 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
         linAttendenceEmployee = (LinearLayout)v.findViewById(R.id.linAttendenceEmployee);
         linAttendenceAdmin = (LinearLayout)v.findViewById(R.id.linAttendenceAdmin);
         recyclerEmpList = (RecyclerView)v.findViewById(R.id.recyclerEmpList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(baseActivity);
-        recyclerEmpList.setLayoutManager(mLayoutManager);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(baseActivity, LinearLayoutManager.VERTICAL, false);
+        recyclerEmpList.setLayoutManager(layoutManager);
         recyclerEmpList.setItemAnimator(new DefaultItemAnimator());
+        recyclerEmpList.hasFixedSize();
         tv_start_work = (TextView)v.findViewById(R.id.tv_start_work);
         tv_end_work = (TextView)v.findViewById(R.id.tv_end_work);
         tv_start_date_time = (TextView)v.findViewById(R.id.tv_start_date_time);
@@ -236,7 +227,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
         switch (view.getId()){
             case R.id.tv_start_work:
                 if (!isAlreadyStarted){
-                    isStartButtonClick = true;
+
                     LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
                     if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
@@ -250,14 +241,13 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                                 .build();
                         mGoogleApiClient.connect();
                     }
-                    updateUI();
+                    attendenceStart();
 
                 }else
                     Toast.makeText(baseActivity,"Work already started",Toast.LENGTH_LONG).show();
 
                 break;
             case R.id.tv_end_work:
-                isStartButtonClick = false;
                 LocationManager manager1 = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
                 if ( !manager1.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
@@ -432,17 +422,14 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     }
 
 
-    private void updateUI() {
+    private void attendenceStart() {
 
         if (null != mCurrentLocation) {
              lat = String.valueOf(mCurrentLocation.getLatitude());
              lng = String.valueOf(mCurrentLocation.getLongitude());
 
-             if(isStartButtonClick){
                  getAttendenceStart();
-             }else{
-                 //getAttendenceStop();
-             }
+
 
         }
     }

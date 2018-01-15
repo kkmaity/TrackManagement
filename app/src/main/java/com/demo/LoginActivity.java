@@ -4,21 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.view.View;
-import android.widget.EdgeEffect;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.demo.api.ApiLogin;
-import com.demo.api.ApiRegistration;
 import com.demo.model.login.ApiLoginParam;
 import com.demo.model.login.LoginMain;
-import com.demo.model.registration.ApiRegistrationParam;
-import com.demo.model.registration.RegistrationMain;
 import com.demo.restservice.OnApiResponseListener;
 import com.demo.utils.Constant;
-
-import java.util.regex.Pattern;
 
 public class LoginActivity extends BaseActivity {
     private TextView tvNewAccount;
@@ -89,6 +83,9 @@ public class LoginActivity extends BaseActivity {
                         preference.setIsAdmin(main.getResponseData().getIsAdmin().toString());
                         preference.setUserStatus("yes");
                         callNewScreen();
+                    }else {
+                        Toast.makeText(LoginActivity.this,""+main.getMessage(),Toast.LENGTH_LONG).show();
+
                     }
                 }
 

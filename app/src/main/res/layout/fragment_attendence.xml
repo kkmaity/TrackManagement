@@ -20,7 +20,7 @@
         android:id="@+id/linAttendenceAdmin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical">
         <include
             layout="@layout/layout_attendance_admin"></include>

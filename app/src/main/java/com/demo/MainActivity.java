@@ -1,6 +1,7 @@
 package com.demo;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -11,7 +12,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.demo.Enum.AppMenu;
@@ -208,6 +207,9 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.profile) {
 
         } else if (id == R.id.logout) {
+            preference.clearData();
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            finish();
 
         }
 

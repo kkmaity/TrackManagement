@@ -22,12 +22,12 @@
             android:id="@+id/et_userid"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="user1"
+            android:text="admin@admin.com"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
-            android:hint="Enter email/mobileNo"
-            android:inputType="text"
+            android:hint="Enter email"
+            android:inputType="textEmailAddress"
             ></EditText>
     </LinearLayout>
     <LinearLayout
@@ -47,12 +47,12 @@
             android:id="@+id/et_password"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="password"
+            android:text="admin"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
             android:hint="Enter password"
-            android:inputType="text"
+            android:inputType="textPassword"
             ></EditText>
     </LinearLayout>
     <LinearLayout

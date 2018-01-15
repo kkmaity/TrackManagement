@@ -46,4 +46,7 @@ dependencies {
     compile "com.google.android.gms:play-services-base:+"
     compile "com.google.android.gms:play-services-maps:+"
     implementation 'com.github.alexfu:CountDownView:0.1.0'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile 'com.firebase:firebase-jobdispatcher:0.6.0'
 }
+apply plugin: 'com.google.gms.google-services'

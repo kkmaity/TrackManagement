@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
-import com.demo.Enum.AppMenu;
 import com.demo.MainActivity;
 import com.demo.R;
 
@@ -29,7 +28,7 @@ public class WorkEntryFragment extends BaseFragment {
         tv_office_job = (TextView)v.findViewById(R.id.tv_office_job);
         tv_out_door_job = (TextView)v.findViewById(R.id.tv_out_door_job);
 
-        ((MainActivity)getActivity()).setTitle(AppMenu.WORk_ENTRY.name());
+        ((MainActivity)getActivity()).setTitle("WORK ENTRY");
 
         tv_office_job.setOnClickListener(this);
         tv_out_door_job.setOnClickListener(this);
