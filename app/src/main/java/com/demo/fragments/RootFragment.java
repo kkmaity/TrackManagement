@@ -13,10 +13,6 @@ import com.demo.Enum.AppMenu;
 import com.demo.MainActivity;
 import com.demo.R;
 
-
-/**
- * Created by root on 21/7/15.
- */
 public class RootFragment extends BaseFragment {
 
 
