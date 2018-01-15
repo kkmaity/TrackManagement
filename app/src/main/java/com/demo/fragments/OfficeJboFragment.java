@@ -118,7 +118,7 @@ public class OfficeJboFragment extends BaseFragment {
                 break;
 
         }
-
+        fragment.setArguments(bundle);
         displayView(fragment);
     }
 }

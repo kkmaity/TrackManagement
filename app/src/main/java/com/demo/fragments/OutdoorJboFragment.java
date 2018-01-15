@@ -2,6 +2,7 @@ package com.demo.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,21 +62,34 @@ public class OutdoorJboFragment extends BaseFragment {
 
     @Override
     public void onClick(View view) {
+        Fragment fragment = new WashFragment();
+        Bundle bundle = new Bundle();
         switch (view.getId()){
             case R.id.tv_delevery:
+                bundle.putString("title",tv_delevery.getText().toString());
                 break;
             case R.id.tv_pickup:
+                bundle.putString("title",tv_pickup.getText().toString());
                 break;
             case R.id.tv_ot_assit:
+                bundle.putString("title",tv_ot_assit.getText().toString());
                 break;
             case R.id.tv_bill_submission:
+                bundle.putString("title",tv_bill_submission.getText().toString());
                 break;
             case R.id.tv_payment_collection:
+                bundle.putString("title",tv_payment_collection.getText().toString());
                 break;
             case R.id.tv_doctor_meet:
+                bundle.putString("title",tv_doctor_meet.getText().toString());
                 break;
             case R.id.tv_others:
+                bundle.putString("title",tv_others.getText().toString());
                 break;
         }
+        fragment.setArguments(bundle);
+        displayView(fragment);
     }
 }
+
+

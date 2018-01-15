@@ -25,6 +25,7 @@ public class WashFragment extends BaseFragment {
 
         View v = inflater.inflate(R.layout.fragment_wash, null, false);
 
+
         return v;
 
     }
@@ -35,7 +36,10 @@ public class WashFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        ((MainActivity)getActivity()).setTitle(getArguments().getString("title"));
     }
+
+
 
 
 }
