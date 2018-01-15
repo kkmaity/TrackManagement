@@ -13,33 +13,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:weightSum="1"
+        android:orientation="horizontal">
         <TextView
             android:id="@+id/tvDate"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.33"
             android:layout_height="wrap_content"
             android:textSize="17sp"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:textColor="@color/textColor"
+           android:textColor="@color/textColor"
             android:text="06/03/2017"/>
         <TextView
             android:id="@+id/tvStartTime"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.33"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="06/03/2017"/>
+           android:text="06/03/2017"/>
         <TextView
             android:id="@+id/tvEndTime"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.33"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:text="06/03/2017"/>
+           android:text="06/03/2017"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
