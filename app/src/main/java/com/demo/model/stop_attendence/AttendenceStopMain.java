@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class AttendenceStopMain {
 
+
     @SerializedName("ResponseCode")
     @Expose
     private Integer responseCode;

@@ -31,7 +31,7 @@ public class Constant {
 
     public static Long getMillisecond(String datetime){
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try
         {
             Date date = simpleDateFormat.parse(datetime);
