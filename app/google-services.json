@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "501250266106",
-    "firebase_url": "https://fir-7ea5c.firebaseio.com",
-    "project_id": "fir-7ea5c",
-    "storage_bucket": "fir-7ea5c.appspot.com"
+    "project_number": "218312628674",
+    "firebase_url": "https://employeetraking-aa3a8.firebaseio.com",
+    "project_id": "employeetraking-aa3a8",
+    "storage_bucket": "employeetraking-aa3a8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:501250266106:android:df0e6f2d32e4ba67",
+        "mobilesdk_app_id": "1:218312628674:android:df0e6f2d32e4ba67",
         "android_client_info": {
           "package_name": "com.demo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "501250266106-vlquprruaum7rhe8fmserkpkiji8hqa8.apps.googleusercontent.com",
+          "client_id": "218312628674-d0hkajnf3vgj8984nbc2gu48tla3js3t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAr50ea8yhpRdv4bd7OgNRDAlqFsSiWtmw"
+          "current_key": "AIzaSyDpRlu69NnZWgB_nTCm6m_zpgYdPfXtqFQ"
         }
       ],
       "services": {
