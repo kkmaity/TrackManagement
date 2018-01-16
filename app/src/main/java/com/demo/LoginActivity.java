@@ -13,6 +13,7 @@ import com.demo.model.login.ApiLoginParam;
 import com.demo.model.login.LoginMain;
 import com.demo.restservice.OnApiResponseListener;
 import com.demo.utils.Constant;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends BaseActivity {
     private TextView tvNewAccount;
@@ -20,12 +21,17 @@ public class LoginActivity extends BaseActivity {
     private EditText    et_userid;
     private EditText    et_password;
     private TextView tv_login;
+    private String deviceToken;
 
-;
+    ;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        deviceToken = FirebaseInstanceId.getInstance().getToken();
+        if (deviceToken!=null){
+            preference.setDeviceToken(deviceToken);
+        }
         tvNewAccount=(TextView)findViewById(R.id.tvNewAccount);
         cardViewLogin=(CardView)findViewById(R.id.cardViewLogin);
         et_userid=(EditText)findViewById(R.id.et_userid);
@@ -113,7 +119,7 @@ public class LoginActivity extends BaseActivity {
         map.setApiKey(Constant.API_KEY);
         map.setUsername(et_userid.getText().toString().trim());
         map.setPassword(et_password.getText().toString().trim());
-        map.setDeviceToken(Constant.API_KEY);
+        map.setDeviceToken(deviceToken);
         return map;
     }
     private void callNewScreen() {

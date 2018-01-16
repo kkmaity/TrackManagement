@@ -21,6 +21,7 @@ import android.widget.EditText;
 import com.demo.preferences.Preference;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -237,6 +238,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         String time = String.format("%2d",hours % 24) + ":" + String.format("%2d",minutes % 60) + ":" + String.format("%2d",seconds % 60);
         return time;
     }
-
+public String getTodayDate(){
+    Calendar calander = Calendar.getInstance();
+    SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
+    String date = simpledateformat.format(calander.getTime());
+    return date;
+}
 
 }

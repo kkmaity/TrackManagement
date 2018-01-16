@@ -28,6 +28,8 @@ public class KlHttpClient {
                                                        JSONObject jsonObjSend) {
 
         try {
+            System.out.println("!!! URl  "+URL);
+            System.out.println("!!! Body  "+jsonObjSend.toString());
             if (httpclient == null)
                 httpclient = new DefaultHttpClient();
 

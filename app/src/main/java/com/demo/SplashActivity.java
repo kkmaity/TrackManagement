@@ -11,6 +11,7 @@ import com.demo.model.AppConfigMain;
 import com.demo.model.AppConfigParam;
 import com.demo.restservice.OnApiResponseListener;
 import com.demo.utils.Constant;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,8 @@ import java.util.Map;
  */
 
 public class SplashActivity extends BaseActivity{
+    private String deviceToken;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,10 @@ public class SplashActivity extends BaseActivity{
     }
 
     private void gatAppName() {
+        deviceToken = FirebaseInstanceId.getInstance().getToken();
+        if (deviceToken!=null){
+            preference.setDeviceToken(deviceToken);
+        }
         if(isNetworkConnected()){
             showProgressDialog();
             new ApiAppConfig(getParam(), new OnApiResponseListener() {

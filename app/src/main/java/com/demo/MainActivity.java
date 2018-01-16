@@ -173,7 +173,7 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+       // getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -185,9 +185,9 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+       /* if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -201,7 +201,7 @@ public class MainActivity extends BaseActivity
         if (id == R.id.about_us) {
             // Handle the camera action
         } else if (id == R.id.terms_conditions) {
-
+            startActivity(new Intent(getApplicationContext(), TermsConditionActivity.class));
         } else if (id == R.id.notifications) {
 
         } else if (id == R.id.profile) {
@@ -211,6 +211,8 @@ public class MainActivity extends BaseActivity
             startActivity(new Intent(MainActivity.this,LoginActivity.class));
             finish();
 
+        }else if(id == R.id.privacy_policy){
+            startActivity(new Intent(getApplicationContext(), PrivacyPolicyActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

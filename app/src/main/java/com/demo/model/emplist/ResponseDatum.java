@@ -27,6 +27,18 @@ public class ResponseDatum {
     @SerializedName("device_token")
     @Expose
     private String deviceToken;
+    @SerializedName("start_lat")
+    @Expose
+    private String startLat;
+    @SerializedName("start_long")
+    @Expose
+    private String startLong;
+    @SerializedName("end_lat")
+    @Expose
+    private String endLat;
+    @SerializedName("end_long")
+    @Expose
+    private String endLong;
 
     public String getUserid() {
         return userid;
@@ -74,6 +86,38 @@ public class ResponseDatum {
 
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
+    }
+
+    public String getStartLat() {
+        return startLat;
+    }
+
+    public void setStartLat(String startLat) {
+        this.startLat = startLat;
+    }
+
+    public String getStartLong() {
+        return startLong;
+    }
+
+    public void setStartLong(String startLong) {
+        this.startLong = startLong;
+    }
+
+    public String getEndLat() {
+        return endLat;
+    }
+
+    public void setEndLat(String endLat) {
+        this.endLat = endLat;
+    }
+
+    public String getEndLong() {
+        return endLong;
+    }
+
+    public void setEndLong(String endLong) {
+        this.endLong = endLong;
     }
 
 }

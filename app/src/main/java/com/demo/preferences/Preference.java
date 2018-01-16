@@ -120,7 +120,13 @@ public class Preference {
     public String getLng() {
         return getString("lng", "");
     }
+    public void setDeviceToken(String DeviceToken) {
+        setString("DeviceId", DeviceToken);
+    }
 
+    public String getDeviceToken() {
+        return getString("DeviceId", "");
+    }
 
 
 
