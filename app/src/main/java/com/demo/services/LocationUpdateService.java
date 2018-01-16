@@ -50,7 +50,7 @@ public class LocationUpdateService extends Service  implements    LocationListen
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "onStartCommand", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "onStartCommand", Toast.LENGTH_SHORT).show();
 
         return START_STICKY;
     }

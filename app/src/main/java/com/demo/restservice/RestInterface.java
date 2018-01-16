@@ -9,6 +9,8 @@ import com.demo.model.attendence_history.ApiAttendenceHistoryParam;
 import com.demo.model.attendence_history.AttendenceHistoryMain;
 import com.demo.model.emplist.ApiEmpListParam;
 import com.demo.model.emplist.EmpListMain;
+import com.demo.model.leave.AppliedLeaveList;
+import com.demo.model.leave.LeaveParam;
 import com.demo.model.login.ApiLoginParam;
 import com.demo.model.login.LoginMain;
 import com.demo.model.registration.RegistrationMain;
@@ -57,6 +59,10 @@ public interface RestInterface {
     Call<AttendanceStatusMain> attendanceStatus(@Body ApiAttendanceStatusParam params);
     @POST("emp_track/api/getemployeeList.php")
     Call<EmpListMain> getemployeeList(@Body ApiEmpListParam params);
+
+
+    @POST("emp_track/api/leave_application_list.php")
+    Call<AppliedLeaveList> leave_application_list(@Body LeaveParam params);
 
     @Multipart
     @POST("api/users/uploadPrescriptionForSamplePickUp")

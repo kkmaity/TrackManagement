@@ -2,65 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/linLeaveEmployee"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="match_parent"
+        android:visibility="visible"
         android:orientation="vertical">
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            app:cardBackgroundColor="#377838"
-            android:layout_gravity="center"
-            app:cardElevation="5dp"
-            >
-            <TextView
-                android:id="@+id/tv_attendence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Normal Leave"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textColor="#fff"
-                android:textSize="20sp"
-                />
+        <include
+            layout="@layout/layout_leave_employee"></include>
 
-        </android.support.v7.widget.CardView>
-    </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
 
-    <RelativeLayout
+        android:id="@+id/linLeaveAdmin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_height="match_parent"
+        android:visibility="visible"
         android:orientation="vertical">
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="#2b41d4"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="5dp"
-            android:layout_centerInParent="true"
-            >
-            <TextView
-                android:id="@+id/tv_work_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Comp Off Leave"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textColor="#fff"
-                android:textSize="20sp"
-                />
+        <include
+            layout="@layout/layout_attendance_admin"></include>
 
-        </android.support.v7.widget.CardView>
-    </RelativeLayout>
+    </LinearLayout>
+
+
 </LinearLayout>
