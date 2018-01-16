@@ -13,11 +13,31 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private double startlat;
+    private double startlong;
+    private double endlat;
+    private double endlong;
+    private boolean isStartLatLongAvailable=false;
+    private boolean isEndLatLongAvailable=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        if (getIntent().getStringExtra("startlat").length()>3){
+            isStartLatLongAvailable=true;
+            startlat=Double.parseDouble(getIntent().getStringExtra("startlat"));
+            startlong=Double.parseDouble(getIntent().getStringExtra("startlong"));
+        }if (getIntent().getStringExtra("endlat").length()>3){
+            isEndLatLongAvailable=true;
+            endlat=Double.parseDouble(getIntent().getStringExtra("endlat"));
+            endlong=Double.parseDouble(getIntent().getStringExtra("endlong"));
+
+        }
+
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -37,10 +57,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setMinZoomPreference(6.0f);
+        mMap.setMaxZoomPreference(14.0f);
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if (isStartLatLongAvailable){
+            LatLng stLatLong = new LatLng(startlat, startlong);
+            mMap.addMarker(new MarkerOptions().position(stLatLong).title("Work Started"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stLatLong, 10));
+        }if (isEndLatLongAvailable){
+            LatLng endLatLong = new LatLng(endlat, endlong);
+            mMap.addMarker(new MarkerOptions().position(endLatLong).title("Work Ended"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(endLatLong, 10));
+        }
+
+
+
     }
 }

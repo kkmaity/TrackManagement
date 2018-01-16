@@ -87,6 +87,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     private boolean isAlreadyStarted=false;
     private boolean isButtonClicked = false;
     private int val = 0;
+    private String startWorkDay="";
 
 
     @Override
@@ -130,12 +131,19 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                 @Override
                 public <E> void onSuccess(E t) {
                     baseActivity.dismissProgressDialog();
-                    EmpListMain main=(EmpListMain)t;
+                    final EmpListMain main=(EmpListMain)t;
                     if (main.getResponseCode()==200) {
                         EmpRecyclerViewAdapter adapter = new EmpRecyclerViewAdapter(baseActivity, main.getResponseData(), new ItemClickListner() {
                             @Override
                             public void onItemClick(Object viewID, int position) {
-                                openMapActivity();
+                                Intent intent=new Intent(baseActivity,MapsActivity.class);
+                                intent.putExtra("startlat",main.getResponseData().get(position).getStartLat());
+                                intent.putExtra("startlong",main.getResponseData().get(position).getStartLong());
+                                intent.putExtra("endlat",main.getResponseData().get(position).getEndLat());
+                                intent.putExtra("endlong",main.getResponseData().get(position).getEndLong());
+
+                                startActivity(intent);
+
 
                             }
                         });
@@ -155,12 +163,6 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                 }
             });
         }
-
-    }
-
-    private void openMapActivity() {
-        startActivity(new Intent(baseActivity, MapsActivity.class));
-
 
     }
 
@@ -219,28 +221,32 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_start_work:
-                if (!isAlreadyStarted){
-                    val = 1;
-                    isButtonClicked = true;
+                if (baseActivity.getTodayDate().equalsIgnoreCase(startWorkDay)){
+                    if (!isAlreadyStarted){
+                        val = 1;
+                        isButtonClicked = true;
 
-                    LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
+                        LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
-                    if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-                        buildAlertMessageNoGps();
-                    }else{
-                        baseActivity.showProgressDialog();
-                        createLocationRequest();
-                        mGoogleApiClient = new GoogleApiClient.Builder(baseActivity)
-                                .addApi(LocationServices.API)
-                                .addConnectionCallbacks(this)
-                                .addOnConnectionFailedListener(this)
-                                .build();
-                        mGoogleApiClient.connect();
-                    }
+                        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                            buildAlertMessageNoGps();
+                        }else{
+                            baseActivity.showProgressDialog();
+                            createLocationRequest();
+                            mGoogleApiClient = new GoogleApiClient.Builder(baseActivity)
+                                    .addApi(LocationServices.API)
+                                    .addConnectionCallbacks(this)
+                                    .addOnConnectionFailedListener(this)
+                                    .build();
+                            mGoogleApiClient.connect();
+                        }
 
 
+                    }else
+                        Toast.makeText(baseActivity,"Work already started",Toast.LENGTH_LONG).show();
                 }else
-                    Toast.makeText(baseActivity,"Work already started",Toast.LENGTH_LONG).show();
+                    Toast.makeText(baseActivity,"You have already started for the work today",Toast.LENGTH_LONG).show();
+
 
                 break;
             case R.id.tv_end_work:
@@ -458,6 +464,9 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                         try {
                             if (json.getInt("ResponseCode") == 200) {
                                 tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
+                                String str = tv_start_date_time.getText().toString();
+                                String[] splited = str.split("\\s+");
+                                startWorkDay=splited[0];
                                 LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
                                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -512,6 +521,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                     if (json.getInt("ResponseCode") == 200) {
                         if(json.has("ResponseData")){
                             tv_end_date_time.setText(json.getJSONObject("ResponseData").getString("stopTime"));
+                            getAttendenceHistory();
                         }else{
                             Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
                         }
