@@ -88,6 +88,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     private boolean isButtonClicked = false;
     private int val = 0;
     private String startWorkDay="";
+    private String already_started="";
 
 
     @Override
@@ -461,22 +462,28 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
 
                         try {
                             if (json.getInt("ResponseCode") == 200) {
-                                tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
-                                String str = tv_start_date_time.getText().toString();
-                                String[] splited = str.split("\\s+");
-                                startWorkDay=splited[0];
-                                LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                                already_started= json.getJSONObject("ResponseData").getString("already_started");
+                                if (already_started.equalsIgnoreCase("1")){
+                                    Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
+                                }else {
+                                    tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
+                                    String str = tv_start_date_time.getText().toString();
+                                    String[] splited = str.split("\\s+");
+                                    startWorkDay=splited[0];
+                                    LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-                                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                    buildAlertMessageNoGps();
-                                } else {
-                                    getActivity().startService(new Intent(getActivity(), LocationUpdateService.class));
+                                    if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                        buildAlertMessageNoGps();
+                                    } else {
+                                        getActivity().startService(new Intent(getActivity(), LocationUpdateService.class));
+                                    }
                                 }
-                            } else if (json.getInt("ResponseCode") == 400) {
-                                Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
+
+                        } else if (json.getInt("ResponseCode") == 400) {
+                            Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
 
 
-                            }
+                        }
 
                         } catch (Exception e) {
                             e.printStackTrace();

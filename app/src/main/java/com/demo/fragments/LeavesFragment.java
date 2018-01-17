@@ -189,6 +189,7 @@ public class LeavesFragment extends BaseFragment {
                 jsonObject.put("userid", baseActivity.preference.getUserId());
                 jsonObject.put("leavestart_date",  baseActivity.milisecondToDate(dates.get(0).getTime()));
                 jsonObject.put("leave_end_date", baseActivity.milisecondToDate(dates.get(dates.size()-1).getTime()));
+                jsonObject.put("description", "description");
                 jsonObject.put("leave_type", leaveType);
                 Log.e("LeaveApplied ", jsonObject.toString());
                 JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/apply_leave.php", jsonObject);
@@ -286,27 +287,18 @@ public class LeavesFragment extends BaseFragment {
         dialog.setCancelable(false);
         TextView cancel = (TextView) dialog.findViewById(R.id.cancel);
         TextView OK = (TextView) dialog.findViewById(R.id.OK);
-
         final Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 10);
-
         final Calendar lastYear = Calendar.getInstance();
         lastYear.add(Calendar.YEAR, -10);
-
         calendar = (CalendarPickerView) dialog.findViewById(R.id.calendar_view);
-
         calendar.init(lastYear.getTime(), nextYear.getTime()) //
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE) //
                 .withSelectedDate(new Date());
 
-
-
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String strdate = "2018-01-22";
         String strdate2 = "2018-01-26";
-
-
-
 
         try {
             Date newdate = dateformat.parse(strdate);
