@@ -462,7 +462,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
 
                         try {
                             if (json.getInt("ResponseCode") == 200) {
-                                already_started= json.getJSONObject("ResponseData").getString("already_started");
+                                already_started= json.getString("already_started");
                                 if (already_started.equalsIgnoreCase("1")){
                                     Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
                                 }else {
