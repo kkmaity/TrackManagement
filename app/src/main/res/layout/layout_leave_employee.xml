@@ -76,9 +76,9 @@
         android:layout_height="wrap_content" />
 
 
-    <include layout="@layout/view_grid_leave"
+<!--    <include layout="@layout/view_grid_leave"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent" />-->
 
 
 </LinearLayout>

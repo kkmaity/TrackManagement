@@ -69,6 +69,12 @@ public class RootFragment extends BaseFragment {
             case LEAVES:
                 getChildFragmentManager().beginTransaction().add(R.id.fl_root, new LeavesFragment()).commit();
                 break;
+            case TERMSCONDITION:
+                getChildFragmentManager().beginTransaction().add(R.id.fl_root, new TermsConditionFragment()).commit();
+                break;
+            case PRIVACYPOLICY:
+                getChildFragmentManager().beginTransaction().add(R.id.fl_root, new PrivacyPolicyFragment()).commit();
+                break;
 
         }
     }
