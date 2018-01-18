@@ -205,6 +205,8 @@ public class MainActivity extends BaseActivity
             onMenuItemSelect(AppMenu.TERMSCONDITION);
            // startActivity(new Intent(getApplicationContext(), TermsConditionActivity.class));
         } else if (id == R.id.notifications) {
+            startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+            finish();
 
         } else if (id == R.id.profile) {
 

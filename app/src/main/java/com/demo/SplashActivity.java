@@ -15,11 +15,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * Created by root on 3/1/18.
- */
-
 public class SplashActivity extends BaseActivity{
     private String deviceToken;
 

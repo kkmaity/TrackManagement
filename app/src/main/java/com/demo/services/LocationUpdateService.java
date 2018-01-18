@@ -27,7 +27,7 @@ import com.google.android.gms.common.api.Status;
 
 import org.json.JSONObject;
 
-public class LocationUpdateService extends Service  implements    LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class LocationUpdateService extends Service  implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = "LocationService";
     private static final long INTERVAL = 1000 * 3;
