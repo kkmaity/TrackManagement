@@ -35,12 +35,7 @@
         <activity
             android:name=".CrashActivity"
             android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".PrivacyPolicyActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".TermsConditionActivity"
-            android:screenOrientation="portrait"></activity>
+
         <service android:name=".services.LocationUpdateService" />
 
         <meta-data

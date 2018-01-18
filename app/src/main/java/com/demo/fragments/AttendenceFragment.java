@@ -88,6 +88,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     private boolean isButtonClicked = false;
     private int val = 0;
     private String startWorkDay="";
+    private String already_started="";
 
 
     @Override
@@ -221,7 +222,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_start_work:
-                if (baseActivity.getTodayDate().equalsIgnoreCase(startWorkDay)){
+
                     if (!isAlreadyStarted){
                         val = 1;
                         isButtonClicked = true;
@@ -244,8 +245,6 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
 
                     }else
                         Toast.makeText(baseActivity,"Work already started",Toast.LENGTH_LONG).show();
-                }else
-                    Toast.makeText(baseActivity,"You have already started for the work today",Toast.LENGTH_LONG).show();
 
 
                 break;
@@ -463,22 +462,28 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
 
                         try {
                             if (json.getInt("ResponseCode") == 200) {
-                                tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
-                                String str = tv_start_date_time.getText().toString();
-                                String[] splited = str.split("\\s+");
-                                startWorkDay=splited[0];
-                                LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                                already_started= json.getString("already_started");
+                                if (already_started.equalsIgnoreCase("1")){
+                                    Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
+                                }else {
+                                    tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
+                                    String str = tv_start_date_time.getText().toString();
+                                    String[] splited = str.split("\\s+");
+                                    startWorkDay=splited[0];
+                                    LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-                                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                    buildAlertMessageNoGps();
-                                } else {
-                                    getActivity().startService(new Intent(getActivity(), LocationUpdateService.class));
+                                    if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                        buildAlertMessageNoGps();
+                                    } else {
+                                        getActivity().startService(new Intent(getActivity(), LocationUpdateService.class));
+                                    }
                                 }
-                            } else if (json.getInt("ResponseCode") == 400) {
-                                Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
+
+                        } else if (json.getInt("ResponseCode") == 400) {
+                            Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
 
 
-                            }
+                        }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -519,6 +524,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
 
                 try {
                     if (json.getInt("ResponseCode") == 200) {
+                        isAlreadyStarted=false;
                         if(json.has("ResponseData")){
                             tv_end_date_time.setText(json.getJSONObject("ResponseData").getString("stopTime"));
                             getAttendenceHistory();
@@ -527,6 +533,8 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                         }
 
 
+                    }else{
+                        Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {

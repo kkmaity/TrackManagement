@@ -6,5 +6,5 @@ package com.demo.Enum;
 
 public enum AppMenu {
 
-    HOME, ATTENDENCE, WORk_ENTRY,LEAVES
+    HOME, ATTENDENCE, WORk_ENTRY,LEAVES, PRIVACYPOLICY,TERMSCONDITION
 }

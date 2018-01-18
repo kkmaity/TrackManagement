@@ -1,28 +1,25 @@
 package com.demo.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.demo.Enum.AppMenu;
 import com.demo.MainActivity;
 import com.demo.R;
-import com.demo.adapter.AttendanceGridAdapter;
 import com.demo.adapter.LeaveGridAdapter;
 import com.demo.api.ApiLeaveHistory;
 import com.demo.model.leave.AppliedLeaveList;
@@ -31,32 +28,30 @@ import com.demo.model.leave.ResponseDatum;
 import com.demo.network.KlHttpClient;
 import com.demo.restservice.OnApiResponseListener;
 import com.demo.utils.Constant;
-import com.savvi.rangedatepicker.CalendarPickerView;
 
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 
 /**
  * Created by root on 20/8/15.
  */
-public class LeavesFragment extends BaseFragment {
+public class LeavesDetailsFragment extends BaseFragment{
 
 
-    private LinearLayout linLeaveEmployee;
+    /*private LinearLayout linLeaveEmployee;
     private LinearLayout linLeaveAdmin;
     private TextView tv_normalLeave;
     private TextView tv_comp_leave;
     private TextView tv_normal_leave_count;
     private TextView tv_comp_leave_count;
-   // private ListView listLeaveHis;
+    private ListView listLeaveHis;
     private LeaveGridAdapter adapter;
     private CalendarPickerView calendar;
     private List<Date> dates;
@@ -64,85 +59,121 @@ public class LeavesFragment extends BaseFragment {
     private String leaveType="normal";
     private String isCompOffApplicable="";
     private String normalLCount;
-    private String compoffLCount;
+    private String compoffLCount;*/
+
+
+
+    private static TextView tv_start,tv_end;
+    private LinearLayout linLeaveEmployee;
+    private LinearLayout linLeaveAdmin;
+    private ListView listLeaveHis;
+    private LeaveGridAdapter adapter;
+    private String leaveType="normal";
+    private int leaveCount = 0;
+    private EditText tv_description;
+    private TextView tv_apply;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_leaves, null, false);
-        ((MainActivity)getActivity()).setTitle(AppMenu.LEAVES.name());
+        View v = inflater.inflate(R.layout.fragment_leaves_details, null, false);
+
+        if(getArguments().getString("type").equals("normal")){
+            ((MainActivity)getActivity()).setTitle("Normal Leave");
+            leaveType="normal";
+        }else if(getArguments().getString("type").equals("comp")){
+            ((MainActivity)getActivity()).setTitle("Comp Off Leave");
+            leaveType = "compoff";
+        }
+
+        leaveCount = getArguments().getInt("count");
+
+        tv_start = (TextView)v.findViewById(R.id.tv_start);
+        tv_end = (TextView)v.findViewById(R.id.tv_end);
         linLeaveEmployee = (LinearLayout)v.findViewById(R.id.linLeaveEmployee);
+        linLeaveAdmin = (LinearLayout)v.findViewById(R.id.linLeaveAdmin);
+        listLeaveHis = (ListView)v.findViewById(R.id.listLeaveHis);
+        tv_description = (EditText)v.findViewById(R.id.tv_description);
+        tv_apply = (TextView)v.findViewById(R.id.tv_apply);
+
+      /*  linLeaveEmployee = (LinearLayout)v.findViewById(R.id.linLeaveEmployee);
         linLeaveAdmin = (LinearLayout)v.findViewById(R.id.linLeaveAdmin);
         tv_normalLeave = (TextView)v.findViewById(R.id.tv_normalLeave);
         tv_comp_leave = (TextView)v.findViewById(R.id.tv_comp_leave);
         tv_normal_leave_count = (TextView)v.findViewById(R.id.tv_normal_leave_count);
         tv_comp_leave_count = (TextView)v.findViewById(R.id.tv_comp_leave_count);
-       // listLeaveHis = (ListView)v.findViewById(R.id.listLeaveHis);
+        listLeaveHis = (ListView)v.findViewById(R.id.listLeaveHis);
         tv_normalLeave.setOnClickListener(this);
         tv_comp_leave.setOnClickListener(this);
-       /* if (baseActivity.preference.getIsAdmin()!=null&&baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
-            linLeaveEmployee.setVisibility(View.GONE);
-            linLeaveAdmin.setVisibility(View.VISIBLE);
-            // getEmpList();
-        }else {*/
+
             linLeaveAdmin.setVisibility(View.GONE);
             linLeaveEmployee.setVisibility(View.VISIBLE);
-            getLeaveCount();
-          //  getLeaveHistory();
 
+            getLeaveHistory();
 
-       // }
+*/
+        tv_start.setOnClickListener(this);
+        tv_end.setOnClickListener(this);
+        tv_apply.setOnClickListener(this);
+        getLeaveHistory();
         return v;
 
     }
 
-    private void getLeaveCount() {
+   /* private void getLeaveCount() {
         if(baseActivity.isNetworkConnected()){
             new LeaveCountAsynctask().execute();
 
         }
 
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
         super.onClick(view);
         switch (view.getId())
         {
-            case R.id.tv_normalLeave:
-               /* if (normalLCount!=null&&!normalLCount.equalsIgnoreCase("0")){
-                    leaveType="normal";
-                    openDateDialog();
+            case R.id.tv_start:
+                if (leaveCount>0){
+                    DialogFragment newFragment = new StartDatePickerFragment();
+                    newFragment.show(baseActivity.getSupportFragmentManager(), "datePicker");
+                    //openDateDialog();
                 }else
-                    Toast.makeText(baseActivity,"No leave available",Toast.LENGTH_LONG).show();*/
-
-               Fragment fragmentnormal  = new LeavesDetailsFragment();
-               Bundle bundle = new Bundle();
-               bundle.putString("type", "normal");
-                bundle.putInt("count", Integer.parseInt(normalLCount));
-               fragmentnormal.setArguments(bundle);
-               displayView(fragmentnormal);
+                    Toast.makeText(baseActivity,"No leave available",Toast.LENGTH_LONG).show();
 
 
                 break;
-            case R.id.tv_comp_leave:
+            case R.id.tv_end:
+                if (leaveCount>0) {
 
-                Fragment fragmentcomp  = new LeavesDetailsFragment();
-                Bundle bundle1 = new Bundle();
-                bundle1.putString("type", "comp");
-                bundle1.putInt("count", Integer.parseInt(compoffLCount));
-                fragmentcomp.setArguments(bundle1);
-                displayView(fragmentcomp);
-                /*if (compoffLCount!=null&&!compoffLCount.equalsIgnoreCase("0")) {
-                    if (isCompOffApplicable.equalsIgnoreCase("yes")) {
+                    String startDate = tv_start.getText().toString();
+
+                    if(startDate.equalsIgnoreCase("select")){
+                        Toast.makeText(baseActivity, "Select start date", Toast.LENGTH_SHORT).show();
+                    }else{
+                        DialogFragment newFragment = new EndDatePickerFragment();
+                        newFragment.show(baseActivity.getSupportFragmentManager(), "datePicker");
+                    }
+
+                   /* if (isCompOffApplicable.equalsIgnoreCase("yes")) {
                         leaveType = "compoff";
                         openDateDialog();
                     } else
-                        Toast.makeText(baseActivity, "Compoff leave not available", Toast.LENGTH_LONG).show();
+                        Toast.makeText(baseActivity, "Compoff leave not available", Toast.LENGTH_LONG).show();*/
                 }else
-                    Toast.makeText(baseActivity, "Compoff leave not available", Toast.LENGTH_LONG).show();*/
+                   // Toast.makeText(baseActivity, "Compoff leave not available", Toast.LENGTH_LONG).show();
 
 
+                break;
+
+            case R.id.tv_apply:
+
+                if(isvalid()){
+                    if(baseActivity.isNetworkConnected()){
+                        new ApplyLeaveAsynctask().execute();
+
+                    }
+                }
                 break;
         }
     }
@@ -158,7 +189,7 @@ public class LeavesFragment extends BaseFragment {
                     if (main.getResponseCode()==200){
                         List<ResponseDatum> listH = main.getResponseData();
                         adapter=new LeaveGridAdapter(baseActivity,listH);
-                       // listLeaveHis.setAdapter(adapter);
+                        listLeaveHis.setAdapter(adapter);
                     }else
                         Toast.makeText(baseActivity,""+main.getMessage(),Toast.LENGTH_LONG).show();
 
@@ -195,6 +226,10 @@ public class LeavesFragment extends BaseFragment {
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
+
+
+
+
     public class ApplyLeaveAsynctask extends AsyncTask<String, Void, JSONObject> {
         @Override
         protected JSONObject doInBackground(String... params) {
@@ -202,9 +237,9 @@ public class LeavesFragment extends BaseFragment {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
                 jsonObject.put("userid", baseActivity.preference.getUserId());
-                jsonObject.put("leavestart_date",  baseActivity.milisecondToDate(dates.get(0).getTime()));
-                jsonObject.put("leave_end_date", baseActivity.milisecondToDate(dates.get(dates.size()-1).getTime()));
-                jsonObject.put("description", "description");
+                jsonObject.put("leavestart_date",  tv_start.getText().toString());
+                jsonObject.put("leave_end_date",tv_end.getText().toString());
+                jsonObject.put("description", tv_description.getText().toString().trim());
                 jsonObject.put("leave_type", leaveType);
                 Log.e("LeaveApplied ", jsonObject.toString());
                 JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/apply_leave.php", jsonObject);
@@ -226,8 +261,12 @@ public class LeavesFragment extends BaseFragment {
                 try {
                     if (json.getInt("ResponseCode") == 200) {
                         if(json.has("ResponseData")){
+                            Toast.makeText(baseActivity, "Leave applied successfully", Toast.LENGTH_LONG).show();
+                            tv_end.setText("Select");
+                            tv_start.setText("Select");
+                            tv_description.setText("");
                             //  tv_end_date_time.setText(json.getJSONObject("ResponseData").getString("stopTime"));
-                           // getLeaveHistory();
+                            getLeaveHistory();
                         }else{
                             Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
                         }
@@ -245,7 +284,7 @@ public class LeavesFragment extends BaseFragment {
 
         }
     }
-    public class LeaveCountAsynctask extends AsyncTask<String, Void, JSONObject> {
+    /*public class LeaveCountAsynctask extends AsyncTask<String, Void, JSONObject> {
         @Override
         protected JSONObject doInBackground(String... params) {
             try {
@@ -294,8 +333,8 @@ public class LeavesFragment extends BaseFragment {
 
 
         }
-    }
-    void openDateDialog(){
+    }*/
+ /*   void openDateDialog(){
         final Dialog dialog=new Dialog(baseActivity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_date_range_dialog);
@@ -348,13 +387,106 @@ public class LeavesFragment extends BaseFragment {
         });
 
         dialog.show();
-    }
+    }*/
 
     private void applyLeaveTask() {
         if(baseActivity.isNetworkConnected()){
             new ApplyLeaveAsynctask().execute();
 
         }
+    }
+
+
+
+
+    public static class StartDatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+
+            // Create a new instance of DatePickerDialog and return it
+            return datePickerDialog;
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            tv_start.setText(year+"-"+String.format("%02d", (month+1))+"-"+day);
+            // Do something with the date chosen by the user
+        }
+    }
+
+
+
+    public static class EndDatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+
+
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+
+
+            try {
+                String st[] = tv_start.getText().toString().trim().split(Pattern.quote("-"));
+
+
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                c.setTime(sdf.parse(tv_start.getText().toString()));
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+
+                // Create a new instance of DatePickerDialog and return it
+                return datePickerDialog;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            tv_end.setText(year+"-"+String.format("%02d", (month+1))+"-"+day);
+            // Do something with the date chosen by the user
+        }
+    }
+
+    private boolean isvalid(){
+        boolean flag = true;
+
+        String startDate = tv_start.getText().toString();
+        String enddate = tv_end.getText().toString();
+
+        if(startDate.equalsIgnoreCase("select")){
+            flag = false;
+            Toast.makeText(baseActivity, "Select start date", Toast.LENGTH_SHORT).show();
+        }else if(enddate.equalsIgnoreCase("select")){
+            flag = false;
+            Toast.makeText(baseActivity, "Select end date", Toast.LENGTH_SHORT).show();
+        }else if(tv_description.getText().toString().trim().length() == 0){
+            flag = false;
+            Toast.makeText(baseActivity, "please enter Description", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+        return flag;
     }
 
 }

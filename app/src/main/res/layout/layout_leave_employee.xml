@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="#377838"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center"
+        app:cardElevation="3dp"
+        >
+        <TextView
+            android:id="@+id/tv_normalLeave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal Leave"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            />
+
+    </android.support.v7.widget.CardView>
+
+
+
+    <TextView
+        android:id="@+id/tv_normal_leave_count"
+        android:layout_width="match_parent"
+        android:text="Leave Count "
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="#e14a59"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
+        app:cardElevation="5dp"
+        >
+        <TextView
+            android:id="@+id/tv_comp_leave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comp Off Leave"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            />
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_comp_leave_count"
+        android:layout_width="match_parent"
+        android:text="Leave Count "
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content" />
+
+
+<!--    <include layout="@layout/view_grid_leave"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />-->
+
+
+</LinearLayout>

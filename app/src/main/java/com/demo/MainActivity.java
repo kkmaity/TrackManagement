@@ -91,6 +91,7 @@ public class MainActivity extends BaseActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -201,8 +202,11 @@ public class MainActivity extends BaseActivity
         if (id == R.id.about_us) {
             // Handle the camera action
         } else if (id == R.id.terms_conditions) {
-            startActivity(new Intent(getApplicationContext(), TermsConditionActivity.class));
+            onMenuItemSelect(AppMenu.TERMSCONDITION);
+           // startActivity(new Intent(getApplicationContext(), TermsConditionActivity.class));
         } else if (id == R.id.notifications) {
+            startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+            finish();
 
         } else if (id == R.id.profile) {
 
@@ -212,7 +216,8 @@ public class MainActivity extends BaseActivity
             finish();
 
         }else if(id == R.id.privacy_policy){
-            startActivity(new Intent(getApplicationContext(), PrivacyPolicyActivity.class));
+            onMenuItemSelect(AppMenu.PRIVACYPOLICY);
+           // startActivity(new Intent(getApplicationContext(), PrivacyPolicyActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -265,6 +270,24 @@ public class MainActivity extends BaseActivity
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.LEAVES);
                 break;
+            case PRIVACYPOLICY: tag = AppMenu.PRIVACYPOLICY.name();
+                fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                if (ACTIVE_TAB_POSITION == 5) {
+                    fragment = null;
+                }
+                ACTIVE_TAB_POSITION = 5;
+                if (fragment == null)
+                    fragment = getRootFragment(AppMenu.PRIVACYPOLICY);
+                break;
+            case TERMSCONDITION: tag = AppMenu.TERMSCONDITION.name();
+                fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                if (ACTIVE_TAB_POSITION == 6) {
+                    fragment = null;
+                }
+                ACTIVE_TAB_POSITION = 6;
+                if (fragment == null)
+                    fragment = getRootFragment(AppMenu.TERMSCONDITION);
+                break;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -286,6 +309,12 @@ public class MainActivity extends BaseActivity
                 break;
             case LEAVES:
                 bundle.putString("appMenu",AppMenu.LEAVES.name());
+                break;
+            case TERMSCONDITION:
+                bundle.putString("appMenu",AppMenu.TERMSCONDITION.name());
+                break;
+            case PRIVACYPOLICY:
+                bundle.putString("appMenu",AppMenu.PRIVACYPOLICY.name());
                 break;
         }
         fragment.setArguments(bundle);

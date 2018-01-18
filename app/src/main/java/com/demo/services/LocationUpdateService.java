@@ -27,7 +27,7 @@ import com.google.android.gms.common.api.Status;
 
 import org.json.JSONObject;
 
-public class LocationUpdateService extends Service  implements    LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class LocationUpdateService extends Service  implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = "LocationService";
     private static final long INTERVAL = 1000 * 3;
@@ -50,7 +50,7 @@ public class LocationUpdateService extends Service  implements    LocationListen
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "onStartCommand", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "onStartCommand", Toast.LENGTH_SHORT).show();
 
         return START_STICKY;
     }
