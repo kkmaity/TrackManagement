@@ -48,4 +48,5 @@ public class NotificationActivity extends BaseActivity {
                 break;
         }
     }
+
 }
