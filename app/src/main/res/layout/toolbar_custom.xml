@@ -20,7 +20,7 @@
             android:layout_centerInParent="true"
             android:textSize="17sp"
             android:textColor="#fff"
-            android:text="Sample Text"
+            android:text="Notifications"
             android:layout_marginLeft="16dp"
             />
     </RelativeLayout>
