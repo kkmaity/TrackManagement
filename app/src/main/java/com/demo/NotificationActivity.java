@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -40,6 +41,9 @@ public class NotificationActivity extends BaseActivity {
         setContentView(R.layout.activity_notifications);
         toolbarHome=(Toolbar)findViewById(R.id.toolbar);
         ivBackBtn=(ImageView)toolbarHome.findViewById(R.id.ivBack);
+        TextView txtTittle = (TextView) toolbarHome.findViewById(R.id.txtTittle);
+        txtTittle.setText("NOTIFICATION");
+
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
 

@@ -204,6 +204,8 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.terms_conditions) {
             startActivity(new Intent(getApplicationContext(), TermsConditionActivity.class));
         } else if (id == R.id.notifications) {
+            startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+            finish();
 
         } else if (id == R.id.profile) {
 
