@@ -5,9 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +12,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.demo.Enum.AppMenu;
 import com.demo.MainActivity;
 import com.demo.R;
-import com.demo.adapter.AttendanceGridAdapter;
 import com.demo.adapter.LeaveGridAdapter;
 import com.demo.api.ApiLeaveHistory;
 import com.demo.model.leave.AppliedLeaveList;
@@ -56,6 +51,7 @@ public class LeavesFragment extends BaseFragment {
     private TextView tv_comp_leave;
     private TextView tv_normal_leave_count;
     private TextView tv_comp_leave_count;
+    private TextView tv_cancel_leave;
    // private ListView listLeaveHis;
     private LeaveGridAdapter adapter;
     private CalendarPickerView calendar;
@@ -77,6 +73,7 @@ public class LeavesFragment extends BaseFragment {
         tv_comp_leave = (TextView)v.findViewById(R.id.tv_comp_leave);
         tv_normal_leave_count = (TextView)v.findViewById(R.id.tv_normal_leave_count);
         tv_comp_leave_count = (TextView)v.findViewById(R.id.tv_comp_leave_count);
+        tv_cancel_leave = (TextView)v.findViewById(R.id.tv_cancel_leave);
        // listLeaveHis = (ListView)v.findViewById(R.id.listLeaveHis);
         tv_normalLeave.setOnClickListener(this);
         tv_comp_leave.setOnClickListener(this);
@@ -141,6 +138,18 @@ public class LeavesFragment extends BaseFragment {
                         Toast.makeText(baseActivity, "Compoff leave not available", Toast.LENGTH_LONG).show();
                 }else
                     Toast.makeText(baseActivity, "Compoff leave not available", Toast.LENGTH_LONG).show();*/
+
+
+                break;
+            case R.id.tv_cancel_leave:
+
+                Fragment fragmentcancel  = new CancelLeaveFragment();
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("type", "comp");
+                bundle2.putInt("count", Integer.parseInt(compoffLCount));
+                fragmentcancel.setArguments(bundle2);
+                displayView(fragmentcancel);
+
 
 
                 break;

@@ -75,6 +75,12 @@ public class RootFragment extends BaseFragment {
             case PRIVACYPOLICY:
                 getChildFragmentManager().beginTransaction().add(R.id.fl_root, new PrivacyPolicyFragment()).commit();
                 break;
+            case ABOUTUS:
+                getChildFragmentManager().beginTransaction().add(R.id.fl_root, new AboutUsFragment()).commit();
+                break;
+            case CANCELLEAVE:
+                getChildFragmentManager().beginTransaction().add(R.id.fl_root, new CancelLeaveFragment()).commit();
+                break;
 
         }
     }

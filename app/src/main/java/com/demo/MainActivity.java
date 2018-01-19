@@ -200,7 +200,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.about_us) {
-            // Handle the camera action
+            onMenuItemSelect(AppMenu.ABOUTUS);
         } else if (id == R.id.terms_conditions) {
             onMenuItemSelect(AppMenu.TERMSCONDITION);
            // startActivity(new Intent(getApplicationContext(), TermsConditionActivity.class));
@@ -288,6 +288,15 @@ public class MainActivity extends BaseActivity
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.TERMSCONDITION);
                 break;
+            case ABOUTUS: tag = AppMenu.ABOUTUS.name();
+                fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                if (ACTIVE_TAB_POSITION == 7) {
+                    fragment = null;
+                }
+                ACTIVE_TAB_POSITION = 7;
+                if (fragment == null)
+                    fragment = getRootFragment(AppMenu.ABOUTUS);
+                break;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -315,6 +324,9 @@ public class MainActivity extends BaseActivity
                 break;
             case PRIVACYPOLICY:
                 bundle.putString("appMenu",AppMenu.PRIVACYPOLICY.name());
+                break;
+            case ABOUTUS:
+                bundle.putString("appMenu",AppMenu.ABOUTUS.name());
                 break;
         }
         fragment.setArguments(bundle);
