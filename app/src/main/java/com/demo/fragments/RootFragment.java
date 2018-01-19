@@ -81,6 +81,9 @@ public class RootFragment extends BaseFragment {
             case CANCELLEAVE:
                 getChildFragmentManager().beginTransaction().add(R.id.fl_root, new CancelLeaveFragment()).commit();
                 break;
+            case PROFILE:
+                getChildFragmentManager().beginTransaction().add(R.id.fl_root, new MyProfileFragment()).commit();
+                break;
 
         }
     }

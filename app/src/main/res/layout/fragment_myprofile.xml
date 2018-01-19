@@ -5,6 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -142,6 +149,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:enabled="false"
+
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
@@ -158,7 +166,8 @@
     android:layout_marginStart="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginLeft="16dp"
-    app:cardBackgroundColor="@color/colorPrimary"
+    android:layout_marginBottom="16dp"
+    app:cardBackgroundColor="@color/pink_btn"
     app:cardCornerRadius="22dp">
     <TextView
         android:id="@+id/tvUpdateSave"
@@ -170,5 +179,8 @@
         android:textColor="#fff"
         android:textSize="20sp"/>
 </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

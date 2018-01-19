@@ -224,6 +224,8 @@ public class MainActivity extends BaseActivity
             finish();
 
         } else if (id == R.id.profile) {
+            onMenuItemSelect(AppMenu.PROFILE);
+
 
         } else if (id == R.id.logout) {
             preference.clearData();
@@ -312,6 +314,15 @@ public class MainActivity extends BaseActivity
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.ABOUTUS);
                 break;
+            case PROFILE: tag = AppMenu.PROFILE.name();
+                fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                if (ACTIVE_TAB_POSITION == 7) {
+                    fragment = null;
+                }
+                ACTIVE_TAB_POSITION = 7;
+                if (fragment == null)
+                    fragment = getRootFragment(AppMenu.PROFILE);
+                break;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -342,6 +353,9 @@ public class MainActivity extends BaseActivity
                 break;
             case ABOUTUS:
                 bundle.putString("appMenu",AppMenu.ABOUTUS.name());
+                break;
+            case PROFILE:
+                bundle.putString("appMenu",AppMenu.PROFILE.name());
                 break;
         }
         fragment.setArguments(bundle);
