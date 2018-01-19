@@ -1,8 +1,10 @@
 package com.demo.fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -134,25 +136,25 @@ public class LeavesDetailsFragment extends BaseFragment{
         switch (view.getId())
         {
             case R.id.tv_start:
-                if (leaveCount>0){
+               // if (leaveCount>0){
                     DialogFragment newFragment = new StartDatePickerFragment();
                     newFragment.show(baseActivity.getSupportFragmentManager(), "datePicker");
                     //openDateDialog();
-                }else
-                    Toast.makeText(baseActivity,"No leave available",Toast.LENGTH_LONG).show();
+               /* }else
+                    Toast.makeText(baseActivity,"No leave available",Toast.LENGTH_LONG).show();*/
 
 
                 break;
             case R.id.tv_end:
-                if (leaveCount>0) {
+               // if (leaveCount>0) {
 
                     String startDate = tv_start.getText().toString();
 
                     if(startDate.equalsIgnoreCase("select")){
                         Toast.makeText(baseActivity, "Select start date", Toast.LENGTH_SHORT).show();
                     }else{
-                        DialogFragment newFragment = new EndDatePickerFragment();
-                        newFragment.show(baseActivity.getSupportFragmentManager(), "datePicker");
+                        DialogFragment newFragment1 = new EndDatePickerFragment();
+                        newFragment1.show(baseActivity.getSupportFragmentManager(), "datePicker");
                     }
 
                    /* if (isCompOffApplicable.equalsIgnoreCase("yes")) {
@@ -160,7 +162,7 @@ public class LeavesDetailsFragment extends BaseFragment{
                         openDateDialog();
                     } else
                         Toast.makeText(baseActivity, "Compoff leave not available", Toast.LENGTH_LONG).show();*/
-                }else
+               // }else
                    // Toast.makeText(baseActivity, "Compoff leave not available", Toast.LENGTH_LONG).show();
 
 
@@ -170,7 +172,66 @@ public class LeavesDetailsFragment extends BaseFragment{
 
                 if(isvalid()){
                     if(baseActivity.isNetworkConnected()){
-                        new ApplyLeaveAsynctask().execute();
+
+                        String startDate1 = tv_start.getText().toString();
+                        String enddate1 = tv_end.getText().toString();
+
+                        if(leaveType.equalsIgnoreCase("normal")){
+
+                            int diff = (int) Constant.getDayDiff(startDate1 , enddate1);
+                            if(diff>leaveCount){
+                                new AlertDialog.Builder(baseActivity)
+                                        .setTitle("Alert")
+                                        .setMessage("Paid Leave "+leaveCount +"\n"+"Un-Paid Leave "+(diff-leaveCount))
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.dismiss();
+                                                new ApplyLeaveAsynctask().execute();
+
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.dismiss();
+
+                                            }
+                                        })
+                                        .show();
+                            }else{
+                                new ApplyLeaveAsynctask().execute();
+                            }
+
+                        }
+
+
+
+                        if(leaveType.equalsIgnoreCase("compoff")) {
+                            int diff = (int) Constant.getDayDiff(enddate1, startDate1);
+                            if (diff > leaveCount) {
+                                new AlertDialog.Builder(baseActivity)
+                                        .setTitle("Alert")
+                                        .setMessage("Your leave balance only " + leaveCount + " Please reduce end date")
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.dismiss();
+
+
+                                            }
+                                        })
+
+                                        .show();
+                            }else{
+                                new ApplyLeaveAsynctask().execute();
+                            }
+                        }
+
+
+
+
+
 
                     }
                 }
@@ -468,8 +529,8 @@ public class LeavesDetailsFragment extends BaseFragment{
     }
 
     private boolean isvalid(){
-        boolean flag = true;
 
+        boolean flag = true;
         String startDate = tv_start.getText().toString();
         String enddate = tv_end.getText().toString();
 
@@ -483,7 +544,6 @@ public class LeavesDetailsFragment extends BaseFragment{
             flag = false;
             Toast.makeText(baseActivity, "please enter Description", Toast.LENGTH_SHORT).show();
         }
-
 
 
         return flag;

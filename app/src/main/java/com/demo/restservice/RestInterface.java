@@ -21,6 +21,8 @@ import com.demo.model.start_attendence.ApiAttendenceStartParam;
 import com.demo.model.start_attendence.AttendenceStartMain;
 import com.demo.model.stop_attendence.ApiAttendenceStopParam;
 import com.demo.model.stop_attendence.AttendenceStopMain;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 import java.util.Map;
@@ -68,16 +70,14 @@ public interface RestInterface {
     @POST("emp_track/api/notification.php")
     Call<NotificationMain> notification(@Body NotificationParam params);
     @Multipart
-    @POST("api/users/uploadPrescriptionForSamplePickUp")
-    Call<ResponseBody> uploadPrescriptionForSamplePickUp(
-            @Part("user_family_id") RequestBody user_family_id,
-            @Part("pincode") RequestBody pincode,
-            @Part("name") RequestBody name,
+    @POST("emp_track/api/userRegister.php")
+    Call<RegistrationMain> userRegister(
+            @Part("ApiKey") RequestBody user_family_id,
+            @Part("name") RequestBody pincode,
+            @Part("email") RequestBody name,
             @Part("phone") RequestBody phone,
-            @Part("address") RequestBody address,
-            @Part("book_by") RequestBody book_by,
-            @Part("user_id") RequestBody user_id,
-            @Part("book_from") RequestBody book_from,
+            @Part("password") RequestBody address,
+            @Part("deviceToken") RequestBody book_by,
             @Part List<MultipartBody.Part> files);
 
 

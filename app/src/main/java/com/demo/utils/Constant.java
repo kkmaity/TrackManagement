@@ -3,6 +3,7 @@ package com.demo.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by root on 3/1/18.
@@ -51,6 +52,29 @@ public class Constant {
         long m = (seconds / 60) % 60;
         long h = (seconds / (60 * 60)) % 24;
         return String.format("%d:%02d:%02d", h,m,s);
+    }
+
+    public static int getDayDiff(String inputString1,String inputString2){
+        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        //String inputString1 = "23 01 1997";
+       // String inputString2 = "27 04 1997";
+        int daycount =0;
+
+        try {
+            Date date1 = myFormat.parse(inputString1);
+            Date date2 = myFormat.parse(inputString2);
+            long endMili = date2.getTime();
+            long startMili = date1.getTime();
+            long diff = endMili - startMili;
+            daycount =   (int) (diff / (1000*60*60*24));
+           // System.out.println ("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+        } catch (Exception e) {
+            String err = e.getMessage();
+            System.out.println("!!!! "+e.getMessage());
+            e.printStackTrace();
+           // return 0;
+        }
+        return Math.abs(daycount);
     }
 
 
