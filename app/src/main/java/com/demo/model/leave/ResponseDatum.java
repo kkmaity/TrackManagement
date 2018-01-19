@@ -8,6 +8,10 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class ResponseDatum {
+    @SerializedName("leaveID")
+    @Expose
+    private String leaveID;
+
     @SerializedName("leave_start_date")
     @Expose
     private String leaveStartDate;
@@ -62,5 +66,13 @@ public class ResponseDatum {
 
     public void setLeaveType(String leaveType) {
         this.leaveType = leaveType;
+    }
+
+    public String getLeaveID() {
+        return leaveID;
+    }
+
+    public void setLeaveID(String leaveID) {
+        this.leaveID = leaveID;
     }
 }

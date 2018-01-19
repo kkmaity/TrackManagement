@@ -77,6 +77,7 @@ public class LeavesFragment extends BaseFragment {
        // listLeaveHis = (ListView)v.findViewById(R.id.listLeaveHis);
         tv_normalLeave.setOnClickListener(this);
         tv_comp_leave.setOnClickListener(this);
+        tv_cancel_leave.setOnClickListener(this);
        /* if (baseActivity.preference.getIsAdmin()!=null&&baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
             linLeaveEmployee.setVisibility(View.GONE);
             linLeaveAdmin.setVisibility(View.VISIBLE);
@@ -145,8 +146,8 @@ public class LeavesFragment extends BaseFragment {
 
                 Fragment fragmentcancel  = new CancelLeaveFragment();
                 Bundle bundle2 = new Bundle();
-                bundle2.putString("type", "comp");
-                bundle2.putInt("count", Integer.parseInt(compoffLCount));
+               // bundle2.putString("type", "comp");
+               // bundle2.putInt("count", Integer.parseInt(compoffLCount));
                 fragmentcancel.setArguments(bundle2);
                 displayView(fragmentcancel);
 
