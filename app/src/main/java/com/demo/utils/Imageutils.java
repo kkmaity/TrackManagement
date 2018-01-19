@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -842,6 +843,5 @@ public class Imageutils
     public interface ImageAttachmentListener {
         public void image_attachment(int from, String filename, Bitmap file, Uri uri);
     }
-
 
 }

@@ -1,6 +1,4 @@
 package com.demo.imagePicker;
-
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,11 +16,6 @@ import com.demo.R;
 import com.demo.utils.Imageutils;
 
 import java.io.File;
-
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AttachmentFragment extends Fragment implements Imageutils.ImageAttachmentListener{
 
 
@@ -33,7 +26,6 @@ public class AttachmentFragment extends Fragment implements Imageutils.ImageAtta
     public AttachmentFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

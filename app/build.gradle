@@ -25,6 +25,10 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
+repositories {
+    mavenCentral()
+    google()
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
@@ -49,6 +53,8 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
     compile 'com.savvi.datepicker:rangepicker:1.0.1'
-
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
 }
 apply plugin: 'com.google.gms.google-services'

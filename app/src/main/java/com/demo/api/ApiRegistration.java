@@ -23,7 +23,7 @@ public class ApiRegistration {
     }
 
     public void doWebServiceCall() {
-        Call<RegistrationMain> getDepartment = RestService.getInstance().restInterface.userRegister(param);
+       /* Call<RegistrationMain> getDepartment = RestService.getInstance().restInterface.userRegister(param);
 
         APIHelper.enqueueWithRetry(getDepartment,new Callback<RegistrationMain>() {
 
@@ -42,7 +42,7 @@ public class ApiRegistration {
                     listener.onError();
 
             }
-        });
+        });*/
     }
 }
 

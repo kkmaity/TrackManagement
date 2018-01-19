@@ -482,17 +482,12 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                         } else if (json.getInt("ResponseCode") == 400) {
                             Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
 
-
                         }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-
-
-
-
         }
     }
 

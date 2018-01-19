@@ -25,8 +25,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.demo.Enum.AppMenu;
 import com.demo.fragments.RootFragment;
 import com.demo.network.KlHttpClient;
@@ -57,6 +60,7 @@ public class MainActivity extends BaseActivity
     private FrameLayout frame_container;
     boolean isMapLoaded = false;
     private CameraUpdate cameraPosition;
+    private ImageView imageView;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -68,6 +72,7 @@ public class MainActivity extends BaseActivity
             }
         }
     };
+
 
 
     @Override
@@ -86,6 +91,7 @@ public class MainActivity extends BaseActivity
 
         }
 
+
         setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -99,7 +105,10 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
-
+        View headerLayout = navigationView.getHeaderView(0);
+        imageView=(ImageView)headerLayout.findViewById(R.id.imageView);
+        TextView textViewName = (TextView)headerLayout.findViewById(R.id.textViewName);
+        TextView textViewMail = (TextView)headerLayout.findViewById(R.id.textViewMail);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -128,6 +137,12 @@ public class MainActivity extends BaseActivity
         if (fragment == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.frame_container, getRootFragment(AppMenu.HOME),AppMenu.HOME.name()).commit();
         }
+        if (preference.getProfImage()!=null&&preference.getProfImage().length()>0){
+            Glide.with(this).load(preference.getProfImage()).into(imageView);
+
+        }
+        textViewName.setText(preference.getName());
+        textViewMail.setText(preference.getEmail());
     }
 
     @Override

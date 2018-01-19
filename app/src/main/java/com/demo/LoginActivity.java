@@ -87,6 +87,7 @@ public class LoginActivity extends BaseActivity {
                         preference.setEmail(main.getResponseData().getEmail().toString());
                         preference.setPhone(main.getResponseData().getPhone().toString());
                         preference.setIsAdmin(main.getResponseData().getIsAdmin().toString());
+                        preference.setProfImage(main.getResponseData().getProfileimage().toString());
                         preference.setUserStatus("yes");
                         callNewScreen();
                     }else {

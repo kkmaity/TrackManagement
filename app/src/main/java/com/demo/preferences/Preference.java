@@ -97,6 +97,17 @@ public class Preference {
     public String getIsAdmin() {
         return getString("isAdmin", "");
     }
+
+    public void setProfImage(String ProfImage) {
+        setString("ProfImage", ProfImage);
+    }
+
+    public String getProfImage() {
+        return getString("ProfImage", "");
+    }
+
+
+
     public void setUserStatus(String setUserStatus) {
         setString("UserStatus", setUserStatus);
     }

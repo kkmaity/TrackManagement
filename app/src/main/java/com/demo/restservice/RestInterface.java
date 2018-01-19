@@ -45,9 +45,9 @@ public interface RestInterface {
     @POST("emp_track/api/appconfig.php")
     Call<AppConfigMain> appconfig(@Body AppConfigParam params);
 
-    @POST("emp_track/api/userRegister.php")
+    /*@POST("emp_track/api/userRegister.php")
     Call<RegistrationMain> userRegister(@Body ApiRegistrationParam params);
-
+*/
     @POST("emp_track/api/userLogin.php")
     Call<LoginMain> userLogin(@Body ApiLoginParam params);
 
@@ -73,12 +73,12 @@ public interface RestInterface {
     @POST("emp_track/api/userRegister.php")
     Call<RegistrationMain> userRegister(
             @Part("ApiKey") RequestBody user_family_id,
-            @Part("name") RequestBody pincode,
-            @Part("email") RequestBody name,
+            @Part("name") RequestBody name,
+            @Part("email") RequestBody email,
             @Part("phone") RequestBody phone,
-            @Part("password") RequestBody address,
-            @Part("deviceToken") RequestBody book_by,
-            @Part List<MultipartBody.Part> files);
+            @Part("password") RequestBody password,
+            @Part("deviceToken") RequestBody deviceToken,
+            @Part MultipartBody.Part files);
 
 
 
