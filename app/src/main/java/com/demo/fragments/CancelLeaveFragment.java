@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.demo.MainActivity;
 import com.demo.R;
 import com.demo.adapter.CancelLeaveGridAdapter;
 import com.demo.api.ApiLeaveHistory;
@@ -50,6 +51,7 @@ public class CancelLeaveFragment extends BaseFragment implements LeaveItemClickL
         tv_cancel.setOnClickListener(this);
         adapter=new CancelLeaveGridAdapter(baseActivity, checkedResponseData, this);
         listLeaveHis.setAdapter(adapter);
+        ((MainActivity)getActivity()).setTitle("Cancel Leave");
         //MAi.setTitle("Cancel Leave");
         //tv_body.setText("Cancel Leave");
       //  new PrivecyPolicyAsynctask().execute();
@@ -89,7 +91,9 @@ public class CancelLeaveFragment extends BaseFragment implements LeaveItemClickL
                         List<ResponseDatum> listH = main.getResponseData();
                         checkedResponseData.clear();
                         for(int i=0; i<listH.size(); i++){
+
                             checkedResponseData.add(new CheckedResponseDatum(listH.get(i),false));
+
                         }
                       adapter.notifyDataSetChanged();
                     }else
@@ -192,11 +196,11 @@ public class CancelLeaveFragment extends BaseFragment implements LeaveItemClickL
 
                 try {
                     if (json.getInt("ResponseCode") == 200) {
-                        if(json.has("ResponseData")){
+                      //  if(json.has("ResponseData")){
                             Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_LONG).show();
 
                             getLeaveHistory();
-                        }
+                       // }
 
 
                     }

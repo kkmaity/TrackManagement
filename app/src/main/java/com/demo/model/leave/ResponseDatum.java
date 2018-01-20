@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class ResponseDatum {
-    @SerializedName("leaveID")
+    @SerializedName("leave_id")
     @Expose
     private String leaveID;
 
