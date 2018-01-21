@@ -16,11 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.demo.MainActivity;
 import com.demo.R;
+import com.demo.adapter.OutDoorHistoryGridAdapter;
+import com.demo.adapter.OutDoorJobGridAdapter;
+import com.demo.model.OutDoorHistory;
 import com.demo.network.KlHttpClient;
 import com.demo.services.LocationUpdateService;
 import com.google.android.gms.common.ConnectionResult;
@@ -31,7 +35,10 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
@@ -55,6 +62,9 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
     private boolean isAlreadyStarted=false;
     private boolean isButtonClicked = false;
     private int val = 0;
+    private ListView gridAttendanceHis;
+    private OutDoorHistoryGridAdapter outDoorHistoryGridAdapter;
+    private ArrayList<OutDoorHistory> outDoorHistories = new ArrayList<>();
 
 
     @Override
@@ -68,9 +78,13 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         tv_end_work = (TextView)v.findViewById(R.id.tv_end_work);
         tv_start_date_time = (TextView)v.findViewById(R.id.tv_start_date_time);
         tv_end_date_time = (TextView)v.findViewById(R.id.tv_end_date_time);
-
+        gridAttendanceHis = (ListView)v.findViewById(R.id.gridAttendanceHis);
+        outDoorHistoryGridAdapter = new OutDoorHistoryGridAdapter(baseActivity,outDoorHistories);
+        gridAttendanceHis.setAdapter(outDoorHistoryGridAdapter);
         tv_start_work.setOnClickListener(this);
         tv_end_work.setOnClickListener(this);
+        getHistory();
+
         return v;
 
     }
@@ -244,6 +258,17 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
     }
 
+    private void getHistory() {
+
+       // if(getView()!=null){
+            if(baseActivity.isNetworkConnected()){
+                new HistoryAsynctask().execute();
+
+            }
+       // }
+
+    }
+
 
     public class StartAsynctask extends AsyncTask<String, Void, JSONObject> {
 
@@ -344,6 +369,90 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
                     }else{
                         Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+        }
+    }
+
+
+    public class HistoryAsynctask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            baseActivity.showProgressDialog();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                jsonObject.put("userid", baseActivity.preference.getUserId());
+
+                Log.e("LeaveCount ", jsonObject.toString());
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoor_job_history.php", jsonObject);
+                return json;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            super.onPostExecute(json);
+            baseActivity.dismissProgressDialog();
+
+            if(json!=null) {
+
+               /* "jobid": "3",
+                        "category": "1",
+                        "challan_no": "98765425",
+                        "box_no": "abcd2456hty",
+                        "description": "Dummy Text Description",
+                        "startTime": "2018-01-20 00:46:36",
+                        "endTime": "2018-01-20 00:48:09",
+                        "job_status": "no"*/
+
+                try {
+                    if (json.getInt("ResponseCode") == 200) {
+                        if(json.has("ResponseData")){
+
+                            JSONArray jsonArray = json.getJSONArray("ResponseData");
+                            for(int i=0; i<jsonArray.length(); i++){
+                                JSONObject c = jsonArray.getJSONObject(i);
+                                String jobid = c.getString("jobid");
+                                String category = c.getString("category");
+                                String challan_no = c.getString("challan_no");
+                                String box_no = c.getString("box_no");
+                                String description = c.getString("description");
+                                String startTime = c.getString("startTime");
+                                String endTime = c.getString("endTime");
+                                String job_status = c.getString("job_status");
+                                if(category.equalsIgnoreCase(getArguments().getString("category_id"))){
+                                    outDoorHistories.add(new OutDoorHistory(jobid,category,challan_no,box_no,description,startTime,endTime,job_status));
+                                }
+
+
+                            }
+
+                            outDoorHistoryGridAdapter.notifyDataSetChanged();
+
+                        }else{
+                            Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
 
                 } catch (Exception e) {

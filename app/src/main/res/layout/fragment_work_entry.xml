@@ -57,7 +57,7 @@
 
         </android.support.v7.widget.CardView>
 
-    <include layout="@layout/view_grid"
+   <!-- <include layout="@layout/view_grid"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent" />-->
 </LinearLayout>

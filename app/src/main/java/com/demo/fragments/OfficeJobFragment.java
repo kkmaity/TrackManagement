@@ -181,7 +181,7 @@ public class OfficeJobFragment extends BaseFragment {
 
                 try {
                     if (json.getInt("ResponseCode") == 200) {
-
+                        workEntries.clear();
                         JSONArray jsonArray = json.getJSONArray("ResponseData");
                         for(int i=0; i<jsonArray.length(); i++){
                             JSONObject c = jsonArray.getJSONObject(i);

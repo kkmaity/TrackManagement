@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.demo.MainActivity;
@@ -20,6 +21,7 @@ public class WorkEntryFragment extends BaseFragment {
 
     private TextView tv_office_job;
     private TextView tv_out_door_job;
+  //  private ListView gridWorkEntry;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class WorkEntryFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_work_entry, null, false);
         tv_office_job = (TextView)v.findViewById(R.id.tv_office_job);
         tv_out_door_job = (TextView)v.findViewById(R.id.tv_out_door_job);
+       // gridWorkEntry = (ListView)v.findViewById(R.id.gridWorkEntry);
 
         ((MainActivity)getActivity()).setTitle("WORK ENTRY");
 
