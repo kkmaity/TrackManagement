@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.demo.MyApplication;
 import com.demo.network.KlHttpClient;
+import com.demo.preferences.Preference;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -36,9 +37,11 @@ public class LocationUpdateService extends Service  implements LocationListener,
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mCurrentLocation;
+    private Preference preference;
 
     @Override
     public void onCreate() {
+        preference = new Preference(getApplicationContext());
         createLocationRequest();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -129,7 +132,7 @@ public class LocationUpdateService extends Service  implements LocationListener,
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                JSONObject jsonObject = new JSONObject(MyApplication.myApplication.preference.getReq());
+                JSONObject jsonObject = new JSONObject(preference.getReq());
                 //jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
                 //jsonObject.put("userID", MyApplication.myApplication.preference.getUserId());
               /*  jsonObject.put("userLat",params[0]);
