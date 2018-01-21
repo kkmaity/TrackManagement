@@ -1,7 +1,5 @@
 package com.demo.api;
 
-import com.demo.model.attendanceStatus.ApiAttendanceStatusParam;
-import com.demo.model.attendanceStatus.AttendanceStatusMain;
 import com.demo.model.emplist.ApiEmpListParam;
 import com.demo.model.emplist.EmpListMain;
 import com.demo.restservice.APIHelper;
