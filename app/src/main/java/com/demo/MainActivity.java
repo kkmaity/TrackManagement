@@ -220,8 +220,7 @@ public class MainActivity extends BaseActivity
             onMenuItemSelect(AppMenu.TERMSCONDITION);
            // startActivity(new Intent(getApplicationContext(), TermsConditionActivity.class));
         } else if (id == R.id.notifications) {
-            startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
-            finish();
+            onMenuItemSelect(AppMenu.NOTIFICATION);;
 
         } else if (id == R.id.profile) {
             onMenuItemSelect(AppMenu.PROFILE);
@@ -278,7 +277,8 @@ public class MainActivity extends BaseActivity
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.WORk_ENTRY);
                 break;
-            case LEAVES: tag = AppMenu.LEAVES.name();
+            case LEAVES:
+                tag = AppMenu.LEAVES.name();
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
                 if (ACTIVE_TAB_POSITION == 4) {
                     fragment = null;
@@ -287,7 +287,8 @@ public class MainActivity extends BaseActivity
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.LEAVES);
                 break;
-            case PRIVACYPOLICY: tag = AppMenu.PRIVACYPOLICY.name();
+            case PRIVACYPOLICY:
+                tag = AppMenu.PRIVACYPOLICY.name();
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
                 if (ACTIVE_TAB_POSITION == 5) {
                     fragment = null;
@@ -296,7 +297,8 @@ public class MainActivity extends BaseActivity
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.PRIVACYPOLICY);
                 break;
-            case TERMSCONDITION: tag = AppMenu.TERMSCONDITION.name();
+            case TERMSCONDITION:
+                tag = AppMenu.TERMSCONDITION.name();
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
                 if (ACTIVE_TAB_POSITION == 6) {
                     fragment = null;
@@ -305,7 +307,8 @@ public class MainActivity extends BaseActivity
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.TERMSCONDITION);
                 break;
-            case ABOUTUS: tag = AppMenu.ABOUTUS.name();
+            case ABOUTUS:
+                tag = AppMenu.ABOUTUS.name();
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
                 if (ACTIVE_TAB_POSITION == 7) {
                     fragment = null;
@@ -314,7 +317,8 @@ public class MainActivity extends BaseActivity
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.ABOUTUS);
                 break;
-            case PROFILE: tag = AppMenu.PROFILE.name();
+            case PROFILE:
+                tag = AppMenu.PROFILE.name();
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
                 if (ACTIVE_TAB_POSITION == 7) {
                     fragment = null;
@@ -322,6 +326,17 @@ public class MainActivity extends BaseActivity
                 ACTIVE_TAB_POSITION = 7;
                 if (fragment == null)
                     fragment = getRootFragment(AppMenu.PROFILE);
+                break;
+
+            case NOTIFICATION:
+                tag = AppMenu.NOTIFICATION.name();
+                fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                if (ACTIVE_TAB_POSITION == 8) {
+                    fragment = null;
+                }
+                ACTIVE_TAB_POSITION = 8;
+                if (fragment == null)
+                    fragment = getRootFragment(AppMenu.NOTIFICATION);
                 break;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -356,6 +371,9 @@ public class MainActivity extends BaseActivity
                 break;
             case PROFILE:
                 bundle.putString("appMenu",AppMenu.PROFILE.name());
+                break;
+            case NOTIFICATION:
+                bundle.putString("appMenu",AppMenu.NOTIFICATION.name());
                 break;
         }
         fragment.setArguments(bundle);

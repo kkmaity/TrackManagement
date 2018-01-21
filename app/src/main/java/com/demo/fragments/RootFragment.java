@@ -84,6 +84,9 @@ public class RootFragment extends BaseFragment {
             case PROFILE:
                 getChildFragmentManager().beginTransaction().add(R.id.fl_root, new MyProfileFragment()).commit();
                 break;
+            case NOTIFICATION:
+                getChildFragmentManager().beginTransaction().add(R.id.fl_root, new NotificationFragment()).commit();
+                break;
 
         }
     }

@@ -8,15 +8,19 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class NotificationData {
-    @SerializedName("id")
-    @Expose
+
+
     private String id;
-    @SerializedName("description")
-    @Expose
+
     private String description;
-    @SerializedName("date")
-    @Expose
+
     private String date;
+
+    public NotificationData(String id, String description, String date) {
+        this.id = id;
+        this.description = description;
+        this.date = date;
+    }
 
     public String getId() {
         return id;
