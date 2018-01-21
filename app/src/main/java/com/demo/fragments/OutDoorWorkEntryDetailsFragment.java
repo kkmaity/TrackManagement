@@ -6,15 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
+import com.demo.MainActivity;
 import com.demo.R;
 
 
 /**
  * Created by root on 20/8/15.
  */
-public class DeleveryFragment extends BaseFragment {
+public class OutDoorWorkEntryDetailsFragment extends BaseFragment {
 
 
 
@@ -22,7 +22,7 @@ public class DeleveryFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_delevery, null, false);
+        View v = inflater.inflate(R.layout.fragment_outdoor_work_entry_details, null, false);
 
         return v;
 
@@ -34,6 +34,7 @@ public class DeleveryFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        ((MainActivity)getActivity()).setTitle(getArguments().getString("category_title"));
     }
 
 

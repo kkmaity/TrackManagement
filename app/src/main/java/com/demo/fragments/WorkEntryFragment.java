@@ -48,7 +48,7 @@ public class WorkEntryFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_office_job:
-                Fragment officejobFragment = new OfficeJboFragment();
+                Fragment officejobFragment = new OfficeJobFragment();
                 displayView(officejobFragment);
                 break;
             case R.id.tv_out_door_job:
