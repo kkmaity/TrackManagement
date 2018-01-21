@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
 /**
  * Created by root on 20/8/15.
  */
-public class LeavesDetailsFragment extends BaseFragment{
+public class LeavesDetailsComffOffFragment extends BaseFragment{
 
 
     /*private LinearLayout linLeaveEmployee;
