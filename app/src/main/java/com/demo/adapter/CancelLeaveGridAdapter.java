@@ -56,7 +56,14 @@ public class CancelLeaveGridAdapter extends BaseAdapter {
         final CheckBox checkbox = (CheckBox) view.findViewById(R.id.checkbox);
        //String str = "Hello I'm your String";
 
-        tvStatus.setText(leaveHisData.get(i).getResponseDatum().getLeaveStatus());
+        String leaveType = "";
+        if(leaveHisData.get(i).getResponseDatum().getLeaveType().equalsIgnoreCase("normal")){
+            leaveType = "Normal";
+        }else{
+            leaveType = "Comp off";
+        }
+
+        tvStatus.setText(leaveHisData.get(i).getResponseDatum().getLeaveStatus()+"\n"+"("+leaveType+")");
         tvStartTime.setText(leaveHisData.get(i).getResponseDatum().getLeaveStartDate());
         tvEndTime.setText(leaveHisData.get(i).getResponseDatum().getLeaveEndDate());
         if(leaveHisData.get(i).isChecked()){

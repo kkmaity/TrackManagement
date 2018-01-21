@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -249,7 +250,15 @@ public class LeavesDetailsNormalFragment extends BaseFragment{
                     AppliedLeaveList main=(AppliedLeaveList)t;
                     if (main.getResponseCode()==200){
                         List<ResponseDatum> listH = main.getResponseData();
-                        adapter=new LeaveGridAdapter(baseActivity,listH);
+
+                        List<ResponseDatum> listHNor =  new ArrayList<>();
+
+                        for(int i=0; i<listH.size(); i++){
+                            if(listH.get(i).getLeaveType().equalsIgnoreCase("normal")){
+                                listHNor.add(listH.get(i));
+                            }
+                        }
+                        adapter=new LeaveGridAdapter(baseActivity,listHNor);
                         listLeaveHis.setAdapter(adapter);
                     }else
                         Toast.makeText(baseActivity,""+main.getMessage(),Toast.LENGTH_LONG).show();
