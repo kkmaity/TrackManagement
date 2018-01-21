@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.demo.MyApplication;
 import com.demo.network.KlHttpClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -128,13 +129,15 @@ public class LocationUpdateService extends Service  implements LocationListener,
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
-                jsonObject.put("userID", "2");
-                jsonObject.put("userLat",params[0]);
-                jsonObject.put("userLong", params[1]);
+                JSONObject jsonObject = new JSONObject(MyApplication.myApplication.preference.getReq());
+                //jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                //jsonObject.put("userID", MyApplication.myApplication.preference.getUserId());
+              /*  jsonObject.put("userLat",params[0]);
+                jsonObject.put("userLong", params[1]);*/
+                jsonObject.put("startLat",params[0]);
+                jsonObject.put("startLong", params[1]);
                 Log.e("SendTrackNotification", jsonObject.toString());
-                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/addlocation.php", jsonObject);
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoorjobStart.php", jsonObject);
 
             } catch (Exception e) {
                 e.printStackTrace();

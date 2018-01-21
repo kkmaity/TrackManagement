@@ -139,6 +139,14 @@ public class Preference {
         return getString("DeviceId", "");
     }
 
+    public String getReq() {
+        return getString("req", "");
+    }
+
+    public void setReq(String req) {
+        setString("req", req);
+    }
+
 
 
 
