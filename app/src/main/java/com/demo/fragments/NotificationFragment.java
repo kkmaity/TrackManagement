@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.demo.MainActivity;
@@ -38,6 +39,7 @@ public class NotificationFragment extends BaseFragment {
     private ProgressDialog progressDialog;
     NotificationRecyclerAdapter adapter;
     private ArrayList<NotificationData> notificationDataArrayList = new ArrayList<>();
+    private TextView tv_no_data;
 
     @Nullable
     @Override
@@ -55,6 +57,7 @@ public class NotificationFragment extends BaseFragment {
 
 
         recyclerNotification=(RecyclerView)v.findViewById(R.id.recyclerNotification);
+        tv_no_data=(TextView)v.findViewById(R.id.tv_no_data);
         LinearLayoutManager horizontalLayoutManagaer4 = new LinearLayoutManager(baseActivity, LinearLayoutManager.VERTICAL, false);
         recyclerNotification.setLayoutManager(horizontalLayoutManagaer4);
 
@@ -140,6 +143,8 @@ if (baseActivity.isNetworkConnected()){
 
                 try {
                     if (json.getInt("ResponseCode") == 200) {
+                        tv_no_data.setVisibility(View.GONE);
+                        recyclerNotification.setVisibility(View.VISIBLE);
                         JSONArray jsonArray = json.getJSONArray("ResponseData");
                         for(int i=0; i<jsonArray.length(); i++){
                             JSONObject c = jsonArray.getJSONObject(i);
@@ -152,7 +157,9 @@ if (baseActivity.isNetworkConnected()){
 
 
                     }else if(json.getInt("ResponseCode") == 400){
-
+                        tv_no_data.setVisibility(View.VISIBLE);
+                        recyclerNotification.setVisibility(View.GONE);
+                        tv_no_data.setText(json.getString("message"));
                     }
 
                 } catch (Exception e) {
