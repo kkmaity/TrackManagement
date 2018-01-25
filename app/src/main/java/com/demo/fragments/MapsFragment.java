@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,8 +48,11 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     private String page_type;
     private String job_status;
     private String job_id;
-    private  List<LatLng> latLngs ;
+    private  List<LatLng>  latLngs = new ArrayList<>(); ;
+    private LatLng startLatLng, endLatLng;
     private  BitmapDescriptor icon;
+    PolylineOptions options;
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -83,7 +87,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
             job_status=getArguments().getString("job_status");
             job_id=getArguments().getString("job_id");
            // getUserLocation();
-            handler.sendEmptyMessageDelayed(1,5000);
+
+
         }
 
 
@@ -149,21 +154,23 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         mMap.setTrafficEnabled(true);
 
 
-        latLngs = new ArrayList<>();
+        handler.sendEmptyMessageDelayed(1,2000);
 
         if(isEndLatLongAvailable){
-            LatLng ln =  new LatLng(endlat,endlong);
-            latLngs.add(ln);
-            cameraPosition = CameraUpdateFactory.newLatLngZoom(ln, 19);
-            mMap.addMarker(new MarkerOptions().position(ln).title("Work End"));
+            endLatLng =  new LatLng(endlat,endlong);
+            latLngs.add(endLatLng);
+            cameraPosition = CameraUpdateFactory.newLatLngZoom(endLatLng, 16);
+            mMap.addMarker(new MarkerOptions().position(endLatLng).title("Work End"));
             mMap.moveCamera(cameraPosition);
             mMap.animateCamera(cameraPosition);
             isMapLoaded = true;
-        }else if(isStartLatLongAvailable){
-            LatLng ln =  new LatLng(startlat,startlong);
-            latLngs.add(ln);
-            cameraPosition = CameraUpdateFactory.newLatLngZoom(ln, 19);
-            mMap.addMarker(new MarkerOptions().position(ln).title("Work Started"));
+        }
+
+        if(isStartLatLongAvailable){
+            startLatLng =  new LatLng(startlat,startlong);
+            latLngs.add(startLatLng);
+            cameraPosition = CameraUpdateFactory.newLatLngZoom(startLatLng, 16);
+            mMap.addMarker(new MarkerOptions().position(startLatLng).title("Work Started"));
             mMap.moveCamera(cameraPosition);
             mMap.animateCamera(cameraPosition);
             isMapLoaded = true;
@@ -191,17 +198,31 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     private void drawRouteOnMap(List<LatLng> latLngs){
-        Polygon polygon = mMap.addPolygon(new PolygonOptions()
+
+        if(!isMapLoaded){
+            cameraPosition = CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 16);
+            mMap.addMarker(new MarkerOptions().position(latLngs.get(0)).title("").icon(icon));
+            mMap.moveCamera(cameraPosition);
+            mMap.animateCamera(cameraPosition);
+            isMapLoaded = true;
+            options = new PolylineOptions().width(15).color(Color.RED).geodesic(true);
+        }
+
+       /* Polygon polygon = mMap.addPolygon(new PolygonOptions()
                 //.add(new LatLng(22.56566, 88.7677), new LatLng(22.6775, 88.6777))
                 .addAll(latLngs)
                 .strokeColor(Color.RED)
-                .fillColor(Color.BLUE));
+                .fillColor(Color.BLUE));*/
 
-        cameraPosition = CameraUpdateFactory.newLatLngZoom(latLngs.get(latLngs.size()-1), 16);
-        mMap.addMarker(new MarkerOptions().position(latLngs.get(latLngs.size()-1)).icon(icon));
-        mMap.moveCamera(cameraPosition);
-        mMap.animateCamera(cameraPosition);
-        isMapLoaded = true;
+
+
+        for (int z = 0; z < latLngs.size(); z++) {
+            LatLng point = latLngs.get(z);
+            options.add(point);
+        }
+       // options.add(latLngs)
+        mMap.addPolyline(options);
+
     }
 
 
@@ -236,19 +257,28 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
                     if (json.getInt("ResponseCode") == 200) {
                         JSONArray ResponseData= json.getJSONArray("ResponseData");
                         if (ResponseData!=null&&ResponseData.length()>0){
+                            latLngs.clear();
+                            mMap.clear();
                             for (int i=0;i<ResponseData.length();i++){
                                 String   lat=ResponseData.getJSONObject(i).getString("userLat");
                                 String   lng=ResponseData.getJSONObject(i).getString("userLong");
                                 LatLng latLng=new LatLng(Double.parseDouble(lat),Double.parseDouble(lng));
                                 latLngs.add(latLng);
                                 System.out.println("get lat lng======"+latLngs);
-                                if (latLngs.size()>0)
-                                drawRouteOnMap(latLngs);
+
+
+
 
 
 
                             }
-                            handler.sendEmptyMessageDelayed(1,500);
+
+                            if (latLngs.size()>0)
+                                drawRouteOnMap(latLngs);
+                            if(job_status.equalsIgnoreCase("yes")){
+                                handler.sendEmptyMessageDelayed(1,10000);
+                            }
+
 
                           //  getUserLocation();
 

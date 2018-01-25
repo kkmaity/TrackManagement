@@ -302,6 +302,12 @@ public class LeavesDetailsNormalFragment extends BaseFragment{
 
     public class ApplyLeaveAsynctask extends AsyncTask<String, Void, JSONObject> {
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            baseActivity.showProgressDialog();
+        }
+
+        @Override
         protected JSONObject doInBackground(String... params) {
             try {
                 JSONObject jsonObject = new JSONObject();
