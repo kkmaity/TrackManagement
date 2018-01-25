@@ -30,7 +30,7 @@ public class WorkEntryFragment extends BaseFragment {
         tv_out_door_job = (TextView)v.findViewById(R.id.tv_out_door_job);
        // gridWorkEntry = (ListView)v.findViewById(R.id.gridWorkEntry);
 
-        ((MainActivity)getActivity()).setTitle("WORK ENTRY");
+        ((MainActivity)getActivity()).setTitle("Work Entry");
 
         tv_office_job.setOnClickListener(this);
         tv_out_door_job.setOnClickListener(this);

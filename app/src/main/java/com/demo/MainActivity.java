@@ -143,6 +143,16 @@ public class MainActivity extends BaseActivity
         }
         textViewName.setText(preference.getName());
         textViewMail.setText(preference.getEmail());
+
+        Bundle bundle1 = getIntent().getExtras();
+        if(bundle1!=null){
+           String noti =  bundle1.getString("noti");
+           if(noti!=null){
+               onMenuItemSelect(AppMenu.NOTIFICATION);
+           }
+        }
+
+
     }
 
     @Override

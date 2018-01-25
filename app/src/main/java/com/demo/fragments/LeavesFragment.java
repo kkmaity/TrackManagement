@@ -81,18 +81,20 @@ public class LeavesFragment extends BaseFragment {
         tv_normalLeave.setOnClickListener(this);
         tv_comp_leave.setOnClickListener(this);
         tv_cancel_leave.setOnClickListener(this);
-       /* if (baseActivity.preference.getIsAdmin()!=null&&baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
+        if (baseActivity.preference.getIsAdmin()!=null&&baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
             linLeaveEmployee.setVisibility(View.GONE);
             linLeaveAdmin.setVisibility(View.VISIBLE);
+            ((TextView)v.findViewById(R.id.message_alert)).setVisibility(View.VISIBLE);
+
             // getEmpList();
-        }else {*/
+        }else {
             linLeaveAdmin.setVisibility(View.GONE);
             linLeaveEmployee.setVisibility(View.VISIBLE);
 
           //  getLeaveHistory();
 
 
-       // }
+        }
         return v;
 
     }
@@ -312,7 +314,7 @@ public class LeavesFragment extends BaseFragment {
                             isCompOffApplicable=json.getJSONObject("ResponseData").getString("compoffleave_applicable");
                             //isCompOffApplicable = "no";
                             if(isCompOffApplicable.equalsIgnoreCase("yes")){
-                                tv_normal_leave_count.setVisibility(View.VISIBLE);
+                                tv_comp_leave_count.setVisibility(View.VISIBLE);
                                 cardcompoff.setVisibility(View.VISIBLE);
                             }else{
                                 tv_normal_leave_count.setVisibility(View.GONE);

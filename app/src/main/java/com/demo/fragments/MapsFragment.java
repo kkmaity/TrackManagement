@@ -201,12 +201,15 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
 
         if(!isMapLoaded){
             cameraPosition = CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 16);
-            mMap.addMarker(new MarkerOptions().position(latLngs.get(0)).title("").icon(icon));
+            mMap.addMarker(new MarkerOptions().position(latLngs.get(0)).title("Start Work"));
+            mMap.addMarker(new MarkerOptions().position(latLngs.get(latLngs.size()-1)).title("End Work"));
             mMap.moveCamera(cameraPosition);
             mMap.animateCamera(cameraPosition);
             isMapLoaded = true;
-            options = new PolylineOptions().width(15).color(Color.RED).geodesic(true);
+            options = new PolylineOptions().width(15).color(Color.BLUE).geodesic(true);
         }
+
+
 
        /* Polygon polygon = mMap.addPolygon(new PolygonOptions()
                 //.add(new LatLng(22.56566, 88.7677), new LatLng(22.6775, 88.6777))
