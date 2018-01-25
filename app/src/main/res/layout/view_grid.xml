@@ -36,6 +36,7 @@
         android:id="@+id/gridAttendanceHis"
         android:padding="8dp"
         android:scrollbars="none"
+        android:dividerHeight="0dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         />

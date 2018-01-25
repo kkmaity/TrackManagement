@@ -114,7 +114,7 @@ public class LeavesFragment extends BaseFragment {
                 }else
                     Toast.makeText(baseActivity,"No leave available",Toast.LENGTH_LONG).show();*/
 
-               Fragment fragmentnormal  = new LeavesDetailsFragment();
+               Fragment fragmentnormal  = new LeavesDetailsNormalFragment();
                Bundle bundle = new Bundle();
                bundle.putString("type", "normal");
                 bundle.putInt("count", Integer.parseInt(normalLCount));
@@ -125,7 +125,7 @@ public class LeavesFragment extends BaseFragment {
                 break;
             case R.id.tv_comp_leave:
 
-                Fragment fragmentcomp  = new LeavesDetailsFragment();
+                Fragment fragmentcomp  = new LeavesDetailsComffOffFragment();
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("type", "comp");
                 bundle1.putInt("count", Integer.parseInt(compoffLCount));

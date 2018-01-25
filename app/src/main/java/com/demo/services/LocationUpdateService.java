@@ -5,25 +5,20 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
-import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.demo.network.KlHttpClient;
+import com.demo.preferences.Preference;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.common.api.Status;
 
 import org.json.JSONObject;
 
@@ -35,9 +30,11 @@ public class LocationUpdateService extends Service  implements LocationListener,
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mCurrentLocation;
+    private Preference preference;
 
     @Override
     public void onCreate() {
+        preference = new Preference(getApplicationContext());
         createLocationRequest();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -102,6 +99,9 @@ public class LocationUpdateService extends Service  implements LocationListener,
         if (null != mCurrentLocation) {
             String lat = String.valueOf(mCurrentLocation.getLatitude());
             String lng = String.valueOf(mCurrentLocation.getLongitude());
+
+
+            if (preference.getJobID()!=null&&!preference.getJobID().isEmpty())
             new SendTrackNotification().execute(lat,lng);
             Log.d(TAG, "UI update LAt  ............."+lat);
         } else {
@@ -128,11 +128,18 @@ public class LocationUpdateService extends Service  implements LocationListener,
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
-                jsonObject.put("userID", "2");
+                JSONObject jsonObject = new JSONObject(preference.getReq());
+                //jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                //jsonObject.put("userID", MyApplication.myApplication.preference.getUserId());
+
+              /*  jsonObject.put("userLat",params[0]);
+                jsonObject.put("userLong", params[1]);*/
                 jsonObject.put("userLat",params[0]);
                 jsonObject.put("userLong", params[1]);
+                jsonObject.put("userid",preference.getUserId());
+                jsonObject.put("jobid",preference.getJobID());
+                jsonObject.put("ApiKey","0a2b8d7f9243305f2a4700e1870f673a");
+
                 Log.e("SendTrackNotification", jsonObject.toString());
                 JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/addlocation.php", jsonObject);
 

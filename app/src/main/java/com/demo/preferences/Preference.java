@@ -67,6 +67,19 @@ public class Preference {
         return getString("UserId", null);
     }
 
+
+
+    public void setJobID(String UserId) {
+        setString("jobid", UserId);
+    }
+
+    public String getJobID() {
+        return getString("jobid", null);
+    }
+
+
+
+
     public void setName(String Name) {
         setString("Name", Name);
     }
@@ -97,6 +110,17 @@ public class Preference {
     public String getIsAdmin() {
         return getString("isAdmin", "");
     }
+
+    public void setProfImage(String ProfImage) {
+        setString("ProfImage", ProfImage);
+    }
+
+    public String getProfImage() {
+        return getString("ProfImage", "");
+    }
+
+
+
     public void setUserStatus(String setUserStatus) {
         setString("UserStatus", setUserStatus);
     }
@@ -126,6 +150,14 @@ public class Preference {
 
     public String getDeviceToken() {
         return getString("DeviceId", "");
+    }
+
+    public String getReq() {
+        return getString("req", "");
+    }
+
+    public void setReq(String req) {
+        setString("req", req);
     }
 
 

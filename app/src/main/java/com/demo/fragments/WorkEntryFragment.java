@@ -20,6 +20,7 @@ public class WorkEntryFragment extends BaseFragment {
 
     private TextView tv_office_job;
     private TextView tv_out_door_job;
+  //  private ListView gridWorkEntry;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class WorkEntryFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_work_entry, null, false);
         tv_office_job = (TextView)v.findViewById(R.id.tv_office_job);
         tv_out_door_job = (TextView)v.findViewById(R.id.tv_out_door_job);
+       // gridWorkEntry = (ListView)v.findViewById(R.id.gridWorkEntry);
 
         ((MainActivity)getActivity()).setTitle("WORK ENTRY");
 
@@ -48,12 +50,18 @@ public class WorkEntryFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_office_job:
-                Fragment officejobFragment = new OfficeJboFragment();
+                Fragment officejobFragment = new OfficeJobFragment();
                 displayView(officejobFragment);
                 break;
             case R.id.tv_out_door_job:
-                Fragment outdoorFragment = new OutdoorJboFragment();
-                displayView(outdoorFragment);
+                if (baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
+                    Fragment employeeListFragment = new EmployeeListFragment();
+                    displayView(employeeListFragment);
+                }else {
+                    Fragment outdoorFragment = new OutdoorJboFragment();
+                    displayView(outdoorFragment);
+                }
+
                 break;
 
         }

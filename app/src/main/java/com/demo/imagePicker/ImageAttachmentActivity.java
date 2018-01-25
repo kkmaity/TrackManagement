@@ -16,15 +16,9 @@ import com.demo.utils.Imageutils;
 import java.io.File;
 
 public class ImageAttachmentActivity extends AppCompatActivity implements Imageutils.ImageAttachmentListener {
-
-
     ImageView iv_attachment;
-
-    //For Image Attachment
-
     private Bitmap bitmap;
     private String file_name;
-
     Imageutils imageutils;
 
 

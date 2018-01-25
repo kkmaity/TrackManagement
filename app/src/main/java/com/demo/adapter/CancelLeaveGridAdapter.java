@@ -9,8 +9,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.demo.BaseActivity;
 import com.demo.R;
 import com.demo.interfaces.ItemClickListner;
+import com.demo.interfaces.LeaveItemClickListner;
+import com.demo.model.leave.CheckedResponseDatum;
 import com.demo.model.leave.ResponseDatum;
 
 import java.util.ArrayList;
@@ -19,10 +22,10 @@ import java.util.List;
 
 public class CancelLeaveGridAdapter extends BaseAdapter {
     private Context mContext;
-    private ItemClickListner mItemClickListner;
-    private  List<ResponseDatum> leaveHisData=new ArrayList<>();
+    private LeaveItemClickListner mItemClickListner;
+    private  List<CheckedResponseDatum> leaveHisData=new ArrayList<>();
    private LayoutInflater inflter;
-    public CancelLeaveGridAdapter(Context applicationContext, List<ResponseDatum> attendenceHisData,ItemClickListner mItemClickListner) {
+    public CancelLeaveGridAdapter(Context applicationContext, List<CheckedResponseDatum> attendenceHisData,LeaveItemClickListner mItemClickListner) {
         this.mContext = applicationContext;
         this.leaveHisData = attendenceHisData;
         this.mItemClickListner=mItemClickListner;
@@ -44,7 +47,7 @@ public class CancelLeaveGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.item_cancel_leave_history, null);
 
         TextView tvStatus = (TextView) view.findViewById(R.id.tvStatus);
@@ -53,11 +56,30 @@ public class CancelLeaveGridAdapter extends BaseAdapter {
         final CheckBox checkbox = (CheckBox) view.findViewById(R.id.checkbox);
        //String str = "Hello I'm your String";
 
-        tvStatus.setText(leaveHisData.get(i).getLeaveStatus());
-        tvStartTime.setText(leaveHisData.get(i).getLeaveStartDate());
-        tvEndTime.setText(leaveHisData.get(i).getLeaveEndDate());
-        checkbox.setTag(i);
-        checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        String leaveType = "";
+        if(leaveHisData.get(i).getResponseDatum().getLeaveType().equalsIgnoreCase("normal")){
+            leaveType = "Normal";
+        }else{
+            leaveType = "Comp off";
+        }
+
+        tvStatus.setText(leaveHisData.get(i).getResponseDatum().getLeaveStatus()+"\n"+"("+leaveType+")");
+        tvStartTime.setText(leaveHisData.get(i).getResponseDatum().getLeaveStartDate());
+        tvEndTime.setText(leaveHisData.get(i).getResponseDatum().getLeaveEndDate());
+        if(leaveHisData.get(i).isChecked()){
+            checkbox.setChecked(true);
+        }else{
+            checkbox.setChecked(false);
+        }
+
+        checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mItemClickListner.onItemClick( i);
+            }
+        });
+
+        /*checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 int position = (int) compoundButton.getTag();
@@ -71,7 +93,7 @@ public class CancelLeaveGridAdapter extends BaseAdapter {
                // Toast.makeText(mContext,""+b,Toast.LENGTH_LONG).show();
 
             }
-        });
+        });*/
         return view;
     }
 }

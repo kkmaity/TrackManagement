@@ -1,14 +1,21 @@
 package com.demo;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -19,6 +26,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double endlong;
     private boolean isStartLatLongAvailable=false;
     private boolean isEndLatLongAvailable=false;
+    private CameraUpdate cameraPosition;
+    boolean isMapLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +38,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             isStartLatLongAvailable=true;
             startlat=Double.parseDouble(getIntent().getStringExtra("startlat"));
             startlong=Double.parseDouble(getIntent().getStringExtra("startlong"));
-        }if (getIntent().getStringExtra("endlat").length()>3){
+        }
+        if (getIntent().getStringExtra("endlat").length()>3){
             isEndLatLongAvailable=true;
             endlat=Double.parseDouble(getIntent().getStringExtra("endlat"));
             endlong=Double.parseDouble(getIntent().getStringExtra("endlong"));
@@ -57,7 +67,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMinZoomPreference(6.0f);
+
+        List<LatLng> latLngs = new ArrayList<>();
+
+        if(isEndLatLongAvailable){
+            LatLng ln =  new LatLng(endlat,endlong);
+            latLngs.add(ln);
+            cameraPosition = CameraUpdateFactory.newLatLngZoom(ln, 19);
+            mMap.addMarker(new MarkerOptions().position(ln).title("End Work"));
+            mMap.moveCamera(cameraPosition);
+            mMap.animateCamera(cameraPosition);
+            isMapLoaded = true;
+        }else if(isStartLatLongAvailable){
+            LatLng ln =  new LatLng(startlat,startlong);
+            latLngs.add(ln);
+            cameraPosition = CameraUpdateFactory.newLatLngZoom(ln, 19);
+            mMap.addMarker(new MarkerOptions().position(ln).title("Start Work"));
+            mMap.moveCamera(cameraPosition);
+            mMap.animateCamera(cameraPosition);
+            isMapLoaded = true;
+        }
+
+
+        Polygon polygon = mMap.addPolygon(new PolygonOptions()
+                //.add(new LatLng(22.56566, 88.7677), new LatLng(22.6775, 88.6777))
+                .addAll(latLngs)
+                .strokeColor(Color.RED)
+                .fillColor(Color.BLUE));
+
+
+       /* mMap.setMinZoomPreference(6.0f);
         mMap.setMaxZoomPreference(14.0f);
         // Add a marker in Sydney and move the camera
         if (isStartLatLongAvailable){
@@ -69,7 +108,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(endLatLong).title("Work Ended"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(endLatLong, 10));
         }
-
+*/
 
 
     }

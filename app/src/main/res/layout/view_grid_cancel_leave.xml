@@ -1,54 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    >
     <LinearLayout
+        android:layout_above="@+id/footer"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:background="#d3d3d3"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:padding="8dp"
-        android:layout_height="wrap_content">
+        android:layout_alignParentTop="true"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="Strat Date"
-            android:gravity="center"
-            android:layout_height="wrap_content" />
+        >
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="End Date" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="Leave Status"
-            android:gravity="center"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:text="Select"
-            android:gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#d3d3d3"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Strat Date" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="End Date" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Status" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Select" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listLeaveHis"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:choiceMode="multipleChoice"
+            android:padding="8dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="none" />
     </LinearLayout>
-    <ListView
+
+    <LinearLayout
+        android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listLeaveHis"
-        android:padding="8dp"
-        android:scrollbars="none"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:choiceMode="multipleChoice"
-        />
-</LinearLayout>
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="#377838"
+                app:cardElevation="5dp">
+
+                <TextView
+                    android:id="@+id/tv_apply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Apply"
+                    android:textColor="#fff"
+                    android:textSize="14sp" />
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linCancal"
+            android:layout_width="0dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:cardBackgroundColor="#2b41d4"
+                app:cardElevation="5dp">
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Cancel"
+                    android:textColor="#fff"
+                    android:textSize="14sp" />
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

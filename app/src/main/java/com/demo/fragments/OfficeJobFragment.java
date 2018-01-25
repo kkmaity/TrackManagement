@@ -1,25 +1,33 @@
 package com.demo.fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
+import android.widget.GridView;
 
-import com.demo.Enum.AppMenu;
-import com.demo.MainActivity;
 import com.demo.R;
+import com.demo.adapter.OfficeGridAdapter;
+import com.demo.model.WorkEntry;
+import com.demo.network.KlHttpClient;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
  * Created by root on 20/8/15.
  */
-public class OfficeJboFragment extends BaseFragment {
+public class OfficeJobFragment extends BaseFragment {
 
-   private TextView tv_wash;
+  /* private TextView tv_wash;
     private TextView tv_refill;
     private TextView tv_arrange;
     private TextView tv_check_insrtument;
@@ -30,13 +38,20 @@ public class OfficeJboFragment extends BaseFragment {
     private TextView tv_trainging;
     private TextView tv_computerjob;
     private TextView tv_stoke_receive;
-    private TextView tv_others;
+    private TextView tv_others;*/
+
+  private GridView list;
+  private OfficeGridAdapter officeGridAdapter;
+  private ArrayList<WorkEntry> workEntries = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_office_job, null, false);
-        tv_wash = (TextView)v.findViewById(R.id.tv_wash);
+        list = (GridView) v.findViewById(R.id.list);
+        officeGridAdapter = new OfficeGridAdapter(this,baseActivity,workEntries);
+        list.setAdapter(officeGridAdapter);
+       /* tv_wash = (TextView)v.findViewById(R.id.tv_wash);
         tv_refill = (TextView)v.findViewById(R.id.tv_refill);
         tv_arrange = (TextView)v.findViewById(R.id.tv_arrange);
         tv_check_insrtument = (TextView)v.findViewById(R.id.tv_check_insrtument);
@@ -60,10 +75,15 @@ public class OfficeJboFragment extends BaseFragment {
         tv_trainging.setOnClickListener(this);
         tv_computerjob.setOnClickListener(this);
         tv_stoke_receive.setOnClickListener(this);
-        tv_others.setOnClickListener(this);
+        tv_others.setOnClickListener(this);*/
+        getWorkEntrey();
 
         return v;
 
+    }
+
+    public void callFragment(Fragment fragment){
+        displayView(fragment);
     }
 
 
@@ -77,10 +97,10 @@ public class OfficeJboFragment extends BaseFragment {
     @Override
     public void onClick(View view) {
 
-        Fragment fragment = new WashFragment();
+        Fragment fragment = new OfficeWorkEntryDetailsFragment();
         Bundle bundle = new Bundle();
         switch (view.getId()){
-            case R.id.tv_wash:
+           /* case R.id.tv_wash:
                 bundle.putString("title",tv_wash.getText().toString());
                 break;
             case R.id.tv_refill:
@@ -115,10 +135,72 @@ public class OfficeJboFragment extends BaseFragment {
                 break;
             case R.id.tv_others:
                 bundle.putString("title",tv_others.getText().toString());
-                break;
+                break;*/
 
         }
         fragment.setArguments(bundle);
         displayView(fragment);
+    }
+
+    private void getWorkEntrey() {
+        if(baseActivity.isNetworkConnected()){
+            new WorkEntryAsynctask().execute();
+
+        }
+    }
+
+    public class WorkEntryAsynctask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            baseActivity.showProgressDialog();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                  Log.e("LeaveApplied ", jsonObject.toString());
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/office_job_category.php", jsonObject);
+                return json;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            super.onPostExecute(json);
+            baseActivity.dismissProgressDialog();
+
+            if(json!=null) {
+
+                try {
+                    if (json.getInt("ResponseCode") == 200) {
+                        workEntries.clear();
+                        JSONArray jsonArray = json.getJSONArray("ResponseData");
+                        for(int i=0; i<jsonArray.length(); i++){
+                            JSONObject c = jsonArray.getJSONObject(i);
+                            String category_id = c.getString("category_id");
+                            String category_title = c.getString("category_title");
+                            workEntries.add(new WorkEntry(category_id, category_title));
+                        }
+                        officeGridAdapter.notifyDataSetChanged();
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+        }
     }
 }

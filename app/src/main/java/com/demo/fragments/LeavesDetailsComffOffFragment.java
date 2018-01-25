@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -44,7 +45,7 @@ import java.util.regex.Pattern;
 /**
  * Created by root on 20/8/15.
  */
-public class LeavesDetailsFragment extends BaseFragment{
+public class LeavesDetailsComffOffFragment extends BaseFragment{
 
 
     /*private LinearLayout linLeaveEmployee;
@@ -85,7 +86,7 @@ public class LeavesDetailsFragment extends BaseFragment{
             leaveType="normal";
         }else if(getArguments().getString("type").equals("comp")){
             ((MainActivity)getActivity()).setTitle("Comp Off Leave");
-            leaveType = "compoff";
+            leaveType = "comp_off";
         }
 
         leaveCount = getArguments().getInt("count");
@@ -207,7 +208,7 @@ public class LeavesDetailsFragment extends BaseFragment{
 
 
 
-                        if(leaveType.equalsIgnoreCase("compoff")) {
+                        if(leaveType.equalsIgnoreCase("comp_off")) {
                             int diff = (int) Constant.getDayDiff(enddate1, startDate1);
                             if (diff > leaveCount) {
                                 new AlertDialog.Builder(baseActivity)
@@ -249,7 +250,14 @@ public class LeavesDetailsFragment extends BaseFragment{
                     AppliedLeaveList main=(AppliedLeaveList)t;
                     if (main.getResponseCode()==200){
                         List<ResponseDatum> listH = main.getResponseData();
-                        adapter=new LeaveGridAdapter(baseActivity,listH);
+                        List<ResponseDatum> listHComp = new ArrayList<>();
+
+                        for(int i=0; i<listH.size(); i++){
+                            if(!listH.get(i).getLeaveType().equalsIgnoreCase("normal")){
+                                listHComp.add(listH.get(i));
+                            }
+                        }
+                        adapter=new LeaveGridAdapter(baseActivity,listHComp);
                         listLeaveHis.setAdapter(adapter);
                     }else
                         Toast.makeText(baseActivity,""+main.getMessage(),Toast.LENGTH_LONG).show();

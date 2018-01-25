@@ -8,10 +8,9 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,14 +26,11 @@ import android.widget.Toast;
 
 import com.demo.Enum.AppMenu;
 import com.demo.MainActivity;
-import com.demo.MapsActivity;
 import com.demo.R;
 import com.demo.adapter.AttendanceGridAdapter;
 import com.demo.adapter.EmpRecyclerViewAdapter;
 import com.demo.api.ApiAttendanceStatus;
 import com.demo.api.ApiAttendenceHistory;
-import com.demo.api.ApiAttendenceStart;
-import com.demo.api.ApiAttendenceStop;
 import com.demo.api.ApiEmpList;
 import com.demo.interfaces.ItemClickListner;
 import com.demo.model.attendanceStatus.ApiAttendanceStatusParam;
@@ -45,9 +40,7 @@ import com.demo.model.attendence_history.AttendenceHistoryMain;
 import com.demo.model.emplist.ApiEmpListParam;
 import com.demo.model.emplist.EmpListMain;
 import com.demo.model.start_attendence.ApiAttendenceStartParam;
-import com.demo.model.start_attendence.AttendenceStartMain;
 import com.demo.model.stop_attendence.ApiAttendenceStopParam;
-import com.demo.model.stop_attendence.AttendenceStopMain;
 import com.demo.network.KlHttpClient;
 import com.demo.restservice.OnApiResponseListener;
 import com.demo.services.LocationUpdateService;
@@ -137,13 +130,22 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                         EmpRecyclerViewAdapter adapter = new EmpRecyclerViewAdapter(baseActivity, main.getResponseData(), new ItemClickListner() {
                             @Override
                             public void onItemClick(Object viewID, int position) {
-                                Intent intent=new Intent(baseActivity,MapsActivity.class);
+
+                                Fragment fragment = new MapsFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("startlat",main.getResponseData().get(position).getStartLat());
+                                bundle.putString("startlong",main.getResponseData().get(position).getStartLong());
+                                bundle.putString("endlat",main.getResponseData().get(position).getEndLat());
+                                bundle.putString("endlong",main.getResponseData().get(position).getEndLong());
+                                fragment.setArguments(bundle);
+                                displayView(fragment);
+                               /* Intent intent=new Intent(baseActivity,MapsActivity.class);
                                 intent.putExtra("startlat",main.getResponseData().get(position).getStartLat());
                                 intent.putExtra("startlong",main.getResponseData().get(position).getStartLong());
                                 intent.putExtra("endlat",main.getResponseData().get(position).getEndLat());
                                 intent.putExtra("endlong",main.getResponseData().get(position).getEndLong());
 
-                                startActivity(intent);
+                                startActivity(intent);*/
 
 
                             }
@@ -482,17 +484,12 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                         } else if (json.getInt("ResponseCode") == 400) {
                             Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
 
-
                         }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-
-
-
-
         }
     }
 

@@ -30,6 +30,10 @@ public class ResponseLoginData {
     @Expose
     private String isAdmin;
 
+    @SerializedName("profileimage")
+    @Expose
+    private String profileimage;
+
     public String getUserid() {
         return userid;
     }
@@ -86,5 +90,11 @@ public class ResponseLoginData {
         this.isAdmin = isAdmin;
     }
 
+    public String getProfileimage() {
+        return profileimage;
+    }
 
+    public void setProfileimage(String profileimage) {
+        this.profileimage = profileimage;
+    }
 }
