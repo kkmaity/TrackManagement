@@ -3,6 +3,8 @@ package com.demo.fragments;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -47,6 +49,17 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     private String job_id;
     private  List<LatLng> latLngs ;
     private  BitmapDescriptor icon;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    getUserLocation();
+                    break;
+            }
+        }
+    };
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,7 +82,8 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
             page_type=getArguments().getString("page_type");//work_hostory
             job_status=getArguments().getString("job_status");
             job_id=getArguments().getString("job_id");
-            getUserLocation();
+           // getUserLocation();
+            handler.sendEmptyMessageDelayed(1,5000);
         }
 
 
@@ -85,10 +99,13 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     private void getUserLocation() {
-        if(baseActivity.isNetworkConnected()){
-            new GetLocationAsynctask().execute();
+        if(getView()!=null){
+            if(baseActivity.isNetworkConnected()){
+                new GetLocationAsynctask().execute();
 
+            }
         }
+
     }
 
    /* @Override
@@ -231,7 +248,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
 
 
                             }
-                            getUserLocation();
+                            handler.sendEmptyMessageDelayed(1,500);
+
+                          //  getUserLocation();
 
                         }
 
