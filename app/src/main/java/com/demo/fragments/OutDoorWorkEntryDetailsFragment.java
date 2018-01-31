@@ -6,10 +6,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -37,6 +40,7 @@ import com.demo.model.CommonDialogModel;
 import com.demo.model.OutDoorHistory;
 import com.demo.network.KlHttpClient;
 import com.demo.services.LocationUpdateService;
+import com.demo.utils.Imageutils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -48,6 +52,7 @@ import com.google.android.gms.location.LocationServices;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -55,7 +60,7 @@ import java.util.Calendar;
 /**
  * Created by root on 20/8/15.
  */
-public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Imageutils.ImageAttachmentListener {
 
     private static EditText et_challan_number;
     private static EditText et_challan_date;
@@ -91,6 +96,13 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
     private ArrayList<CommonDialogModel> commonDialogModels = new ArrayList<>();
     private JSONArray hostpitalListArr, doctorListArr, modeOfTranportArr, bileArr;
     private CommonAdapter adapter;
+    private Imageutils imageutils;
+    private int imageViewID;
+    private Bitmap mBitmap1;
+    private Bitmap mBitmap2;
+    private Bitmap mBitmap3;
+    private Bitmap mBitmap4;
+    private Bitmap mBitmap5;
 
 
     @Override
@@ -101,7 +113,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         // et_challan_number = (EditText)v.findViewById(R.id.et_challan_number);
         // et_box_number = (EditText)v.findViewById(R.id.et_box_number);
         // et_description = (EditText)v.findViewById(R.id.et_description);
-
+        imageutils =new Imageutils(getActivity(),this,true);
         et_challan_number = (EditText) v.findViewById(R.id.et_challan_number);
         et_challan_date = (EditText) v.findViewById(R.id.et_challan_date);
         et_hospital_name = (EditText) v.findViewById(R.id.et_hospital_name);
@@ -217,14 +229,24 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
             case R.id.et_bike_list:
                 break;
             case R.id.ivPicture1:
+                imageViewID=1;
+                imageutils.imagepicker(1);
                 break;
             case R.id.ivPicture2:
+                imageViewID=2;
+                imageutils.imagepicker(1);
                 break;
             case R.id.ivPicture3:
+                imageViewID=3;
+                imageutils.imagepicker(1);
                 break;
             case R.id.ivPicture4:
+                imageViewID=4;
+                imageutils.imagepicker(1);
                 break;
             case R.id.ivPicture5:
+                imageViewID=5;
+                imageutils.imagepicker(1);
                 break;
         }
     }
@@ -655,7 +677,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
                         }
 
-                       setValueInCommonDialog(commonDialogModels);
+                       setValueInCommonDialog(commonDialogModels,et_hospital_name);
 
 
                     }
@@ -667,12 +689,13 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         }
     }
 
-    private void setValueInCommonDialog(final ArrayList<CommonDialogModel> hostpitalListArr) {
+    private void setValueInCommonDialog(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
         adapter=new CommonAdapter(baseActivity,hostpitalListArr);
         new CommonDialog(adapter,baseActivity, hostpitalListArr, new OnRowClickListener() {
             @Override
-            public void onItemClick(int position) {
-                et_hospital_name.setText(hostpitalListArr.get(position).getName());
+            public void onItemClick(int viewId,int position) {
+
+                et_name.setText(hostpitalListArr.get(position).getName());
 
             }
         }).show();
@@ -712,7 +735,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                         doctorListArr = json.getJSONArray("ResponseData");
                         commonDialogModels.clear();
                         CommonDialogModel model;
-                        for(int i=0;i<hostpitalListArr.length();i++){
+                        for(int i=0;i<doctorListArr.length();i++){
                             model=  new CommonDialogModel();
                             model.setId(doctorListArr.getJSONObject(i).getString("doctor_id"));
                             model.setName(doctorListArr.getJSONObject(i).getString("doctor_name"));
@@ -720,7 +743,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
                         }
 
-                        setValueInCommonDialog(commonDialogModels);
+                        setValueInCommonDialog(commonDialogModels,et_doctor_name);
 
                     }
 
@@ -781,8 +804,53 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d("Fragment", "onRequestPermissionsResult: "+requestCode);
+        imageutils.request_permission_result(requestCode, permissions, grantResults);
+    }
 
     @Override
+    public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
+        Bitmap bitmap = file;
+        String file_name = filename;
+        switch (imageViewID){
+            case 1:
+                ivPicture1.setImageBitmap(file);
+                mBitmap1=file;
+                break;
+            case 2:
+                ivPicture2.setImageBitmap(file);
+                mBitmap2=file;
+                break;
+            case 3:
+                ivPicture3.setImageBitmap(file);
+                mBitmap3=file;
+                break;
+            case 4:
+                ivPicture4.setImageBitmap(file);
+                mBitmap4=file;
+                break;
+            case 5:
+                ivPicture5.setImageBitmap(file);
+                mBitmap5=file;
+                break;
+
+        }
+
+
+        String path =  Environment.getExternalStorageDirectory() + File.separator + "ImageAttach" + File.separator;
+        imageutils.createImage(file,filename,path,false);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.d("Fragment", "onActivityResult: ");
+        imageutils.onActivityResult(requestCode, resultCode, data);
+
+    }    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);

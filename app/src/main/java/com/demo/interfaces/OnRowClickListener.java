@@ -5,5 +5,5 @@ package com.demo.interfaces;
  */
 
 public interface OnRowClickListener {
-    void onItemClick(int position);
+    void onItemClick(int viewID,int position);
 }

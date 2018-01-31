@@ -57,7 +57,7 @@ public class CommonDialog extends Dialog implements AdapterView.OnItemClickListe
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         dismiss();
-        listener.onItemClick(i);
+        listener.onItemClick(view.getId(),i);
 
     }
 
