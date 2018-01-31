@@ -128,7 +128,7 @@ public class LocationUpdateService extends Service  implements LocationListener,
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                JSONObject jsonObject = new JSONObject(preference.getReq());
+                JSONObject jsonObject = new JSONObject();
                 //jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
                 //jsonObject.put("userID", MyApplication.myApplication.preference.getUserId());
 

@@ -262,6 +262,7 @@ public String milisecondToDate(long milliSeconds){
 
 }
     public File getImageFile(Bitmap bitmap){
+    if (bitmap!=null){
         File f = new File(BaseActivity.this.getCacheDir(), "profimg");
         try {
             f.createNewFile();
@@ -298,6 +299,9 @@ public String milisecondToDate(long milliSeconds){
             e.printStackTrace();
         }
         return f;
+    }else
+        return null;
     }
+
 
 }

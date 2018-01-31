@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.demo.R;
 import com.demo.fragments.OutDoorWorkEntryDetailsFragment;
+import com.demo.fragments.OutDoorWorkEntryDoctorMeetDetailsFragment;
+import com.demo.fragments.OutDoorWorkEntryOtherDetailsFragment;
 import com.demo.fragments.OutdoorJboFragment;
 import com.demo.model.WorkEntry;
 
@@ -51,7 +53,7 @@ public class OutDoorJobGridAdapter extends BaseAdapter {
         view = inflter.inflate(R.layout.item_outdoor_entry, null);
 
         CardView card = (CardView) view.findViewById(R.id.card);
-        TextView tv_category = (TextView) view.findViewById(R.id.tv_category);
+        final TextView tv_category = (TextView) view.findViewById(R.id.tv_category);
        // TextView tvEndTime = (TextView) view.findViewById(R.id.tvEndTime);
        //String str = "Hello I'm your String";
 
@@ -63,15 +65,33 @@ public class OutDoorJobGridAdapter extends BaseAdapter {
         }else if(i%3 == 2){
             card.setCardBackgroundColor(Color.parseColor("#e14a59"));
         }
-        card.setOnClickListener(new View.OnClickListener() {
+        tv_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new OutDoorWorkEntryDetailsFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("category_id",leaveHisData.get(i).getCategory_id());
-                bundle.putString("category_title",leaveHisData.get(i).getCategory_title());
-                fragment.setArguments(bundle);
-                outdoorJboFragment.callFragment(fragment);
+
+                if(tv_category.getText().toString().equalsIgnoreCase("others")){
+                    Fragment fragment = new OutDoorWorkEntryOtherDetailsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("category_id",leaveHisData.get(i).getCategory_id());
+                    bundle.putString("category_title",leaveHisData.get(i).getCategory_title());
+                    fragment.setArguments(bundle);
+                    outdoorJboFragment.callFragment(fragment);
+                }else if(tv_category.getText().toString().equalsIgnoreCase("doctor meet")){
+                    Fragment fragment = new OutDoorWorkEntryDoctorMeetDetailsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("category_id",leaveHisData.get(i).getCategory_id());
+                    bundle.putString("category_title",leaveHisData.get(i).getCategory_title());
+                    fragment.setArguments(bundle);
+                    outdoorJboFragment.callFragment(fragment);
+                }else{
+                    Fragment fragment = new OutDoorWorkEntryDetailsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("category_id",leaveHisData.get(i).getCategory_id());
+                    bundle.putString("category_title",leaveHisData.get(i).getCategory_title());
+                    fragment.setArguments(bundle);
+                    outdoorJboFragment.callFragment(fragment);
+                }
+
 
             }
         });

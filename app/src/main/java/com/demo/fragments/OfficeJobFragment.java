@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 
+import com.demo.MainActivity;
 import com.demo.R;
 import com.demo.adapter.OfficeGridAdapter;
 import com.demo.model.WorkEntry;
@@ -51,6 +52,7 @@ public class OfficeJobFragment extends BaseFragment {
         list = (GridView) v.findViewById(R.id.list);
         officeGridAdapter = new OfficeGridAdapter(this,baseActivity,workEntries);
         list.setAdapter(officeGridAdapter);
+        ((MainActivity)getActivity()).setTitle("Office Job");
        /* tv_wash = (TextView)v.findViewById(R.id.tv_wash);
         tv_refill = (TextView)v.findViewById(R.id.tv_refill);
         tv_arrange = (TextView)v.findViewById(R.id.tv_arrange);
@@ -92,6 +94,7 @@ public class OfficeJobFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
     }
 
     @Override

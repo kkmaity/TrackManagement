@@ -317,6 +317,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:id="@+id/linBikelist"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -426,16 +427,16 @@
                    android:id="@+id/ivPicture1"
                    android:layout_width="0dp"
                    android:layout_weight="1"
-                   android:src="@drawable/ph_add_image"
+                   android:src="@drawable/photo"
                    android:layout_height="60dp"
                    android:layout_marginRight="3dp"
-                   android:scaleType="centerCrop"/>
+                   android:scaleType="fitXY"/>
                 <ImageView
                     android:id="@+id/ivPicture2"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginRight="3dp"
-                    android:src="@drawable/ph_add_image"
+                    android:src="@drawable/photo"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"/>
                 <ImageView
@@ -443,7 +444,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginRight="3dp"
-                    android:src="@drawable/ph_add_image"
+                    android:src="@drawable/photo"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"/>
                 <ImageView
@@ -451,14 +452,14 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginRight="3dp"
-                    android:src="@drawable/ph_add_image"
+                    android:src="@drawable/photo"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"/>
                 <ImageView
                     android:id="@+id/ivPicture5"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:src="@drawable/ph_add_image"
+                    android:src="@drawable/photo"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"/>
             </LinearLayout>

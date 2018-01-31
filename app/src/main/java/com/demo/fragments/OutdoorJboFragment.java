@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 
+import com.demo.MainActivity;
 import com.demo.R;
 import com.demo.adapter.OutDoorJobGridAdapter;
 import com.demo.model.WorkEntry;
@@ -39,6 +40,7 @@ public class OutdoorJboFragment extends BaseFragment {
         list = (GridView) v.findViewById(R.id.list);
         officeGridAdapter = new OutDoorJobGridAdapter(this,baseActivity,workEntries);
         list.setAdapter(officeGridAdapter);
+        ((MainActivity)getActivity()).setTitle("Outdoor Job");
         getWorkEntrey();
         return v;
 
@@ -60,6 +62,7 @@ public class OutdoorJboFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
     }
 
     public class WorkEntryAsynctask extends AsyncTask<String, Void, JSONObject> {

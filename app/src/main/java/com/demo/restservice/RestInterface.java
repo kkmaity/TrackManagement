@@ -81,6 +81,28 @@ public interface RestInterface {
             @Part MultipartBody.Part files);
 
 
+    @Multipart
+    @POST("emp_track/api/outdoorworkStart.php")
+    Call<ResponseBody> outdoorworkStart(
+            @Part("ApiKey") RequestBody ApiKey,
+            @Part("userid") RequestBody userid,
+            @Part("job_category") RequestBody job_category,
+            @Part("challan_no") RequestBody challan_no,
+            @Part("challan_date") RequestBody challan_date,
+            @Part("hospital_id") RequestBody hospital_id,
+            @Part("doctor_id") RequestBody doctor_id,
+            @Part("invoice_number") RequestBody invoice_number,
+            @Part("invoice_date") RequestBody invoice_date,
+            @Part("mode_of_transport") RequestBody mode_of_transport,
+            @Part("office_bike_id") RequestBody office_bike_id,
+            @Part("expense") RequestBody expense,
+            @Part("startLat") RequestBody startLat,
+            @Part("startLong") RequestBody startLong,
+            @Part MultipartBody.Part picture1,
+            @Part MultipartBody.Part picture2,
+            @Part MultipartBody.Part picture3,
+            @Part MultipartBody.Part picture4,
+            @Part MultipartBody.Part picture5);
 
 
 
