@@ -84,7 +84,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:padding="5dp"
 
         android:layout_height="wrap_content">
@@ -95,6 +95,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -104,6 +105,8 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:gravity="center"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_challan_number"
@@ -111,6 +114,8 @@
                     android:maxLines="1"
 
                     android:singleLine="true"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -118,10 +123,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -131,12 +138,17 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:gravity="center"
+
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_challan_date"
                     android:layout_width="match_parent"
                     android:maxLines="1"
                     android:editable="false"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
@@ -145,10 +157,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -159,6 +173,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
                 android:gravity="center"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_hospital_name"
@@ -168,16 +183,19 @@
                     android:editable="false"
                     android:imeOptions="actionNext"
                     android:padding="5dp"
+                    android:background="@null"
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -194,6 +212,8 @@
                     android:maxLines="1"
                     android:editable="false"
                     android:singleLine="true"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -201,6 +221,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
@@ -220,6 +242,8 @@
                     android:layout_width="match_parent"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -227,10 +251,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -247,6 +273,8 @@
                     android:maxLines="1"
                     android:editable="false"
                     android:singleLine="true"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -254,10 +282,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -274,6 +304,8 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:editable="false"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -281,10 +313,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -294,12 +328,15 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_bike_list"
                     android:layout_width="match_parent"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:editable="false"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
@@ -308,10 +345,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -327,6 +366,8 @@
                     android:layout_width="match_parent"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -334,10 +375,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
@@ -352,6 +395,8 @@
                     android:id="@+id/et_expence"
                     android:layout_width="match_parent"
                     android:maxLines="1"
+                    android:padding="5dp"
+                    android:background="@null"
                     android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
@@ -360,10 +405,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
