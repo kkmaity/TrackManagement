@@ -205,6 +205,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_doctor_name"
@@ -236,6 +237,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_invoice_number"
@@ -266,6 +268,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_invoice_date"
@@ -297,6 +300,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_mode_of_transport"
@@ -328,6 +332,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content">
                 <EditText
@@ -360,6 +365,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_description"
@@ -390,6 +396,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
+                android:background="@drawable/rounded_corner_inputbox"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_expence"
@@ -402,30 +409,55 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_marginTop="5dp"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:text="Take Picture"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/et_picture"
-                    android:layout_width="match_parent"
-                    android:imeOptions="actionDone"
-                    android:layout_height="wrap_content" />
+               <ImageView
+                   android:id="@+id/ivPicture1"
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:src="@drawable/ph_add_image"
+                   android:layout_height="60dp"
+                   android:scaleType="centerCrop"/>
+                <ImageView
+                    android:id="@+id/ivPicture2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ph_add_image"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"/>
+                <ImageView
+                    android:id="@+id/ivPicture3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ph_add_image"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"/>
+                <ImageView
+                    android:id="@+id/ivPicture4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ph_add_image"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"/>
+                <ImageView
+                    android:id="@+id/ivPicture5"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ph_add_image"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

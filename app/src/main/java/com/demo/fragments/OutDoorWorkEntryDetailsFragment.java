@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +67,11 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
     private EditText et_bike_list;
     private EditText et_description;
     private EditText et_expence;
-    private EditText et_picture;
+    private ImageView ivPicture1;
+    private ImageView ivPicture2;
+    private ImageView ivPicture3;
+    private ImageView ivPicture4;
+    private ImageView ivPicture5;
     private TextView tv_start_work;
     private TextView tv_end_work;
     private TextView tv_start_date_time;
@@ -107,8 +112,17 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         et_bike_list = (EditText) v.findViewById(R.id.et_bike_list);
         et_description = (EditText) v.findViewById(R.id.et_challan_number);
         et_expence = (EditText) v.findViewById(R.id.et_expence);
-        et_picture = (EditText) v.findViewById(R.id.et_picture);
+        ivPicture1 = (ImageView) v.findViewById(R.id.ivPicture1);
+        ivPicture2 = (ImageView) v.findViewById(R.id.ivPicture2);
+        ivPicture3 = (ImageView) v.findViewById(R.id.ivPicture3);
+        ivPicture4 = (ImageView) v.findViewById(R.id.ivPicture4);
+        ivPicture5 = (ImageView) v.findViewById(R.id.ivPicture5);
 
+        ivPicture1.setOnClickListener(this);
+        ivPicture2.setOnClickListener(this);
+        ivPicture3.setOnClickListener(this);
+        ivPicture4.setOnClickListener(this);
+        ivPicture5.setOnClickListener(this);
         et_challan_date.setOnClickListener(this);
         et_hospital_name.setOnClickListener(this);
         et_doctor_name.setOnClickListener(this);
@@ -190,11 +204,9 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 break;
             case R.id.et_hospital_name:
              getHospitalListAsyntask();
-
-
-
                 break;
             case R.id.et_doctor_name:
+                getDoctorListAsyntask();
                 break;
             case R.id.et_invoice_date:
                 DialogFragment newFragment2 = new InvoiceDatePickerFragment();
@@ -203,6 +215,16 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
             case R.id.et_mode_of_transport:
                 break;
             case R.id.et_bike_list:
+                break;
+            case R.id.ivPicture1:
+                break;
+            case R.id.ivPicture2:
+                break;
+            case R.id.ivPicture3:
+                break;
+            case R.id.ivPicture4:
+                break;
+            case R.id.ivPicture5:
                 break;
         }
     }
@@ -213,6 +235,14 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
             new HospitalListAsynctask().execute();
         }
     }
+    private void getDoctorListAsyntask() {
+
+        if (baseActivity.isNetworkConnected()){
+
+            new DoctorListAsynctask().execute();
+        }
+    }
+
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -487,14 +517,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
             if (json != null) {
 
-               /* "jobid": "3",
-                        "category": "1",
-                        "challan_no": "98765425",
-                        "box_no": "abcd2456hty",
-                        "description": "Dummy Text Description",
-                        "startTime": "2018-01-20 00:46:36",
-                        "endTime": "2018-01-20 00:48:09",
-                        "job_status": "no"*/
+
 
                 try {
                     if (json.getInt("ResponseCode") == 200) {
@@ -656,7 +679,11 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
     }
 
     public class DoctorListAsynctask extends AsyncTask<String, Void, JSONObject> {
-
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            baseActivity.showProgressDialog();
+        }
 
         @Override
         protected JSONObject doInBackground(String... params) {
@@ -683,7 +710,17 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 try {
                     if (json.getInt("ResponseCode") == 200) {
                         doctorListArr = json.getJSONArray("ResponseData");
+                        commonDialogModels.clear();
+                        CommonDialogModel model;
+                        for(int i=0;i<hostpitalListArr.length();i++){
+                            model=  new CommonDialogModel();
+                            model.setId(doctorListArr.getJSONObject(i).getString("doctor_id"));
+                            model.setName(doctorListArr.getJSONObject(i).getString("doctor_name"));
+                            commonDialogModels.add(model);
 
+                        }
+
+                        setValueInCommonDialog(commonDialogModels);
 
                     }
 
@@ -723,7 +760,17 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 try {
                     if (json.getInt("ResponseCode") == 200) {
                         modeOfTranportArr = json.getJSONArray("ResponseData");
+                        commonDialogModels.clear();
+                        CommonDialogModel model;
+                        for(int i=0;i<hostpitalListArr.length();i++){
+                            model=  new CommonDialogModel();
+                            //model.setId(modeOfTranportArr.getJSONObject(i).getString("doctor_id"));
+                            //model.setName(modeOfTranportArr.getJSONObject(i).getString("doctor_name"));
+                          //  commonDialogModels.add(model);
 
+                        }
+
+                        //setValueInCommonDialog(commonDialogModels);
 
                     }
 
