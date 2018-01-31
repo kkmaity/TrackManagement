@@ -28,7 +28,11 @@ import android.widget.Toast;
 
 import com.demo.MainActivity;
 import com.demo.R;
+import com.demo.adapter.CommonAdapter;
 import com.demo.adapter.OutDoorHistoryGridAdapter;
+import com.demo.dialog.CommonDialog;
+import com.demo.interfaces.OnRowClickListener;
+import com.demo.model.CommonDialogModel;
 import com.demo.model.OutDoorHistory;
 import com.demo.network.KlHttpClient;
 import com.demo.services.LocationUpdateService;
@@ -53,7 +57,7 @@ import java.util.Calendar;
 public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static EditText et_challan_number;
-    private EditText et_challan_date;
+    private static EditText et_challan_date;
     private EditText et_hospital_name;
     private EditText et_doctor_name;
     private EditText et_invoice_number;
@@ -79,7 +83,9 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
     private ListView gridAttendanceHis;
     private OutDoorHistoryGridAdapter outDoorHistoryGridAdapter;
     private ArrayList<OutDoorHistory> outDoorHistories = new ArrayList<>();
+    private ArrayList<CommonDialogModel> commonDialogModels = new ArrayList<>();
     private JSONArray hostpitalListArr, doctorListArr, modeOfTranportArr, bileArr;
+    private CommonAdapter adapter;
 
 
     @Override
@@ -120,9 +126,9 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         tv_start_work.setOnClickListener(this);
         tv_end_work.setOnClickListener(this);
         getHistory();
-        new HospitalListAsynctask().execute();
+       /* new HospitalListAsynctask().execute();
         new DoctorListAsynctask().execute();
-        new ModeOfTranportListAsynctask().execute();
+        new ModeOfTranportListAsynctask().execute();*/
 
         return v;
 
@@ -183,6 +189,10 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 newFragment1.show(baseActivity.getSupportFragmentManager(), "datePicker");
                 break;
             case R.id.et_hospital_name:
+             getHospitalListAsyntask();
+
+
+
                 break;
             case R.id.et_doctor_name:
                 break;
@@ -194,6 +204,13 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 break;
             case R.id.et_bike_list:
                 break;
+        }
+    }
+
+    private void getHospitalListAsyntask() {
+        if (baseActivity.isNetworkConnected()){
+
+            new HospitalListAsynctask().execute();
         }
     }
 
@@ -489,13 +506,13 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                                 String jobid = c.getString("jobid");
                                 String category = c.getString("category");
                                 String challan_no = c.getString("challan_no");
-                                String box_no = c.getString("box_no");
+                              //  String box_no = c.getString("box_no");
                                 String description = c.getString("description");
                                 String startTime = c.getString("startTime");
                                 String endTime = c.getString("endTime");
                                 String job_status = c.getString("job_status");
                                 if (category.equalsIgnoreCase(getArguments().getString("category_id"))) {
-                                    outDoorHistories.add(new OutDoorHistory(jobid, category, challan_no, box_no, description, startTime, endTime, job_status));
+                                    outDoorHistories.add(new OutDoorHistory(jobid, category, challan_no, "", description, startTime, endTime, job_status));
                                 }
 
 
@@ -541,7 +558,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            et_challan_number.setText(year + "-" + String.format("%02d", (month + 1)) + "-" + day);
+            et_challan_date.setText(year + "-" + String.format("%02d", (month + 1)) + "-" + day);
             // Do something with the date chosen by the user
         }
     }
@@ -574,7 +591,11 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
 
     public class HospitalListAsynctask extends AsyncTask<String, Void, JSONObject> {
-
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            baseActivity.showProgressDialog();
+        }
 
         @Override
         protected JSONObject doInBackground(String... params) {
@@ -601,6 +622,17 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 try {
                     if (json.getInt("ResponseCode") == 200) {
                         hostpitalListArr = json.getJSONArray("ResponseData");
+                        commonDialogModels.clear();
+                        CommonDialogModel model;
+                        for(int i=0;i<hostpitalListArr.length();i++){
+                            model=  new CommonDialogModel();
+                            model.setId(hostpitalListArr.getJSONObject(i).getString("hospital_id"));
+                            model.setName(hostpitalListArr.getJSONObject(i).getString("hospital_name"));
+                            commonDialogModels.add(model);
+
+                        }
+
+                       setValueInCommonDialog(commonDialogModels);
 
 
                     }
@@ -610,6 +642,17 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 }
             }
         }
+    }
+
+    private void setValueInCommonDialog(final ArrayList<CommonDialogModel> hostpitalListArr) {
+        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, new OnRowClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                et_hospital_name.setText(hostpitalListArr.get(position).getName());
+
+            }
+        }).show();
     }
 
     public class DoctorListAsynctask extends AsyncTask<String, Void, JSONObject> {
@@ -703,10 +746,10 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
     @Override
     public boolean onContextItemSelected(MenuItem item){
         if(item.getTitle()=="Call"){
-            Toast.makeText(getApplicationContext(),"calling code",Toast.LENGTH_LONG).show();
+            Toast.makeText(baseActivity,"calling code",Toast.LENGTH_LONG).show();
         }
         else if(item.getTitle()=="SMS"){
-            Toast.makeText(getApplicationContext(),"sending sms code",Toast.LENGTH_LONG).show();
+            Toast.makeText(baseActivity,"sending sms code",Toast.LENGTH_LONG).show();
         }else{
             return false;
         }
