@@ -33,6 +33,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             app:cardCornerRadius="15dp"
+            android:visibility="invisible"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             app:cardBackgroundColor="#ef4b4b">
@@ -166,6 +167,7 @@
     android:layout_marginStart="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginLeft="16dp"
+    android:visibility="invisible"
     android:layout_marginBottom="16dp"
     app:cardBackgroundColor="@color/pink_btn"
     app:cardCornerRadius="22dp">

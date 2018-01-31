@@ -87,7 +87,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_attendence, null, false);
-        ((MainActivity)getActivity()).setTitle(AppMenu.ATTENDENCE.name());
+        ((MainActivity)getActivity()).setTitle("Attendance");
         linAttendenceEmployee = (LinearLayout)v.findViewById(R.id.linAttendenceEmployee);
         linAttendenceAdmin = (LinearLayout)v.findViewById(R.id.linAttendenceAdmin);
         recyclerEmpList = (RecyclerView)v.findViewById(R.id.recyclerEmpList);
@@ -466,8 +466,9 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                             if (json.getInt("ResponseCode") == 200) {
                                 already_started= json.getString("already_started");
                                 if (already_started.equalsIgnoreCase("1")){
-                                    Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_LONG).show();
                                 }else {
+                                    Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_LONG).show();
                                     tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
                                     String str = tv_start_date_time.getText().toString();
                                     String[] splited = str.split("\\s+");
@@ -524,6 +525,7 @@ public class AttendenceFragment extends BaseFragment implements LocationListener
                         isAlreadyStarted=false;
                         if(json.has("ResponseData")){
                             tv_end_date_time.setText(json.getJSONObject("ResponseData").getString("stopTime"));
+                            Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
                             getAttendenceHistory();
                         }else{
                             Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();

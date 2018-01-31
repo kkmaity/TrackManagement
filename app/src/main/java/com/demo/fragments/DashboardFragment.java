@@ -30,7 +30,7 @@ public class DashboardFragment extends BaseFragment {
         tv_work_entry = (TextView)v.findViewById(R.id.tv_work_entry);
         tv_leaves = (TextView)v.findViewById(R.id.tv_leaves);
 
-        ((MainActivity)getActivity()).setTitle(AppMenu.HOME.name());
+        ((MainActivity)getActivity()).setTitle("Home");
 
         tv_attendence.setOnClickListener(this);
         tv_work_entry.setOnClickListener(this);

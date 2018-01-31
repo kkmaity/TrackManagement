@@ -188,7 +188,7 @@ public class LeavesDetailsComffOffFragment extends BaseFragment{
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 dialogInterface.dismiss();
-                                                new ApplyLeaveAsynctask().execute();
+                                              //  new ApplyLeaveAsynctask().execute();
 
                                             }
                                         })
@@ -548,10 +548,10 @@ public class LeavesDetailsComffOffFragment extends BaseFragment{
         }else if(enddate.equalsIgnoreCase("select")){
             flag = false;
             Toast.makeText(baseActivity, "Select end date", Toast.LENGTH_SHORT).show();
-        }else if(tv_description.getText().toString().trim().length() == 0){
+        }/*else if(tv_description.getText().toString().trim().length() == 0){
             flag = false;
             Toast.makeText(baseActivity, "please enter Description", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
 
         return flag;

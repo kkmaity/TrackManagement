@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,12 +62,13 @@ public class LeavesFragment extends BaseFragment {
     private String isCompOffApplicable="";
     private String normalLCount;
     private String compoffLCount;
+    private CardView cardcompoff;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_leaves, null, false);
-        ((MainActivity)getActivity()).setTitle(AppMenu.LEAVES.name());
+        ((MainActivity)getActivity()).setTitle("Leaves");
         linLeaveEmployee = (LinearLayout)v.findViewById(R.id.linLeaveEmployee);
         linLeaveAdmin = (LinearLayout)v.findViewById(R.id.linLeaveAdmin);
         tv_normalLeave = (TextView)v.findViewById(R.id.tv_normalLeave);
@@ -74,31 +76,39 @@ public class LeavesFragment extends BaseFragment {
         tv_normal_leave_count = (TextView)v.findViewById(R.id.tv_normal_leave_count);
         tv_comp_leave_count = (TextView)v.findViewById(R.id.tv_comp_leave_count);
         tv_cancel_leave = (TextView)v.findViewById(R.id.tv_cancel_leave);
+        cardcompoff = (CardView)v.findViewById(R.id.cardcompoff);
        // listLeaveHis = (ListView)v.findViewById(R.id.listLeaveHis);
         tv_normalLeave.setOnClickListener(this);
         tv_comp_leave.setOnClickListener(this);
         tv_cancel_leave.setOnClickListener(this);
-       /* if (baseActivity.preference.getIsAdmin()!=null&&baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
+        if (baseActivity.preference.getIsAdmin()!=null&&baseActivity.preference.getIsAdmin().equalsIgnoreCase("1")){
             linLeaveEmployee.setVisibility(View.GONE);
             linLeaveAdmin.setVisibility(View.VISIBLE);
+            ((TextView)v.findViewById(R.id.message_alert)).setVisibility(View.VISIBLE);
+
             // getEmpList();
-        }else {*/
+        }else {
             linLeaveAdmin.setVisibility(View.GONE);
             linLeaveEmployee.setVisibility(View.VISIBLE);
-            getLeaveCount();
+
           //  getLeaveHistory();
 
 
-       // }
+        }
         return v;
 
     }
 
-    private void getLeaveCount() {
-        if(baseActivity.isNetworkConnected()){
-            new LeaveCountAsynctask().execute();
 
+
+    private void getLeaveCount() {
+        if(getView()!=null){
+            if(baseActivity.isNetworkConnected()){
+                new LeaveCountAsynctask().execute();
+
+            }
         }
+
 
     }
 
@@ -204,6 +214,7 @@ public class LeavesFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        getLeaveCount();
     }
     public class ApplyLeaveAsynctask extends AsyncTask<String, Void, JSONObject> {
         @Override
@@ -256,6 +267,16 @@ public class LeavesFragment extends BaseFragment {
         }
     }
     public class LeaveCountAsynctask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(getView()!=null){
+                baseActivity.showProgressDialog();
+            }
+
+        }
+
         @Override
         protected JSONObject doInBackground(String... params) {
             try {
@@ -276,7 +297,10 @@ public class LeavesFragment extends BaseFragment {
         @Override
         protected void onPostExecute(JSONObject json) {
             super.onPostExecute(json);
-            baseActivity.dismissProgressDialog();
+            if(getView()!=null){
+                baseActivity.dismissProgressDialog();
+            }
+
 
             if(json!=null) {
 
@@ -288,6 +312,14 @@ public class LeavesFragment extends BaseFragment {
                             tv_normal_leave_count.setText("Normal Leave Count  "+normalLCount);
                             tv_comp_leave_count.setText("Compoff Leave Count  "+compoffLCount);
                             isCompOffApplicable=json.getJSONObject("ResponseData").getString("compoffleave_applicable");
+                            //isCompOffApplicable = "no";
+                            if(isCompOffApplicable.equalsIgnoreCase("yes")){
+                                tv_comp_leave_count.setVisibility(View.VISIBLE);
+                                cardcompoff.setVisibility(View.VISIBLE);
+                            }else{
+                                tv_normal_leave_count.setVisibility(View.GONE);
+                                cardcompoff.setVisibility(View.GONE);
+                            }
                         }else{
                             Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
                         }
