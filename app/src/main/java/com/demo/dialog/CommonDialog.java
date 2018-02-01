@@ -29,12 +29,14 @@ public class CommonDialog extends Dialog implements AdapterView.OnItemClickListe
     private ArrayList<CommonDialogModel> listData=new ArrayList<>();
     private ListView listCommon;
     private CommonAdapter adapter;
-    public CommonDialog(CommonAdapter adapter,BaseActivity baseActivity, ArrayList<CommonDialogModel> listData, OnRowClickListener listener) {
+    private View v;
+    public CommonDialog(CommonAdapter adapter,BaseActivity baseActivity, ArrayList<CommonDialogModel> listData,View vi, OnRowClickListener listener) {
         super(baseActivity);
         this.baseActivity = baseActivity;
         this.listener = listener;
         this.listData = listData;
         this.adapter=adapter;
+        this.v=vi;
 
 
     }
@@ -57,7 +59,7 @@ public class CommonDialog extends Dialog implements AdapterView.OnItemClickListe
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         dismiss();
-        listener.onItemClick(view.getId(),i);
+        listener.onItemClick(view.getId(),i,v);
 
     }
 

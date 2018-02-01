@@ -720,7 +720,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
 
                         }
 
-                       setValueInCommonDialog(commonDialogModels,et_hospital_name);
+                        setValueInCommonDialogHos(commonDialogModels,et_hospital_name);
 
 
                     }
@@ -732,32 +732,107 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         }
     }
 
-    private void setValueInCommonDialog(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
+    private void setValueInCommonDialogHos(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
         adapter=new CommonAdapter(baseActivity,hostpitalListArr);
-        new CommonDialog(adapter,baseActivity, hostpitalListArr, new OnRowClickListener() {
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
             @Override
-            public void onItemClick(int viewId,int position) {
-                
-                if(view == et_hospital_name){
-                    hospitalid = hostpitalListArr.get(position).getId();
-                }else if(view == et_doctor_name){
-                    doctorid = hostpitalListArr.get(position).getId();
-                }else if(view == et_mode_of_transport){
-                    transportid = hostpitalListArr.get(position).getId();
-                }else if(view == et_bike_list){
-                    bikeid = hostpitalListArr.get(position).getId();
-                }
-
+            public void onItemClick(int viewId,int position,View v) {
                 et_name.setText(hostpitalListArr.get(position).getName());
-                if (et_name.getText().toString().equalsIgnoreCase("Office Bike")){
-                    linBikelist.setVisibility(View.VISIBLE);
-                }else
-                    linBikelist.setVisibility(View.GONE);
+
+                hospitalid = hostpitalListArr.get(position).getId();
+            }
+
+
+
+
+
+
+        }).show();
+    }
+
+
+
+
+    private void setValueInCommonDialogBike(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
+        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+            @Override
+            public void onItemClick(int viewId,int position,View v) {
+                et_name.setText(hostpitalListArr.get(position).getName());
+
+                bikeid = hostpitalListArr.get(position).getId();
+
+
+
+
 
 
             }
         }).show();
     }
+    private void setValueInCommonDialogDOC(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
+        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+            @Override
+            public void onItemClick(int viewId,int position,View v) {
+                et_name.setText(hostpitalListArr.get(position).getName());
+
+                doctorid = hostpitalListArr.get(position).getId();
+
+
+
+
+
+
+            }
+        }).show();
+    }
+    private void setValueInCommonDialogMode(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
+        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+            @Override
+            public void onItemClick(int viewId,int position,View v) {
+                et_name.setText(hostpitalListArr.get(position).getName());
+                if (et_name.getText().toString().equalsIgnoreCase("Office Bike")){
+                    linBikelist.setVisibility(View.VISIBLE);
+                }else{
+
+                    linBikelist.setVisibility(View.GONE);
+                }
+
+
+                transportid = hostpitalListArr.get(position).getId();
+
+
+
+
+
+
+            }
+        }).show();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public class DoctorListAsynctask extends AsyncTask<String, Void, JSONObject> {
         @Override
@@ -801,7 +876,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
 
                         }
 
-                        setValueInCommonDialog(commonDialogModels,et_doctor_name);
+                        setValueInCommonDialogDOC(commonDialogModels,et_doctor_name);
 
                     }
 
@@ -851,11 +926,11 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                             model=  new CommonDialogModel();
                             model.setId(modeOfTranportArr.getJSONObject(i).getString("transport_id"));
                             model.setName(modeOfTranportArr.getJSONObject(i).getString("title"));
-                           commonDialogModels.add(model);
+                            commonDialogModels.add(model);
 
                         }
 
-                        setValueInCommonDialog(commonDialogModels,et_mode_of_transport);
+                        setValueInCommonDialogMode(commonDialogModels,et_mode_of_transport);
 
                     }
 
@@ -907,7 +982,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
 
                         }
 
-                        setValueInCommonDialog(commonDialogModels,et_bike_list);
+                        setValueInCommonDialogBike(commonDialogModels,et_bike_list);
 
                     }
 

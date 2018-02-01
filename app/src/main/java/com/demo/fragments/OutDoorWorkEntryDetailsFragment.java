@@ -442,63 +442,6 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
     }
 
 
-    public class StartAsynctask extends AsyncTask<String, Void, JSONObject> {
-
-
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
-                jsonObject.put("userid", baseActivity.preference.getUserId());
-                jsonObject.put("job_category", getArguments().getString("category_id"));
-                jsonObject.put("challan_no", et_challan_number.getText().toString().trim());
-                // jsonObject.put("box_no", et_box_number.getText().toString().trim());
-                jsonObject.put("description", et_description.getText().toString().trim());
-                jsonObject.put("startLat", lat);
-                jsonObject.put("startLong", lng);
-                baseActivity.preference.setReq(jsonObject.toString());
-                Log.e("SendTrackNotification", jsonObject.toString());
-                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoorjobStart.php", jsonObject);
-                return json;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject json) {
-            super.onPostExecute(json);
-            baseActivity.dismissProgressDialog();
-
-            if (json != null) {
-
-                try {
-                    if (json.getInt("ResponseCode") == 200) {
-                        String already_started = json.getString("already_started");
-                        if (already_started.equalsIgnoreCase("1")) {
-                            Toast.makeText(baseActivity, "Work already started", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(baseActivity, "Work  started", Toast.LENGTH_LONG).show();
-                        }
-
-
-                        tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
-                        baseActivity.preference.setJobID(json.getJSONObject("ResponseData").getString("jobid"));
-
-                        getActivity().startService(new Intent(getActivity(), LocationUpdateService.class));
-
-
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     public class StopAsynctask extends AsyncTask<String, Void, JSONObject> {
         @Override
@@ -510,7 +453,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 jsonObject.put("endLat", lat);
                 jsonObject.put("endLong", lng);
                 Log.e("AttendenceStop ", jsonObject.toString());
-                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoorjobStop.php", jsonObject);
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoorworkStop.php", jsonObject);
                 return json;
 
             } catch (Exception e) {
@@ -721,7 +664,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
                         }
 
-                       setValueInCommonDialog(commonDialogModels,et_hospital_name);
+                       setValueInCommonDialogHos(commonDialogModels,et_hospital_name);
 
 
                     }
@@ -733,32 +676,107 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         }
     }
 
-    private void setValueInCommonDialog(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
+    private void setValueInCommonDialogHos(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
         adapter=new CommonAdapter(baseActivity,hostpitalListArr);
-        new CommonDialog(adapter,baseActivity, hostpitalListArr, new OnRowClickListener() {
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
             @Override
-            public void onItemClick(int viewId,int position) {
-                
-                if(view == et_hospital_name){
+            public void onItemClick(int viewId,int position,View v) {
+                et_name.setText(hostpitalListArr.get(position).getName());
+
                     hospitalid = hostpitalListArr.get(position).getId();
-                }else if(view == et_doctor_name){
-                    doctorid = hostpitalListArr.get(position).getId();
-                }else if(view == et_mode_of_transport){
-                    transportid = hostpitalListArr.get(position).getId();
-                }else if(view == et_bike_list){
-                    bikeid = hostpitalListArr.get(position).getId();
                 }
 
+
+
+
+
+
+        }).show();
+    }
+
+
+
+
+    private void setValueInCommonDialogBike(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
+        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+            @Override
+            public void onItemClick(int viewId,int position,View v) {
                 et_name.setText(hostpitalListArr.get(position).getName());
-                if (et_name.getText().toString().equalsIgnoreCase("Office Bike")){
-                    linBikelist.setVisibility(View.VISIBLE);
-                }else
-                    linBikelist.setVisibility(View.GONE);
+
+                    bikeid = hostpitalListArr.get(position).getId();
+
+
+
+
 
 
             }
         }).show();
     }
+    private void setValueInCommonDialogDOC(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
+        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+            @Override
+            public void onItemClick(int viewId,int position,View v) {
+                et_name.setText(hostpitalListArr.get(position).getName());
+
+                    doctorid = hostpitalListArr.get(position).getId();
+
+
+
+
+
+
+            }
+        }).show();
+    }
+    private void setValueInCommonDialogMode(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
+        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
+        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+            @Override
+            public void onItemClick(int viewId,int position,View v) {
+                et_name.setText(hostpitalListArr.get(position).getName());
+                if (et_name.getText().toString().equalsIgnoreCase("Office Bike")){
+                    linBikelist.setVisibility(View.VISIBLE);
+                }else{
+
+                        linBikelist.setVisibility(View.GONE);
+                }
+
+
+                    transportid = hostpitalListArr.get(position).getId();
+
+
+
+
+
+
+            }
+        }).show();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public class DoctorListAsynctask extends AsyncTask<String, Void, JSONObject> {
         @Override
@@ -802,7 +820,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
                         }
 
-                        setValueInCommonDialog(commonDialogModels,et_doctor_name);
+                        setValueInCommonDialogDOC(commonDialogModels,et_doctor_name);
 
                     }
 
@@ -856,7 +874,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
                         }
 
-                        setValueInCommonDialog(commonDialogModels,et_mode_of_transport);
+                        setValueInCommonDialogMode(commonDialogModels,et_mode_of_transport);
 
                     }
 
@@ -908,7 +926,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
 
                         }
 
-                        setValueInCommonDialog(commonDialogModels,et_bike_list);
+                        setValueInCommonDialogBike(commonDialogModels,et_bike_list);
 
                     }
 

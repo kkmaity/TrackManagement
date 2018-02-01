@@ -657,7 +657,7 @@ public class Imageutils
                         selected_path=null;
                         selected_path=getPath(selectedImage);
                         file_name =selected_path.substring(selected_path.lastIndexOf("/")+1);
-                        bitmap =compressImage(selectedImage.toString(),816,612);
+                        bitmap =compressImage(selectedImage.toString(),300,300);
                         imageAttachment_callBack.image_attachment(from, file_name, bitmap,selectedImage);
                     }
                     catch(Exception e)

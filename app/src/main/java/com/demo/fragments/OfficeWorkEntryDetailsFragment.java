@@ -1,82 +1,67 @@
 package com.demo.fragments;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 
 import com.demo.MainActivity;
 import com.demo.R;
-import com.demo.model.notification.NotificationMain;
-import com.demo.restservice.APIHelper;
-import com.demo.restservice.RestService;
-import com.demo.utils.Constant;
+import com.demo.adapter.OutDoorHistoryGridAdapter;
+import com.demo.model.OutDoorHistory;
+import com.demo.network.KlHttpClient;
 
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class OfficeWorkEntryDetailsFragment extends BaseFragment{
 
-
-/**
- * Created by root on 20/8/15.
- */
-public class OfficeWorkEntryDetailsFragment extends BaseFragment {
-
-
-    private EditText et_challan_number;
-    private EditText et_challan_date;
-    private EditText et_hospital_name;
-    private EditText et_doctor_name;
-    private EditText et_invoice_number;
-    private EditText et_invoice_date;
-    private EditText et_mode_of_transport;
-    private EditText et_bike_list;
-    private EditText et_description;
-    private EditText et_expence;
-    private EditText et_picture;
-
-
+    private OutDoorHistoryGridAdapter outDoorHistoryGridAdapter;
+    private ArrayList<OutDoorHistory> outDoorHistories = new ArrayList<>();
+    private ListView gridAttendanceHis;
+    private View tv_start_work;
+    private View tv_end_work;
+    private EditText etChallanNo;
+    private EditText etBoxNo;
+    private EditText etDesc;
+    private TextView tv_start_date_time;
+    private TextView tv_end_date_time;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_office_workentry_details, null, false);
-
-        et_challan_number = (EditText)v.findViewById(R.id.et_challan_number);
-        et_challan_date = (EditText)v.findViewById(R.id.et_challan_date);
-        et_hospital_name = (EditText)v.findViewById(R.id.et_hospital_name);
-        et_doctor_name = (EditText)v.findViewById(R.id.et_doctor_name);
-        et_invoice_number = (EditText)v.findViewById(R.id.et_invoice_number);
-        et_invoice_date = (EditText)v.findViewById(R.id.et_invoice_date);
-        et_mode_of_transport = (EditText)v.findViewById(R.id.et_mode_of_transport);
-        et_bike_list = (EditText)v.findViewById(R.id.et_bike_list);
-        et_description = (EditText)v.findViewById(R.id.et_challan_number);
-        et_expence = (EditText)v.findViewById(R.id.et_expence);
-        et_picture = (EditText)v.findViewById(R.id.et_picture);
-
-        et_challan_date.setOnClickListener(this);
-        et_hospital_name.setOnClickListener(this);
-        et_doctor_name.setOnClickListener(this);
-        et_invoice_number.setOnClickListener(this);
-        et_mode_of_transport.setOnClickListener(this);
-        et_bike_list.setOnClickListener(this);
-
+        gridAttendanceHis = (ListView) v.findViewById(R.id.gridAttendanceHis);
+        etChallanNo = (EditText) v.findViewById(R.id.etChallanNo);
+        etBoxNo = (EditText) v.findViewById(R.id.etBoxNo);
+        etDesc = (EditText) v.findViewById(R.id.etDesc);
+        tv_start_work = (TextView)v.findViewById(R.id.tv_start_work);
+        tv_end_work = (TextView)v.findViewById(R.id.tv_end_work);
+        tv_start_date_time = (TextView)v.findViewById(R.id.tv_start_date_time);
+        tv_end_date_time = (TextView)v.findViewById(R.id.tv_end_date_time);
+        outDoorHistoryGridAdapter = new OutDoorHistoryGridAdapter(baseActivity, outDoorHistories);
+        gridAttendanceHis.setAdapter(outDoorHistoryGridAdapter);
+        tv_start_work.setOnClickListener(this);
+        tv_end_work.setOnClickListener(this);
+        ((MainActivity) getActivity()).setTitle(getArguments().getString("category_title"));
+        getHistory();
 
         return v;
 
@@ -88,29 +73,250 @@ public class OfficeWorkEntryDetailsFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-        ((MainActivity)getActivity()).setTitle(getArguments().getString("category_title"));
+    }
+    private void getHistory() {
 
+        // if(getView()!=null){
+        if (baseActivity.isNetworkConnected()) {
+            new HistoryAsynctask().execute();
+
+        }
+        // }
 
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.et_challan_date:
+        switch (view.getId()) {
+            case R.id.tv_start_work:
+                if (isValid()) {
+                    getAttendenceStart();
+                }
+                break;
+            case R.id.tv_end_work:
+
+                getAttendenceStop();
+
+                break;
 
 
-                break;
-            case R.id.et_hospital_name:
-                break;
-            case R.id.et_doctor_name:
-                break;
-            case R.id.et_invoice_number:
-                break;
-            case R.id.et_mode_of_transport:
-                break;
-            case R.id.et_bike_list:
-                break;
 
         }
+    }
+    private void getAttendenceStop() {
+
+        if (getView() != null) {
+            if (baseActivity.isNetworkConnected()) {
+                new StopAsynctask().execute();
+
+            }
+        }
+
+    }
+    private void getAttendenceStart() {
+
+        if (getView() != null) {
+            if (baseActivity.isNetworkConnected()) {
+                new StartAsynctask().execute();
+
+            }
+        }
+
+    }
+
+    public class StartAsynctask extends AsyncTask<String, Void, JSONObject> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            baseActivity.showProgressDialog();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                jsonObject.put("userid", baseActivity.preference.getUserId());
+                jsonObject.put("job_category", getArguments().getString("category_id"));
+                jsonObject.put("challan_no", etChallanNo.getText().toString().trim());
+                 jsonObject.put("box_no", etBoxNo.getText().toString().trim());
+                jsonObject.put("description", etDesc.getText().toString().trim());
+
+                baseActivity.preference.setReq(jsonObject.toString());
+                Log.e("SendTrackNotification", jsonObject.toString());
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/officejobStart.php", jsonObject);
+                return json;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            super.onPostExecute(json);
+            baseActivity.dismissProgressDialog();
+
+            if (json != null) {
+
+                try {
+                    if (json.getInt("ResponseCode") == 200) {
+                        String already_started = json.getString("already_started");
+                        if (already_started.equalsIgnoreCase("1")) {
+                            Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_LONG).show();
+                        }
+
+
+                        tv_start_date_time.setText(json.getJSONObject("ResponseData").getString("startTime"));
+                        baseActivity.preference.setJobID(json.getJSONObject("ResponseData").getString("jobid"));
+
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public class StopAsynctask extends AsyncTask<String, Void, JSONObject> {
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                jsonObject.put("userid", baseActivity.preference.getUserId());
+                Log.e("AttendenceStop ", jsonObject.toString());
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/officejobStop.php", jsonObject);
+                return json;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            super.onPostExecute(json);
+            baseActivity.dismissProgressDialog();
+
+            if (json != null) {
+
+                try {
+                    if (json.getInt("ResponseCode") == 200) {
+                        if (json.has("ResponseData")) {
+                            tv_end_date_time.setText(json.getJSONObject("ResponseData").getString("stopTime"));
+                            // getAttendenceHistory();
+                        } else {
+                            Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    } else {
+                        Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+    }
+
+
+    public class HistoryAsynctask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            baseActivity.showProgressDialog();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
+                jsonObject.put("userid", baseActivity.preference.getUserId());
+
+                Log.e("LeaveCount ", jsonObject.toString());
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoor_job_history.php", jsonObject);
+                return json;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            super.onPostExecute(json);
+            baseActivity.dismissProgressDialog();
+
+            if (json != null) {
+
+
+
+                try {
+                    if (json.getInt("ResponseCode") == 200) {
+                        if (json.has("ResponseData")) {
+
+                            JSONArray jsonArray = json.getJSONArray("ResponseData");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject c = jsonArray.getJSONObject(i);
+                                String jobid = c.getString("jobid");
+                                String category = c.getString("category");
+                                String challan_no = c.getString("challan_no");
+                                //  String box_no = c.getString("box_no");
+                                String description = c.has("description")?c.getString("description"):"";
+                                String startTime = c.getString("startTime");
+                                String endTime = c.getString("endTime");
+                                String job_status = c.getString("job_status");
+                                if (category.equalsIgnoreCase(getArguments().getString("category_id"))) {
+                                    outDoorHistories.add(new OutDoorHistory(jobid, category, challan_no, "", description, startTime, endTime, job_status));
+                                }
+
+
+                            }
+
+                            outDoorHistoryGridAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+    }
+    public boolean isValid() {
+        boolean flag = true;
+
+        if (etChallanNo.getText().toString().trim().length() == 0) {
+            etChallanNo.setError("Please fill challan number");
+            flag = false;
+        }else if(etBoxNo.getText().toString().trim().length() == 0){
+            etBoxNo.setError("Please fill box number");
+            flag = false;
+        }else if (etDesc.getText().toString().trim().length() == 0) {
+            etDesc.setError("Please fill description");
+            flag = false;
+        }
+        return flag;
     }
 }

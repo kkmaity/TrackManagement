@@ -734,25 +734,33 @@ public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implement
 
     private void setValueInCommonDialog(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
         adapter=new CommonAdapter(baseActivity,hostpitalListArr);
-        new CommonDialog(adapter,baseActivity, hostpitalListArr, new OnRowClickListener() {
+        new CommonDialog(adapter,baseActivity, hostpitalListArr,view, new OnRowClickListener() {
             @Override
-            public void onItemClick(int viewId,int position) {
-                
-                if(view == et_hospital_name){
-                    hospitalid = hostpitalListArr.get(position).getId();
-                }else if(view == et_doctor_name){
-                    doctorid = hostpitalListArr.get(position).getId();
-                }else if(view == et_mode_of_transport){
-                    transportid = hostpitalListArr.get(position).getId();
-                }else if(view == et_bike_list){
-                    bikeid = hostpitalListArr.get(position).getId();
-                }
-
+            public void onItemClick(int viewId,int position,View v) {
                 et_name.setText(hostpitalListArr.get(position).getName());
                 if (et_name.getText().toString().equalsIgnoreCase("Office Bike")){
                     linBikelist.setVisibility(View.VISIBLE);
+                }else{
+                    if(v == et_bike_list)
+                        linBikelist.setVisibility(View.VISIBLE);
+                    else
+                        linBikelist.setVisibility(View.GONE);
+                }
+                if(v == et_hospital_name){
+                    hospitalid = hostpitalListArr.get(position).getId();
+                }else if(v == et_doctor_name){
+                    doctorid = hostpitalListArr.get(position).getId();
+                }else if(v == et_mode_of_transport){
+                    transportid = hostpitalListArr.get(position).getId();
+                }else if(v == et_bike_list){
+                    bikeid = hostpitalListArr.get(position).getId();
+                }
+
+
+               /* if (et_name.getText().toString().equalsIgnoreCase("Office Bike")){
+                    linBikelist.setVisibility(View.VISIBLE);
                 }else
-                    linBikelist.setVisibility(View.GONE);
+                    linBikelist.setVisibility(View.GONE);*/
 
 
             }
