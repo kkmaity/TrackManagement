@@ -1,14 +1,35 @@
 package com.demo.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.demo.MainActivity;
 import com.demo.R;
+import com.demo.model.notification.NotificationMain;
+import com.demo.restservice.APIHelper;
+import com.demo.restservice.RestService;
+import com.demo.utils.Constant;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -36,6 +57,9 @@ public class OfficeWorkEntryDetailsFragment extends BaseFragment {
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         ((MainActivity)getActivity()).setTitle(getArguments().getString("category_title"));
     }
+
+
+
 
 
 

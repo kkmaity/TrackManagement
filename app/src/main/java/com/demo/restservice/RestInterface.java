@@ -59,16 +59,24 @@ public interface RestInterface {
 
     @POST("emp_track/api/attendanceStop.php")
     Call<AttendenceStopMain> attendance_stop(@Body ApiAttendenceStopParam params);
+
     @POST("emp_track/api/attendanceStatus.php")
     Call<AttendanceStatusMain> attendanceStatus(@Body ApiAttendanceStatusParam params);
+
     @POST("emp_track/api/getemployeeList.php")
     Call<EmpListMain> getemployeeList(@Body ApiEmpListParam params);
 
 
     @POST("emp_track/api/leave_application_list.php")
     Call<AppliedLeaveList> leave_application_list(@Body LeaveParam params);
+
     @POST("emp_track/api/notification.php")
     Call<NotificationMain> notification(@Body NotificationParam params);
+
+    
+
+
+
     @Multipart
     @POST("emp_track/api/userRegister.php")
     Call<RegistrationMain> userRegister(
@@ -79,7 +87,6 @@ public interface RestInterface {
             @Part("password") RequestBody password,
             @Part("deviceToken") RequestBody deviceToken,
             @Part MultipartBody.Part files);
-
 
 
 
