@@ -510,7 +510,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 jsonObject.put("endLat", lat);
                 jsonObject.put("endLong", lng);
                 Log.e("AttendenceStop ", jsonObject.toString());
-                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoorjobStop.php", jsonObject);
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoorworkStop.php", jsonObject);
                 return json;
 
             } catch (Exception e) {
