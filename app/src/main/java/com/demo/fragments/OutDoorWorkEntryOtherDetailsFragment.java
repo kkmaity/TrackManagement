@@ -72,7 +72,7 @@ import retrofit2.Response;
 /**
  * Created by root on 20/8/15.
  */
-public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Imageutils.ImageAttachmentListener {
+public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Imageutils.ImageAttachmentListener {
 
     private static EditText et_challan_number;
     private static EditText et_challan_date;
@@ -123,7 +123,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_outdoor_work_entry_details, null, false);
+        View v = inflater.inflate(R.layout.fragment_outdoor_work_entry_other_details, null, false);
         ((MainActivity) getActivity()).setTitle("Outdoor Work Entry");
         // et_challan_number = (EditText)v.findViewById(R.id.et_challan_number);
         // et_box_number = (EditText)v.findViewById(R.id.et_box_number);
@@ -158,7 +158,6 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         et_invoice_number.setOnClickListener(this);
         et_mode_of_transport.setOnClickListener(this);
         et_bike_list.setOnClickListener(this);
-        et_invoice_date.setOnClickListener(this);
 
         tv_start_work = (TextView) v.findViewById(R.id.tv_start_work);
         tv_end_work = (TextView) v.findViewById(R.id.tv_end_work);
@@ -339,17 +338,17 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-
+        //((MainActivity) getActivity()).setTitle(getArguments().getString("category_title"));
     }
 
 
     public boolean isValid() {
         boolean flag = true;
 
-        if (et_challan_number.getText().toString().trim().length() == 0) {
+        /*if (et_challan_number.getText().toString().trim().length() == 0) {
             et_challan_number.setError("Please fill challan number");
             flag = false;
-        }/*else if(et_box_number.getText().toString().trim().length() == 0){
+        }*//*else if(et_box_number.getText().toString().trim().length() == 0){
             et_box_number.setError("Please fill box number");
             flag = false;
         }*/ /*else if (et_description.getText().toString().trim().length() == 0) {
