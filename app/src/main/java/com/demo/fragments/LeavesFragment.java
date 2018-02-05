@@ -39,10 +39,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
-/**
- * Created by root on 20/8/15.
- */
 public class LeavesFragment extends BaseFragment {
 
 

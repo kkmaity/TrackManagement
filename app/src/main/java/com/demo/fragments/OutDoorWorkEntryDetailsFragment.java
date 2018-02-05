@@ -256,23 +256,23 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                 break;
             case R.id.ivPicture1:
                 imageViewID=1;
-                imageutils.imagepicker(1);
+                imageutils.imagepicker(0);
                 break;
             case R.id.ivPicture2:
                 imageViewID=2;
-                imageutils.imagepicker(1);
+                imageutils.imagepicker(0);
                 break;
             case R.id.ivPicture3:
                 imageViewID=3;
-                imageutils.imagepicker(1);
+                imageutils.imagepicker(0);
                 break;
             case R.id.ivPicture4:
                 imageViewID=4;
-                imageutils.imagepicker(1);
+                imageutils.imagepicker(0);
                 break;
             case R.id.ivPicture5:
                 imageViewID=5;
-                imageutils.imagepicker(1);
+                imageutils.imagepicker(0);
                 break;
         }
     }
@@ -1024,7 +1024,7 @@ public class OutDoorWorkEntryDetailsFragment extends BaseFragment implements Loc
                                       Bitmap picture4,
                                       Bitmap picture5){
 
-
+System.out.println("==========="+picture1+""+picture2);
 
          challan_no = null == challan_no? "":challan_no;
          challan_date = null == challan_date? "":challan_date;
