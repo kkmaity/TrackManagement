@@ -179,6 +179,7 @@ public class CancelLeaveFragment extends BaseFragment implements LeaveItemClickL
                 jsonObject.put("ApiKey", "0a2b8d7f9243305f2a4700e1870f673a");
                 jsonObject.put("userid", baseActivity.preference.getUserId());
                 jsonObject.put("leaveID",  params[0]);
+                jsonObject.put("status", "cancel_application");
                  Log.e("ApplyCalcelLeaveA", jsonObject.toString());
                 JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/attendanceCancel.php", jsonObject);
                 return json;

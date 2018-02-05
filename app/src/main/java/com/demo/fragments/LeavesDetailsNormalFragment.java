@@ -183,7 +183,7 @@ public class LeavesDetailsNormalFragment extends BaseFragment{
                             if(diff>leaveCount){
                                 new AlertDialog.Builder(baseActivity)
                                         .setTitle("Alert")
-                                        .setMessage("Normal Leave "+leaveCount +"\n"+"Leave Without Pay"+(diff-leaveCount))
+                                        .setMessage("Normal Leave :"+leaveCount +"\n"+"Leave Without Pay :"+(diff-leaveCount))
                                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
