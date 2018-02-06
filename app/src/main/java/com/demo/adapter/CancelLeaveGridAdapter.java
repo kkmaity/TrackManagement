@@ -62,6 +62,12 @@ public class CancelLeaveGridAdapter extends BaseAdapter {
         }else{
             leaveType = "Comp off";
         }
+        String status = leaveHisData.get(i).getResponseDatum().getLeaveStatus();
+        if(status.equalsIgnoreCase("cancel_approve") || status.equalsIgnoreCase("cancel_rejected") || status.equalsIgnoreCase("cancel_application")){
+            checkbox.setVisibility(View.GONE);
+        }else{
+            checkbox.setVisibility(View.VISIBLE);
+        }
 
         tvStatus.setText(leaveHisData.get(i).getResponseDatum().getLeaveStatus()+"\n"+"("+leaveType+")");
         tvStartTime.setText(leaveHisData.get(i).getResponseDatum().getLeaveStartDate());

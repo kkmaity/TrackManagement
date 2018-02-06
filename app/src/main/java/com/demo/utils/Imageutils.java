@@ -290,11 +290,13 @@ public class Imageutils
                     true);
 
             return scaledBitmap;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            String err =  e.getMessage();
+            return null;
         }
 
-        return null;
+
     }
 
     /**

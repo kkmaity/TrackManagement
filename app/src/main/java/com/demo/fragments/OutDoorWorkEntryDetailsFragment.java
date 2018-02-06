@@ -1057,7 +1057,7 @@ System.out.println("==========="+picture1+""+picture2);
         RequestBody expenseBody = RequestBody.create(MultipartBody.FORM, expense);
         RequestBody startLatBody = RequestBody.create(MultipartBody.FORM, startLat);
         RequestBody startLongBody = RequestBody.create(MultipartBody.FORM, startLong);
-        MultipartBody.Part body1,body2,body3,body4,body5;
+        MultipartBody.Part body1 = null,body2= null,body3= null,body4= null,body5= null;
         if(picture1!=null){
             RequestBody requestFile1 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture1));
             body1 = MultipartBody.Part.createFormData("picture1", baseActivity.getImageFile(picture1).getName(), requestFile1);
@@ -1086,7 +1086,7 @@ System.out.println("==========="+picture1+""+picture2);
         Call<ResponseBody> getDepartment = RestService.getInstance().restInterface.outdoorworkStart(bodyApiKey,userIdBody,
                 jobCategoryBody,challan_noBody,challan_dateBody,hospital_idBody,doctor_idBody,invoice_numberBody,
                 invoice_dateBody,mode_of_transportBody,office_bike_idBody,expenseBody,startLatBody,
-                startLongBody,null,null,null,null,null);
+                startLongBody,body1,body2,body3,body4,body5);
         getDepartment.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
