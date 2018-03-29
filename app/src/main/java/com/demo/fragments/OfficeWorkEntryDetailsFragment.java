@@ -89,12 +89,15 @@ public class OfficeWorkEntryDetailsFragment extends BaseFragment{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_start_work:
+                if (!baseActivity.isNetworkConnected())
+                    return;
                 if (isValid()) {
                     getAttendenceStart();
                 }
                 break;
             case R.id.tv_end_work:
-
+                if (!baseActivity.isNetworkConnected())
+                    return;
                 getAttendenceStop();
 
                 break;

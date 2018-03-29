@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.demo.preferences.Preference;
 
@@ -125,6 +126,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
+        if(!isConnected){
+            Toast.makeText(this, "No network connection", Toast.LENGTH_SHORT).show();
+        }
         return isConnected;
     }
 

@@ -182,6 +182,8 @@ public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implement
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_start_work:
+                if (!baseActivity.isNetworkConnected())
+                    return;
                 if (isValid()) {
                     LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
@@ -202,7 +204,8 @@ public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implement
                 }
                 break;
             case R.id.tv_end_work:
-
+                if (!baseActivity.isNetworkConnected())
+                    return;
                 val = 2;
                 isButtonClicked = true;
 
