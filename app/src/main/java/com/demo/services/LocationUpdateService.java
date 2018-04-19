@@ -102,7 +102,7 @@ public class LocationUpdateService extends Service  implements LocationListener,
 
 
             if (preference.getJobID()!=null&&!preference.getJobID().isEmpty())
-            new SendTrackNotification().execute(lat,lng);
+          //  new SendTrackNotification().execute(lat,lng);
             Log.d(TAG, "UI update LAt  ............."+lat);
         } else {
             Log.d(TAG, "location is null ...............");

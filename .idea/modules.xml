@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://E:/SanjoyDa (Video App)/TrackManagement/DemoSApp.iml" filepath="E:/SanjoyDa (Video App)/TrackManagement/DemoSApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/TrackManagement.iml" filepath="$PROJECT_DIR$/TrackManagement.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

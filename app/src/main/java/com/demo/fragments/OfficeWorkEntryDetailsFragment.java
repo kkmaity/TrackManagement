@@ -250,7 +250,7 @@ public class OfficeWorkEntryDetailsFragment extends BaseFragment{
                 jsonObject.put("userid", baseActivity.preference.getUserId());
 
                 Log.e("LeaveCount ", jsonObject.toString());
-                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoor_job_history.php", jsonObject);
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/office_job_history.php", jsonObject);
                 return json;
 
             } catch (Exception e) {

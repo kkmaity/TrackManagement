@@ -3,6 +3,7 @@ package com.demo.fragments;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,6 +45,7 @@ import com.demo.network.KlHttpClient;
 import com.demo.restservice.RestService;
 import com.demo.services.LocationUpdateService;
 import com.demo.utils.Constant;
+import com.demo.utils.FileUtils;
 import com.demo.utils.Imageutils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -61,6 +64,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -118,6 +122,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
     private LinearLayout linBikelist;
     private View view;
     private String hospitalid, doctorid, transportid,bikeid;
+    private Uri uri1,uri2,uri3,uri4,uri5;
 
 
     @Override
@@ -513,7 +518,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                 jsonObject.put("endLat", lat);
                 jsonObject.put("endLong", lng);
                 Log.e("AttendenceStop ", jsonObject.toString());
-                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoorjobStop.php", jsonObject);
+                JSONObject json = KlHttpClient.SendHttpPost("http://173.214.180.212/emp_track/api/outdoorworkStop.php", jsonObject);
                 return json;
 
             } catch (Exception e) {
@@ -1011,23 +1016,29 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         switch (imageViewID){
             case 1:
                 ivPicture1.setImageBitmap(file);
+                String select=FileUtils.getPath(baseActivity,uri);
                 mBitmap1=file;
+                uri1=uri;
                 break;
             case 2:
                 ivPicture2.setImageBitmap(file);
                 mBitmap2=file;
+                uri2=uri;
                 break;
             case 3:
                 ivPicture3.setImageBitmap(file);
                 mBitmap3=file;
+                uri3=uri;
                 break;
             case 4:
                 ivPicture4.setImageBitmap(file);
                 mBitmap4=file;
+                uri4=uri;
                 break;
             case 5:
                 ivPicture5.setImageBitmap(file);
                 mBitmap5=file;
+                uri5=uri;
                 break;
 
         }
@@ -1117,36 +1128,46 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         RequestBody expenseBody = RequestBody.create(MultipartBody.FORM, expense);
         RequestBody startLatBody = RequestBody.create(MultipartBody.FORM, startLat);
         RequestBody startLongBody = RequestBody.create(MultipartBody.FORM, startLong);
-        MultipartBody.Part body1,body2,body3,body4,body5;
+        MultipartBody.Part body1=null,body2=null,body3=null,body4=null,body5 = null;
         if(picture1!=null){
-            RequestBody requestFile1 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture1));
-            body1 = MultipartBody.Part.createFormData("picture1", baseActivity.getImageFile(picture1).getName(), requestFile1);
+
+             body1 = prepareFilePart("picture1", uri1);
+
+           // RequestBody requestFile1 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture1));
+           // body1 = MultipartBody.Part.createFormData("picture1", baseActivity.getImageFile(picture1).getName(), requestFile1);
         }
 
         if(picture2!=null){
-            RequestBody requestFile2 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture2));
-            body2 = MultipartBody.Part.createFormData("picture2", baseActivity.getImageFile(picture1).getName(), requestFile2);
+           // RequestBody requestFile2 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture2));
+           // body2 = MultipartBody.Part.createFormData("picture2", baseActivity.getImageFile(picture1).getName(), requestFile2);
+            body2 = prepareFilePart("picture2", uri2);
+
         }
         if(picture3!=null){
-            RequestBody requestFile3 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture3));
-             body3 = MultipartBody.Part.createFormData("picture3", baseActivity.getImageFile(picture1).getName(), requestFile3);
+           // RequestBody requestFile3 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture3));
+           ///  body3 = MultipartBody.Part.createFormData("picture3", baseActivity.getImageFile(picture1).getName(), requestFile3);
+            body3 = prepareFilePart("picture3",uri3);
+
         }
 
         if(picture4!=null){
             RequestBody requestFile4 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture4));
-            body4 = MultipartBody.Part.createFormData("picture4", baseActivity.getImageFile(picture1).getName(), requestFile4);
+           // body4 = MultipartBody.Part.createFormData("picture4", baseActivity.getImageFile(picture1).getName(), requestFile4);
+            body4 = prepareFilePart("picture4", uri4);
+
         }
 
         if(picture5!=null){
             RequestBody requestFile5 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture5));
-            body5 = MultipartBody.Part.createFormData("picture5", baseActivity.getImageFile(picture1).getName(), requestFile5);
+          //  body5 = MultipartBody.Part.createFormData("picture5", baseActivity.getImageFile(picture1).getName(), requestFile5);
+            body5 = prepareFilePart("picture5", uri5);
         }
 
 
         Call<ResponseBody> getDepartment = RestService.getInstance().restInterface.outdoorworkStart(bodyApiKey,userIdBody,
                 jobCategoryBody,challan_noBody,challan_dateBody,hospital_idBody,doctor_idBody,invoice_numberBody,
                 invoice_dateBody,mode_of_transportBody,office_bike_idBody,expenseBody,startLatBody,
-                startLongBody,null,null,null,null,null);
+                startLongBody,body1,body2,body3,body4,body5);
         getDepartment.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1202,4 +1223,31 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
             }
         });
     }
+    @NonNull
+    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
+        File file = FileUtils.getFile(baseActivity, fileUri);
+        MediaType type = MediaType.parse(getMimeType(fileUri));
+        RequestBody requestFile = RequestBody.create(type, file);
+        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+    }
+
+
+
+
+    public String getMimeType(Uri uri) {
+        String mimeType = null;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            ContentResolver cr = baseActivity.getApplicationContext().getContentResolver();
+            mimeType = cr.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
+                    .toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    fileExtension.toLowerCase());
+        }
+        return mimeType;
+    }
+
+
+
 }
