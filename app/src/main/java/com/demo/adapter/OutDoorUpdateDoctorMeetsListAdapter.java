@@ -74,7 +74,6 @@ public class OutDoorUpdateDoctorMeetsListAdapter extends BaseAdapter {
                 bundle.putString("job_id", attendenceHisData.get(i).getJobid());
                 fragment.setArguments(bundle);
                 outDoorWorkEntryDoctorMeetDetailsFragment.displayView(fragment);
-//                OutDoorWorkEntryOtherDetailsFragment outDoorWorkEntryOtherDetailsFragment =
             }
         });
         return view;
