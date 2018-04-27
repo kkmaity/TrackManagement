@@ -55,7 +55,6 @@ public class OutDoorUpdateOthersListAdapter extends BaseAdapter {
         TextView tvEndTime = view.findViewById(R.id.tvEndTime);
         TextView tvStatus = view.findViewById(R.id.tvStatus);
         TextView tv_update = view.findViewById(R.id.tv_update);
-        //String str = "Hello I'm your String";
         if (attendenceHisData.get(i).getJob_status().equalsIgnoreCase("yes")) {
             tvStatus.setText("Job Status :" + " Ongoing Work");
         } else
