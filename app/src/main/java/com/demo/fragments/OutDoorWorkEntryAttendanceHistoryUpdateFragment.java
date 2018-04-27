@@ -381,32 +381,6 @@ public class OutDoorWorkEntryAttendanceHistoryUpdateFragment extends BaseFragmen
         RequestBody bodyApiKey = RequestBody.create(MultipartBody.FORM, Constant.API_KEY);
         RequestBody job_idBody = RequestBody.create(MultipartBody.FORM, job_id);
         RequestBody descriptionBody = RequestBody.create(MultipartBody.FORM, description);
-//        MultipartBody.Part body1 = null, body2 = null, body3 = null, body4 = null, body5 = null;
-//        if (picture1 != null) {
-//            RequestBody requestFile1 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture1));
-//            body1 = MultipartBody.Part.createFormData("picture1", baseActivity.getImageFile(picture1).getName(), requestFile1);
-////            body1 = prepareFilePart("picture1", uri1);
-//        }
-//        if (picture2 != null) {
-//            RequestBody requestFile2 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture2));
-//            body2 = MultipartBody.Part.createFormData("picture2", baseActivity.getImageFile(picture2).getName(), requestFile2);
-////            body2 = prepareFilePart("picture2", uri2);
-//        }
-//        if (picture3 != null) {
-//            RequestBody requestFile3 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture3));
-//            body3 = MultipartBody.Part.createFormData("picture3", baseActivity.getImageFile(picture3).getName(), requestFile3);
-////            body3 = prepareFilePart("picture3", uri3);
-//        }
-//        if (picture4 != null) {
-//            RequestBody requestFile4 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture4));
-//            body4 = MultipartBody.Part.createFormData("picture4", baseActivity.getImageFile(picture4).getName(), requestFile4);
-////            body4 = prepareFilePart("picture4", uri4);
-//        }
-//        if (picture5 != null) {
-//            RequestBody requestFile5 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture5));
-//            body5 = MultipartBody.Part.createFormData("picture5", baseActivity.getImageFile(picture5).getName(), requestFile5);
-////            body5 = prepareFilePart("picture5", uri5);
-//        }
 
         List<MultipartBody.Part> parts = new ArrayList<>();
         if (images != null && images.size() > 0) {
