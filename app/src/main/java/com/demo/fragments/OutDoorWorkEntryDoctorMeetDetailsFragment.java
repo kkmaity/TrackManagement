@@ -36,7 +36,7 @@ import android.widget.Toast;
 import com.demo.MainActivity;
 import com.demo.R;
 import com.demo.adapter.CommonAdapter;
-import com.demo.adapter.OutDoorHistoryGridAdapter;
+import com.demo.adapter.OutDoorUpdateDoctorMeetsListAdapter;
 import com.demo.dialog.CommonDialog;
 import com.demo.interfaces.OnRowClickListener;
 import com.demo.model.CommonDialogModel;
@@ -76,7 +76,7 @@ import retrofit2.Response;
 /**
  * Created by root on 20/8/15.
  */
-public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Imageutils.ImageAttachmentListener {
+public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Imageutils.ImageAttachmentListener {
 
     private static EditText et_challan_number;
     private static EditText et_challan_date;
@@ -107,7 +107,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
     private boolean isButtonClicked = false;
     private int val = 0;
     private ListView gridAttendanceHis;
-    private OutDoorHistoryGridAdapter outDoorHistoryGridAdapter;
+    private OutDoorUpdateDoctorMeetsListAdapter outDoorUpdateDoctorMeetsListAdapter;
     private ArrayList<OutDoorHistory> outDoorHistories = new ArrayList<>();
     private ArrayList<CommonDialogModel> commonDialogModels = new ArrayList<>();
     private JSONArray hostpitalListArr, doctorListArr, modeOfTranportArr, bileArr;
@@ -121,8 +121,8 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
     private Bitmap mBitmap5;
     private LinearLayout linBikelist;
     private View view;
-    private String hospitalid, doctorid, transportid,bikeid;
-    private Uri uri1,uri2,uri3,uri4,uri5;
+    private String hospitalid, doctorid, transportid, bikeid;
+    private Uri uri1, uri2, uri3, uri4, uri5;
 
 
     @Override
@@ -133,24 +133,24 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         // et_challan_number = (EditText)v.findViewById(R.id.et_challan_number);
         // et_box_number = (EditText)v.findViewById(R.id.et_box_number);
         // et_description = (EditText)v.findViewById(R.id.et_description);
-        imageutils =new Imageutils(getActivity(),this,true);
-        et_challan_number = (EditText) v.findViewById(R.id.et_challan_number);
-        linBikelist = (LinearLayout) v.findViewById(R.id.linBikelist);
-        et_challan_date = (EditText) v.findViewById(R.id.et_challan_date);
-        et_hospital_name = (EditText) v.findViewById(R.id.et_hospital_name);
-        et_doctor_name = (EditText) v.findViewById(R.id.et_doctor_name);
-        et_invoice_number = (EditText) v.findViewById(R.id.et_invoice_number);
-        et_invoice_date = (EditText) v.findViewById(R.id.et_invoice_date);
-        et_mode_of_transport = (EditText) v.findViewById(R.id.et_mode_of_transport);
-        et_bike_list = (EditText) v.findViewById(R.id.et_bike_list);
-        et_description = (EditText) v.findViewById(R.id.et_challan_number);
+        imageutils = new Imageutils(getActivity(), this, true);
+        et_challan_number = v.findViewById(R.id.et_challan_number);
+        linBikelist = v.findViewById(R.id.linBikelist);
+        et_challan_date = v.findViewById(R.id.et_challan_date);
+        et_hospital_name = v.findViewById(R.id.et_hospital_name);
+        et_doctor_name = v.findViewById(R.id.et_doctor_name);
+        et_invoice_number = v.findViewById(R.id.et_invoice_number);
+        et_invoice_date = v.findViewById(R.id.et_invoice_date);
+        et_mode_of_transport = v.findViewById(R.id.et_mode_of_transport);
+        et_bike_list = v.findViewById(R.id.et_bike_list);
+        et_description = v.findViewById(R.id.et_challan_number);
         linBikelist.setVisibility(View.GONE);
-        et_expence = (EditText) v.findViewById(R.id.et_expence);
-        ivPicture1 = (ImageView) v.findViewById(R.id.ivPicture1);
-        ivPicture2 = (ImageView) v.findViewById(R.id.ivPicture2);
-        ivPicture3 = (ImageView) v.findViewById(R.id.ivPicture3);
-        ivPicture4 = (ImageView) v.findViewById(R.id.ivPicture4);
-        ivPicture5 = (ImageView) v.findViewById(R.id.ivPicture5);
+        et_expence = v.findViewById(R.id.et_expence);
+        ivPicture1 = v.findViewById(R.id.ivPicture1);
+        ivPicture2 = v.findViewById(R.id.ivPicture2);
+        ivPicture3 = v.findViewById(R.id.ivPicture3);
+        ivPicture4 = v.findViewById(R.id.ivPicture4);
+        ivPicture5 = v.findViewById(R.id.ivPicture5);
 
         ivPicture1.setOnClickListener(this);
         ivPicture2.setOnClickListener(this);
@@ -164,13 +164,13 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         et_mode_of_transport.setOnClickListener(this);
         et_bike_list.setOnClickListener(this);
 
-        tv_start_work = (TextView) v.findViewById(R.id.tv_start_work);
-        tv_end_work = (TextView) v.findViewById(R.id.tv_end_work);
-        tv_start_date_time = (TextView) v.findViewById(R.id.tv_start_date_time);
-        tv_end_date_time = (TextView) v.findViewById(R.id.tv_end_date_time);
-        gridAttendanceHis = (ListView) v.findViewById(R.id.gridAttendanceHis);
-        outDoorHistoryGridAdapter = new OutDoorHistoryGridAdapter(baseActivity, outDoorHistories);
-        gridAttendanceHis.setAdapter(outDoorHistoryGridAdapter);
+        tv_start_work = v.findViewById(R.id.tv_start_work);
+        tv_end_work = v.findViewById(R.id.tv_end_work);
+        tv_start_date_time = v.findViewById(R.id.tv_start_date_time);
+        tv_end_date_time = v.findViewById(R.id.tv_end_date_time);
+        gridAttendanceHis = v.findViewById(R.id.gridAttendanceHis);
+        outDoorUpdateDoctorMeetsListAdapter = new OutDoorUpdateDoctorMeetsListAdapter(baseActivity, outDoorHistories, this);
+        gridAttendanceHis.setAdapter(outDoorUpdateDoctorMeetsListAdapter);
         tv_start_work.setOnClickListener(this);
         tv_end_work.setOnClickListener(this);
         ((MainActivity) getActivity()).setTitle(getArguments().getString("category_title"));
@@ -243,7 +243,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                 break;
             case R.id.et_hospital_name:
                 view = et_hospital_name;
-             getHospitalListAsyntask();
+                getHospitalListAsyntask();
                 break;
             case R.id.et_doctor_name:
                 view = et_doctor_name;
@@ -263,44 +263,46 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                 getBikeListAsyntask();
                 break;
             case R.id.ivPicture1:
-                imageViewID=1;
+                imageViewID = 1;
                 imageutils.imagepicker(1);
                 break;
             case R.id.ivPicture2:
-                imageViewID=2;
+                imageViewID = 2;
                 imageutils.imagepicker(1);
                 break;
             case R.id.ivPicture3:
-                imageViewID=3;
+                imageViewID = 3;
                 imageutils.imagepicker(1);
                 break;
             case R.id.ivPicture4:
-                imageViewID=4;
+                imageViewID = 4;
                 imageutils.imagepicker(1);
                 break;
             case R.id.ivPicture5:
-                imageViewID=5;
+                imageViewID = 5;
                 imageutils.imagepicker(1);
                 break;
         }
     }
 
     private void getHospitalListAsyntask() {
-        if (baseActivity.isNetworkConnected()){
+        if (baseActivity.isNetworkConnected()) {
 
             new HospitalListAsynctask().execute();
         }
     }
+
     private void getDoctorListAsyntask() {
 
-        if (baseActivity.isNetworkConnected()){
+        if (baseActivity.isNetworkConnected()) {
 
             new DoctorListAsynctask().execute();
         }
     }
+
     private void getModeOfTransportListAsyntask() {
 
-        if (baseActivity.isNetworkConnected()){
+        if (baseActivity.isNetworkConnected()) {
 
             new ModeOfTranportListAsynctask().execute();
         }
@@ -308,7 +310,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
 
     private void getBikeListAsyntask() {
 
-        if (baseActivity.isNetworkConnected()){
+        if (baseActivity.isNetworkConnected()) {
 
             new BikeListAsynctask().execute();
         }
@@ -347,7 +349,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-       // ((MainActivity) getActivity()).setTitle(getArguments().getString("category_title"));
+        // ((MainActivity) getActivity()).setTitle(getArguments().getString("category_title"));
     }
 
 
@@ -418,9 +420,9 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
     private void getAttendenceStart() {
         if (getView() != null) {
             if (baseActivity.isNetworkConnected()) {
-               // new StartAsynctask().execute();
+                // new StartAsynctask().execute();
 
-                submitOutdorJobData(getArguments().getString("category_id"),et_challan_number.getText().toString(),et_challan_date.getText().toString(),hospitalid,doctorid,et_invoice_number.getText().toString(),et_invoice_date.getText().toString(),transportid,bikeid,et_expence.getText().toString(),lat, lng,mBitmap1,mBitmap2,mBitmap3,mBitmap4,mBitmap5);
+                submitOutdorJobData(getArguments().getString("category_id"), et_challan_number.getText().toString(), et_challan_date.getText().toString(), hospitalid, doctorid, et_invoice_number.getText().toString(), et_invoice_date.getText().toString(), transportid, bikeid, et_expence.getText().toString(), lat, lng, mBitmap1, mBitmap2, mBitmap3, mBitmap4, mBitmap5);
 
             }
         }
@@ -592,7 +594,6 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
             if (json != null) {
 
 
-
                 try {
                     if (json.getInt("ResponseCode") == 200) {
                         if (json.has("ResponseData")) {
@@ -603,8 +604,8 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                                 String jobid = c.getString("jobid");
                                 String category = c.getString("category");
                                 String challan_no = c.getString("challan_no");
-                              //  String box_no = c.getString("box_no");
-                                String description = c.has("description")?c.getString("description"):"";
+                                //  String box_no = c.getString("box_no");
+                                String description = c.has("description") ? c.getString("description") : "";
                                 String startTime = c.getString("startTime");
                                 String endTime = c.getString("endTime");
                                 String job_status = c.getString("job_status");
@@ -615,7 +616,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
 
                             }
 
-                            outDoorHistoryGridAdapter.notifyDataSetChanged();
+                            outDoorUpdateDoctorMeetsListAdapter.notifyDataSetChanged();
 
                         } else {
                             Toast.makeText(baseActivity, json.getString("message"), Toast.LENGTH_SHORT).show();
@@ -721,15 +722,15 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                         hostpitalListArr = json.getJSONArray("ResponseData");
                         commonDialogModels.clear();
                         CommonDialogModel model;
-                        for(int i=0;i<hostpitalListArr.length();i++){
-                            model=  new CommonDialogModel();
+                        for (int i = 0; i < hostpitalListArr.length(); i++) {
+                            model = new CommonDialogModel();
                             model.setId(hostpitalListArr.getJSONObject(i).getString("hospital_id"));
                             model.setName(hostpitalListArr.getJSONObject(i).getString("hospital_name"));
                             commonDialogModels.add(model);
 
                         }
 
-                        setValueInCommonDialogHos(commonDialogModels,et_hospital_name);
+                        setValueInCommonDialogHos(commonDialogModels, et_hospital_name);
 
 
                     }
@@ -741,70 +742,58 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         }
     }
 
-    private void setValueInCommonDialogHos(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
-        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
-        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+    private void setValueInCommonDialogHos(final ArrayList<CommonDialogModel> hostpitalListArr, final EditText et_name) {
+        adapter = new CommonAdapter(baseActivity, hostpitalListArr);
+        new CommonDialog(adapter, baseActivity, hostpitalListArr, view, new OnRowClickListener() {
             @Override
-            public void onItemClick(int viewId,int position,View v) {
+            public void onItemClick(int viewId, int position, View v) {
                 et_name.setText(hostpitalListArr.get(position).getName());
 
                 hospitalid = hostpitalListArr.get(position).getId();
             }
 
 
-
-
-
-
         }).show();
     }
 
 
-
-
-    private void setValueInCommonDialogBike(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
-        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
-        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+    private void setValueInCommonDialogBike(final ArrayList<CommonDialogModel> hostpitalListArr, final EditText et_name) {
+        adapter = new CommonAdapter(baseActivity, hostpitalListArr);
+        new CommonDialog(adapter, baseActivity, hostpitalListArr, view, new OnRowClickListener() {
             @Override
-            public void onItemClick(int viewId,int position,View v) {
+            public void onItemClick(int viewId, int position, View v) {
                 et_name.setText(hostpitalListArr.get(position).getName());
 
                 bikeid = hostpitalListArr.get(position).getId();
 
 
-
-
-
-
             }
         }).show();
     }
-    private void setValueInCommonDialogDOC(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
-        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
-        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+
+    private void setValueInCommonDialogDOC(final ArrayList<CommonDialogModel> hostpitalListArr, final EditText et_name) {
+        adapter = new CommonAdapter(baseActivity, hostpitalListArr);
+        new CommonDialog(adapter, baseActivity, hostpitalListArr, view, new OnRowClickListener() {
             @Override
-            public void onItemClick(int viewId,int position,View v) {
+            public void onItemClick(int viewId, int position, View v) {
                 et_name.setText(hostpitalListArr.get(position).getName());
 
                 doctorid = hostpitalListArr.get(position).getId();
 
 
-
-
-
-
             }
         }).show();
     }
-    private void setValueInCommonDialogMode(final ArrayList<CommonDialogModel> hostpitalListArr,final EditText et_name) {
-        adapter=new CommonAdapter(baseActivity,hostpitalListArr);
-        new CommonDialog(adapter,baseActivity, hostpitalListArr, view,new OnRowClickListener() {
+
+    private void setValueInCommonDialogMode(final ArrayList<CommonDialogModel> hostpitalListArr, final EditText et_name) {
+        adapter = new CommonAdapter(baseActivity, hostpitalListArr);
+        new CommonDialog(adapter, baseActivity, hostpitalListArr, view, new OnRowClickListener() {
             @Override
-            public void onItemClick(int viewId,int position,View v) {
+            public void onItemClick(int viewId, int position, View v) {
                 et_name.setText(hostpitalListArr.get(position).getName());
-                if (et_name.getText().toString().equalsIgnoreCase("Office Bike")){
+                if (et_name.getText().toString().equalsIgnoreCase("Office Bike")) {
                     linBikelist.setVisibility(View.VISIBLE);
-                }else{
+                } else {
 
                     linBikelist.setVisibility(View.GONE);
                 }
@@ -813,34 +802,9 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                 transportid = hostpitalListArr.get(position).getId();
 
 
-
-
-
-
             }
         }).show();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public class DoctorListAsynctask extends AsyncTask<String, Void, JSONObject> {
@@ -877,15 +841,15 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                         doctorListArr = json.getJSONArray("ResponseData");
                         commonDialogModels.clear();
                         CommonDialogModel model;
-                        for(int i=0;i<doctorListArr.length();i++){
-                            model=  new CommonDialogModel();
+                        for (int i = 0; i < doctorListArr.length(); i++) {
+                            model = new CommonDialogModel();
                             model.setId(doctorListArr.getJSONObject(i).getString("doctor_id"));
                             model.setName(doctorListArr.getJSONObject(i).getString("doctor_name"));
                             commonDialogModels.add(model);
 
                         }
 
-                        setValueInCommonDialogDOC(commonDialogModels,et_doctor_name);
+                        setValueInCommonDialogDOC(commonDialogModels, et_doctor_name);
 
                     }
 
@@ -931,15 +895,15 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                         modeOfTranportArr = json.getJSONArray("ResponseData");
                         commonDialogModels.clear();
                         CommonDialogModel model;
-                        for(int i=0;i<modeOfTranportArr.length();i++){
-                            model=  new CommonDialogModel();
+                        for (int i = 0; i < modeOfTranportArr.length(); i++) {
+                            model = new CommonDialogModel();
                             model.setId(modeOfTranportArr.getJSONObject(i).getString("transport_id"));
                             model.setName(modeOfTranportArr.getJSONObject(i).getString("title"));
                             commonDialogModels.add(model);
 
                         }
 
-                        setValueInCommonDialogMode(commonDialogModels,et_mode_of_transport);
+                        setValueInCommonDialogMode(commonDialogModels, et_mode_of_transport);
 
                     }
 
@@ -949,6 +913,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
             }
         }
     }
+
     public class BikeListAsynctask extends AsyncTask<String, Void, JSONObject> {
         @Override
         protected void onPreExecute() {
@@ -983,15 +948,15 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                         bileArr = json.getJSONArray("ResponseData");
                         commonDialogModels.clear();
                         CommonDialogModel model;
-                        for(int i=0;i<bileArr.length();i++){
-                            model=  new CommonDialogModel();
+                        for (int i = 0; i < bileArr.length(); i++) {
+                            model = new CommonDialogModel();
                             model.setId(bileArr.getJSONObject(i).getString("bike_id"));
                             model.setName(bileArr.getJSONObject(i).getString("bike_no"));
                             commonDialogModels.add(model);
 
                         }
 
-                        setValueInCommonDialogBike(commonDialogModels,et_bike_list);
+                        setValueInCommonDialogBike(commonDialogModels, et_bike_list);
 
                     }
 
@@ -1005,7 +970,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d("Fragment", "onRequestPermissionsResult: "+requestCode);
+        Log.d("Fragment", "onRequestPermissionsResult: " + requestCode);
         imageutils.request_permission_result(requestCode, permissions, grantResults);
     }
 
@@ -1013,101 +978,100 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
     public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
         Bitmap bitmap = file;
         String file_name = filename;
-        switch (imageViewID){
+        switch (imageViewID) {
             case 1:
                 ivPicture1.setImageBitmap(file);
-                String select=FileUtils.getPath(baseActivity,uri);
-                mBitmap1=file;
-                uri1=uri;
+                String select = FileUtils.getPath(baseActivity, uri);
+                mBitmap1 = file;
+                uri1 = uri;
                 break;
             case 2:
                 ivPicture2.setImageBitmap(file);
-                mBitmap2=file;
-                uri2=uri;
+                mBitmap2 = file;
+                uri2 = uri;
                 break;
             case 3:
                 ivPicture3.setImageBitmap(file);
-                mBitmap3=file;
-                uri3=uri;
+                mBitmap3 = file;
+                uri3 = uri;
                 break;
             case 4:
                 ivPicture4.setImageBitmap(file);
-                mBitmap4=file;
-                uri4=uri;
+                mBitmap4 = file;
+                uri4 = uri;
                 break;
             case 5:
                 ivPicture5.setImageBitmap(file);
-                mBitmap5=file;
-                uri5=uri;
+                mBitmap5 = file;
+                uri5 = uri;
                 break;
 
         }
 
 
-        String path =  Environment.getExternalStorageDirectory() + File.separator + "ImageAttach" + File.separator;
-        imageutils.createImage(file,filename,path,false);
+        String path = Environment.getExternalStorageDirectory() + File.separator + "ImageAttach" + File.separator;
+        imageutils.createImage(file, filename, path, false);
 
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("Fragment", "onActivityResult: ");
         imageutils.onActivityResult(requestCode, resultCode, data);
 
-    }    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
-    {
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle("Select The Action");
         menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
         menu.add(0, v.getId(), 0, "SMS");
     }
+
     @Override
-    public boolean onContextItemSelected(MenuItem item){
-        if(item.getTitle()=="Call"){
-            Toast.makeText(baseActivity,"calling code",Toast.LENGTH_LONG).show();
-        }
-        else if(item.getTitle()=="SMS"){
-            Toast.makeText(baseActivity,"sending sms code",Toast.LENGTH_LONG).show();
-        }else{
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getTitle() == "Call") {
+            Toast.makeText(baseActivity, "calling code", Toast.LENGTH_LONG).show();
+        } else if (item.getTitle() == "SMS") {
+            Toast.makeText(baseActivity, "sending sms code", Toast.LENGTH_LONG).show();
+        } else {
             return false;
         }
         return true;
     }
 
 
-    private  void submitOutdorJobData(String job_category,
-                                      String challan_no,
-                                      String challan_date,
-                                      String hospital_id,
-                                      String doctor_id,
-                                      String invoice_number,
-                                      String invoice_date,
-                                      String mode_of_transport,
-                                      String office_bike_id,
-                                      String expense,
-                                      String startLat,
-                                      String startLong,
-                                      Bitmap picture1,
-                                      Bitmap picture2,
-                                      Bitmap picture3,
-                                      Bitmap picture4,
-                                      Bitmap picture5){
+    private void submitOutdorJobData(String job_category,
+                                     String challan_no,
+                                     String challan_date,
+                                     String hospital_id,
+                                     String doctor_id,
+                                     String invoice_number,
+                                     String invoice_date,
+                                     String mode_of_transport,
+                                     String office_bike_id,
+                                     String expense,
+                                     String startLat,
+                                     String startLong,
+                                     Bitmap picture1,
+                                     Bitmap picture2,
+                                     Bitmap picture3,
+                                     Bitmap picture4,
+                                     Bitmap picture5) {
 
 
-
-         challan_no = null == challan_no? "":challan_no;
-         challan_date = null == challan_date? "":challan_date;
-         hospital_id = null == hospital_id? "":hospital_id;
-         doctor_id= null == doctor_id? "":doctor_id;
-         invoice_number= null == invoice_number? "":invoice_number;
-         invoice_date= null == invoice_date? "":invoice_date;
-         mode_of_transport= null == mode_of_transport? "":mode_of_transport;
-         office_bike_id= null == office_bike_id? "":office_bike_id;
-         expense= null == expense? "":expense;
-         startLat= null == startLat? "":startLat;
-         startLong= null == startLong? "":startLong;
+        challan_no = null == challan_no ? "" : challan_no;
+        challan_date = null == challan_date ? "" : challan_date;
+        hospital_id = null == hospital_id ? "" : hospital_id;
+        doctor_id = null == doctor_id ? "" : doctor_id;
+        invoice_number = null == invoice_number ? "" : invoice_number;
+        invoice_date = null == invoice_date ? "" : invoice_date;
+        mode_of_transport = null == mode_of_transport ? "" : mode_of_transport;
+        office_bike_id = null == office_bike_id ? "" : office_bike_id;
+        expense = null == expense ? "" : expense;
+        startLat = null == startLat ? "" : startLat;
+        startLong = null == startLong ? "" : startLong;
        /*  picture1= null == picture1? "":picture1;
          picture2= null == challan_no? "":challan_no;
          picture3= null == challan_no? "":challan_no;
@@ -1128,55 +1092,55 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         RequestBody expenseBody = RequestBody.create(MultipartBody.FORM, expense);
         RequestBody startLatBody = RequestBody.create(MultipartBody.FORM, startLat);
         RequestBody startLongBody = RequestBody.create(MultipartBody.FORM, startLong);
-        MultipartBody.Part body1=null,body2=null,body3=null,body4=null,body5 = null;
-        if(picture1!=null){
+        MultipartBody.Part body1 = null, body2 = null, body3 = null, body4 = null, body5 = null;
+        if (picture1 != null) {
 
-             body1 = prepareFilePart("picture1", uri1);
+            body1 = prepareFilePart("picture1", uri1);
 
-           // RequestBody requestFile1 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture1));
-           // body1 = MultipartBody.Part.createFormData("picture1", baseActivity.getImageFile(picture1).getName(), requestFile1);
+            // RequestBody requestFile1 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture1));
+            // body1 = MultipartBody.Part.createFormData("picture1", baseActivity.getImageFile(picture1).getName(), requestFile1);
         }
 
-        if(picture2!=null){
-           // RequestBody requestFile2 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture2));
-           // body2 = MultipartBody.Part.createFormData("picture2", baseActivity.getImageFile(picture1).getName(), requestFile2);
+        if (picture2 != null) {
+            // RequestBody requestFile2 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture2));
+            // body2 = MultipartBody.Part.createFormData("picture2", baseActivity.getImageFile(picture1).getName(), requestFile2);
             body2 = prepareFilePart("picture2", uri2);
 
         }
-        if(picture3!=null){
-           // RequestBody requestFile3 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture3));
-           ///  body3 = MultipartBody.Part.createFormData("picture3", baseActivity.getImageFile(picture1).getName(), requestFile3);
-            body3 = prepareFilePart("picture3",uri3);
+        if (picture3 != null) {
+            // RequestBody requestFile3 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture3));
+            ///  body3 = MultipartBody.Part.createFormData("picture3", baseActivity.getImageFile(picture1).getName(), requestFile3);
+            body3 = prepareFilePart("picture3", uri3);
 
         }
 
-        if(picture4!=null){
+        if (picture4 != null) {
             RequestBody requestFile4 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture4));
-           // body4 = MultipartBody.Part.createFormData("picture4", baseActivity.getImageFile(picture1).getName(), requestFile4);
+            // body4 = MultipartBody.Part.createFormData("picture4", baseActivity.getImageFile(picture1).getName(), requestFile4);
             body4 = prepareFilePart("picture4", uri4);
 
         }
 
-        if(picture5!=null){
+        if (picture5 != null) {
             RequestBody requestFile5 = RequestBody.create(MultipartBody.FORM, baseActivity.getImageFile(picture5));
-          //  body5 = MultipartBody.Part.createFormData("picture5", baseActivity.getImageFile(picture1).getName(), requestFile5);
+            //  body5 = MultipartBody.Part.createFormData("picture5", baseActivity.getImageFile(picture1).getName(), requestFile5);
             body5 = prepareFilePart("picture5", uri5);
         }
 
 
-        Call<ResponseBody> getDepartment = RestService.getInstance().restInterface.outdoorworkStart(bodyApiKey,userIdBody,
-                jobCategoryBody,challan_noBody,challan_dateBody,hospital_idBody,doctor_idBody,invoice_numberBody,
-                invoice_dateBody,mode_of_transportBody,office_bike_idBody,expenseBody,startLatBody,
-                startLongBody,body1,body2,body3,body4,body5);
+        Call<ResponseBody> getDepartment = RestService.getInstance().restInterface.outdoorworkStart(bodyApiKey, userIdBody,
+                jobCategoryBody, challan_noBody, challan_dateBody, hospital_idBody, doctor_idBody, invoice_numberBody,
+                invoice_dateBody, mode_of_transportBody, office_bike_idBody, expenseBody, startLatBody,
+                startLongBody, body1, body2, body3, body4, body5);
         getDepartment.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 baseActivity.dismissProgressDialog();
 
                 try {
-                    String res=response.body().string();
+                    String res = response.body().string();
                     try {
-                        JSONObject json=new JSONObject(res);
+                        JSONObject json = new JSONObject(res);
                         /*if (object.getInt("ResponseCode")==200){
                             JSONObject objects=object.getJSONObject("ResponseData");
                             String startTime = objects.getString("startTime");
@@ -1197,6 +1161,8 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
                                 baseActivity.preference.setJobID(json.getJSONObject("ResponseData").getString("jobid"));
 
                                 getActivity().startService(new Intent(getActivity(), LocationUpdateService.class));
+
+                                getHistory();
 
 
                             }
@@ -1223,6 +1189,7 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
             }
         });
     }
+
     @NonNull
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
         File file = FileUtils.getFile(baseActivity, fileUri);
@@ -1230,8 +1197,6 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         RequestBody requestFile = RequestBody.create(type, file);
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
-
-
 
 
     public String getMimeType(Uri uri) {
@@ -1247,7 +1212,6 @@ public class OutDoorWorkEntryDoctorMeetDetailsFragment extends BaseFragment impl
         }
         return mimeType;
     }
-
 
 
 }

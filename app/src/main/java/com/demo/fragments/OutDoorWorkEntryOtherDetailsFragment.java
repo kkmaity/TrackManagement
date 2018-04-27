@@ -36,7 +36,7 @@ import android.widget.Toast;
 import com.demo.MainActivity;
 import com.demo.R;
 import com.demo.adapter.CommonAdapter;
-import com.demo.adapter.OutDoorHistoryGridAdapter;
+import com.demo.adapter.OutDoorUpdateOthersListAdapter;
 import com.demo.dialog.CommonDialog;
 import com.demo.interfaces.OnRowClickListener;
 import com.demo.model.CommonDialogModel;
@@ -107,7 +107,7 @@ public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implement
     private boolean isButtonClicked = false;
     private int val = 0;
     private ListView gridAttendanceHis;
-    private OutDoorHistoryGridAdapter outDoorHistoryGridAdapter;
+    private OutDoorUpdateOthersListAdapter outDoorHistoryGridAdapter;
     private ArrayList<OutDoorHistory> outDoorHistories = new ArrayList<>();
     private ArrayList<CommonDialogModel> commonDialogModels = new ArrayList<>();
     private JSONArray hostpitalListArr, doctorListArr, modeOfTranportArr, bileArr;
@@ -138,23 +138,23 @@ public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implement
         // et_box_number = (EditText)v.findViewById(R.id.et_box_number);
         // et_description = (EditText)v.findViewById(R.id.et_description);
         imageutils =new Imageutils(getActivity(),this,true);
-        et_challan_number = (EditText) v.findViewById(R.id.et_challan_number);
-        linBikelist = (LinearLayout) v.findViewById(R.id.linBikelist);
-        et_challan_date = (EditText) v.findViewById(R.id.et_challan_date);
-        et_hospital_name = (EditText) v.findViewById(R.id.et_hospital_name);
-        et_doctor_name = (EditText) v.findViewById(R.id.et_doctor_name);
-        et_invoice_number = (EditText) v.findViewById(R.id.et_invoice_number);
-        et_invoice_date = (EditText) v.findViewById(R.id.et_invoice_date);
-        et_mode_of_transport = (EditText) v.findViewById(R.id.et_mode_of_transport);
-        et_bike_list = (EditText) v.findViewById(R.id.et_bike_list);
-        et_description = (EditText) v.findViewById(R.id.et_challan_number);
+        et_challan_number = v.findViewById(R.id.et_challan_number);
+        linBikelist = v.findViewById(R.id.linBikelist);
+        et_challan_date = v.findViewById(R.id.et_challan_date);
+        et_hospital_name = v.findViewById(R.id.et_hospital_name);
+        et_doctor_name = v.findViewById(R.id.et_doctor_name);
+        et_invoice_number = v.findViewById(R.id.et_invoice_number);
+        et_invoice_date = v.findViewById(R.id.et_invoice_date);
+        et_mode_of_transport = v.findViewById(R.id.et_mode_of_transport);
+        et_bike_list = v.findViewById(R.id.et_bike_list);
+        et_description = v.findViewById(R.id.et_challan_number);
         linBikelist.setVisibility(View.GONE);
-        et_expence = (EditText) v.findViewById(R.id.et_expence);
-        ivPicture1 = (ImageView) v.findViewById(R.id.ivPicture1);
-        ivPicture2 = (ImageView) v.findViewById(R.id.ivPicture2);
-        ivPicture3 = (ImageView) v.findViewById(R.id.ivPicture3);
-        ivPicture4 = (ImageView) v.findViewById(R.id.ivPicture4);
-        ivPicture5 = (ImageView) v.findViewById(R.id.ivPicture5);
+        et_expence = v.findViewById(R.id.et_expence);
+        ivPicture1 = v.findViewById(R.id.ivPicture1);
+        ivPicture2 = v.findViewById(R.id.ivPicture2);
+        ivPicture3 = v.findViewById(R.id.ivPicture3);
+        ivPicture4 = v.findViewById(R.id.ivPicture4);
+        ivPicture5 = v.findViewById(R.id.ivPicture5);
 
         ivPicture1.setOnClickListener(this);
         ivPicture2.setOnClickListener(this);
@@ -168,12 +168,12 @@ public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implement
         et_mode_of_transport.setOnClickListener(this);
         et_bike_list.setOnClickListener(this);
 
-        tv_start_work = (TextView) v.findViewById(R.id.tv_start_work);
-        tv_end_work = (TextView) v.findViewById(R.id.tv_end_work);
-        tv_start_date_time = (TextView) v.findViewById(R.id.tv_start_date_time);
-        tv_end_date_time = (TextView) v.findViewById(R.id.tv_end_date_time);
-        gridAttendanceHis = (ListView) v.findViewById(R.id.gridAttendanceHis);
-        outDoorHistoryGridAdapter = new OutDoorHistoryGridAdapter(baseActivity, outDoorHistories);
+        tv_start_work = v.findViewById(R.id.tv_start_work);
+        tv_end_work = v.findViewById(R.id.tv_end_work);
+        tv_start_date_time = v.findViewById(R.id.tv_start_date_time);
+        tv_end_date_time = v.findViewById(R.id.tv_end_date_time);
+        gridAttendanceHis = v.findViewById(R.id.gridAttendanceHis);
+        outDoorHistoryGridAdapter = new OutDoorUpdateOthersListAdapter(baseActivity, outDoorHistories, this);
         gridAttendanceHis.setAdapter(outDoorHistoryGridAdapter);
         tv_start_work.setOnClickListener(this);
         tv_end_work.setOnClickListener(this);
@@ -1133,7 +1133,7 @@ public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implement
                                 baseActivity.preference.setJobID(json.getJSONObject("ResponseData").getString("jobid"));
 
                                 getActivity().startService(new Intent(getActivity(), LocationUpdateService.class));
-
+                                getHistory();
 
                             }
 
@@ -1166,9 +1166,6 @@ public class OutDoorWorkEntryOtherDetailsFragment extends BaseFragment implement
         RequestBody requestFile = RequestBody.create(type, file);
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
-
-
-
 
     public String getMimeType(Uri uri) {
         String mimeType = null;
